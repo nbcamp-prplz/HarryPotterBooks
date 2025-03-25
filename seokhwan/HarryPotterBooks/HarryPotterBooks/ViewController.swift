@@ -35,8 +35,13 @@ final class ViewController: UIViewController {
 
 private extension ViewController {
     func configure() {
+        configureLayout()
         configureSubviews()
         configureConstraints()
+    }
+
+    func configureLayout() {
+        view.backgroundColor = .systemBackground
     }
 
     func configureSubviews() {
