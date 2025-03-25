@@ -62,7 +62,7 @@ class HomeView: UIView {
     }
     
     // configuration
-    public func config(title: String) {
+    public func config(title: String?) {
         titleLabel.text = title
     }
 }
