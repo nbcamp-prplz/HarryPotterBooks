@@ -9,21 +9,31 @@
 /* Begin PBXBuildFile section */
 		959724CE2D918CD600DEB155 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724CD2D918CD600DEB155 /* AppDelegate.swift */; };
 		959724D02D918CD600DEB155 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724CF2D918CD600DEB155 /* SceneDelegate.swift */; };
-		959724D22D918CD600DEB155 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724D12D918CD600DEB155 /* ViewController.swift */; };
+		959724D22D918CD600DEB155 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724D12D918CD600DEB155 /* MainViewController.swift */; };
 		959724D72D918CD700DEB155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 959724D62D918CD700DEB155 /* Assets.xcassets */; };
 		959724DA2D918CD700DEB155 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 959724D92D918CD700DEB155 /* Base */; };
 		959724E42D91AD5800DEB155 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 959724E32D91AD5800DEB155 /* data.json */; };
+		959724EA2D9276E600DEB155 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724E92D9276E600DEB155 /* MainView.swift */; };
+		959724EC2D9276EF00DEB155 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724EB2D9276EF00DEB155 /* MainViewModel.swift */; };
+		959724EE2D9279F000DEB155 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724ED2D9279F000DEB155 /* DataService.swift */; };
+		959724F12D927DA300DEB155 /* BookResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724F02D927DA300DEB155 /* BookResponse.swift */; };
+		959724F42D928F0A00DEB155 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 959724F32D928F0A00DEB155 /* SnapKit */; };
+		959724F72D928F3C00DEB155 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 959724F62D928F3C00DEB155 /* Then */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		959724CA2D918CD600DEB155 /* HarryPotterBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarryPotterBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		959724CD2D918CD600DEB155 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		959724CF2D918CD600DEB155 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		959724D12D918CD600DEB155 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		959724D12D918CD600DEB155 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		959724D62D918CD700DEB155 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		959724D92D918CD700DEB155 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		959724DB2D918CD700DEB155 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		959724E32D91AD5800DEB155 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
+		959724E92D9276E600DEB155 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		959724EB2D9276EF00DEB155 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		959724ED2D9279F000DEB155 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		959724F02D927DA300DEB155 /* BookResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				959724F42D928F0A00DEB155 /* SnapKit in Frameworks */,
+				959724F72D928F3C00DEB155 /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,12 +68,11 @@
 		959724CC2D918CD600DEB155 /* HarryPotterBooks */ = {
 			isa = PBXGroup;
 			children = (
+				959724EF2D927D7300DEB155 /* Model */,
+				959724E82D9276C700DEB155 /* Global */,
 				959724E72D91ADB600DEB155 /* ViewControllers */,
 				959724E62D91ADB100DEB155 /* ViewModels */,
 				959724E52D91ADA800DEB155 /* Views */,
-				959724CD2D918CD600DEB155 /* AppDelegate.swift */,
-				959724CF2D918CD600DEB155 /* SceneDelegate.swift */,
-				959724D12D918CD600DEB155 /* ViewController.swift */,
 				959724D62D918CD700DEB155 /* Assets.xcassets */,
 				959724D82D918CD700DEB155 /* LaunchScreen.storyboard */,
 				959724DB2D918CD700DEB155 /* Info.plist */,
@@ -73,6 +84,7 @@
 		959724E52D91ADA800DEB155 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				959724E92D9276E600DEB155 /* MainView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -80,6 +92,7 @@
 		959724E62D91ADB100DEB155 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				959724EB2D9276EF00DEB155 /* MainViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -87,8 +100,27 @@
 		959724E72D91ADB600DEB155 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				959724D12D918CD600DEB155 /* MainViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		959724E82D9276C700DEB155 /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				959724ED2D9279F000DEB155 /* DataService.swift */,
+				959724CD2D918CD600DEB155 /* AppDelegate.swift */,
+				959724CF2D918CD600DEB155 /* SceneDelegate.swift */,
+			);
+			path = Global;
+			sourceTree = "<group>";
+		};
+		959724EF2D927D7300DEB155 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				959724F02D927DA300DEB155 /* BookResponse.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,6 +139,10 @@
 			dependencies = (
 			);
 			name = HarryPotterBooks;
+			packageProductDependencies = (
+				959724F32D928F0A00DEB155 /* SnapKit */,
+				959724F62D928F3C00DEB155 /* Then */,
+			);
 			productName = HarryPotterBooks;
 			productReference = 959724CA2D918CD600DEB155 /* HarryPotterBooks.app */;
 			productType = "com.apple.product-type.application";
@@ -135,6 +171,10 @@
 				Base,
 			);
 			mainGroup = 959724C12D918CD600DEB155;
+			packageReferences = (
+				959724F22D928F0A00DEB155 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				959724F52D928F3C00DEB155 /* XCRemoteSwiftPackageReference "Then" */,
+			);
 			productRefGroup = 959724CB2D918CD600DEB155 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -162,9 +202,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				959724D22D918CD600DEB155 /* ViewController.swift in Sources */,
+				959724EC2D9276EF00DEB155 /* MainViewModel.swift in Sources */,
+				959724D22D918CD600DEB155 /* MainViewController.swift in Sources */,
+				959724EA2D9276E600DEB155 /* MainView.swift in Sources */,
+				959724EE2D9279F000DEB155 /* DataService.swift in Sources */,
 				959724CE2D918CD600DEB155 /* AppDelegate.swift in Sources */,
 				959724D02D918CD600DEB155 /* SceneDelegate.swift in Sources */,
+				959724F12D927DA300DEB155 /* BookResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,6 +431,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		959724F22D928F0A00DEB155 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.7.1;
+			};
+		};
+		959724F52D928F3C00DEB155 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = exactVersion;
+				version = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		959724F32D928F0A00DEB155 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 959724F22D928F0A00DEB155 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		959724F62D928F3C00DEB155 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 959724F52D928F3C00DEB155 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 959724C22D918CD600DEB155 /* Project object */;
 }
