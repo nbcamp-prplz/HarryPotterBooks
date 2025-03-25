@@ -68,15 +68,15 @@
 		959724CC2D918CD600DEB155 /* HarryPotterBooks */ = {
 			isa = PBXGroup;
 			children = (
+				959724F92D92A5DD00DEB155 /* Networking */,
+				959724F82D92A56F00DEB155 /* Resources */,
 				959724EF2D927D7300DEB155 /* Model */,
 				959724E82D9276C700DEB155 /* Global */,
 				959724E72D91ADB600DEB155 /* ViewControllers */,
 				959724E62D91ADB100DEB155 /* ViewModels */,
 				959724E52D91ADA800DEB155 /* Views */,
-				959724D62D918CD700DEB155 /* Assets.xcassets */,
 				959724D82D918CD700DEB155 /* LaunchScreen.storyboard */,
 				959724DB2D918CD700DEB155 /* Info.plist */,
-				959724E32D91AD5800DEB155 /* data.json */,
 			);
 			path = HarryPotterBooks;
 			sourceTree = "<group>";
@@ -108,7 +108,6 @@
 		959724E82D9276C700DEB155 /* Global */ = {
 			isa = PBXGroup;
 			children = (
-				959724ED2D9279F000DEB155 /* DataService.swift */,
 				959724CD2D918CD600DEB155 /* AppDelegate.swift */,
 				959724CF2D918CD600DEB155 /* SceneDelegate.swift */,
 			);
@@ -121,6 +120,23 @@
 				959724F02D927DA300DEB155 /* BookResponse.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		959724F82D92A56F00DEB155 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				959724D62D918CD700DEB155 /* Assets.xcassets */,
+				959724E32D91AD5800DEB155 /* data.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		959724F92D92A5DD00DEB155 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				959724ED2D9279F000DEB155 /* DataService.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
