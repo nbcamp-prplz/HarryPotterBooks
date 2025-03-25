@@ -7,10 +7,6 @@
 
 import Foundation
 
-struct BookList: Decodable {
-    let attributes: [Book]
-}
-
 struct Book: Decodable {
     let title: String
     let author: String
