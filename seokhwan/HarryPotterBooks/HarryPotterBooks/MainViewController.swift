@@ -12,6 +12,8 @@ final class MainViewController: UIViewController {
         label.text = "HarryPotterBooks"
         label.textAlignment = .center
         label.font = .boldSystemFont(ofSize: 24)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
 
         return label
     }()
