@@ -8,5 +8,5 @@
 import Foundation
 
 struct BookResponseDTO: Decodable {
-    let attributes: [Book]
+    let data: [BookResponse]
 }

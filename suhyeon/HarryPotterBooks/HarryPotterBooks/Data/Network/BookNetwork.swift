@@ -21,7 +21,7 @@ class BookNetwork: BookNetworkProtocol {
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: path))
             let bookResponse = try JSONDecoder().decode(BookResponseDTO.self, from: data)
-            return .success(bookResponse.attributes)
+            return .success(bookResponse.data.map{$0.attributes})
         } catch {
             return .failure(.parsingFaild)
         }
