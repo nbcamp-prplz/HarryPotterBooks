@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class ViewController: UIViewController {
+final class MainViewController: UIViewController {
     private lazy var bookTitleLabel: UILabel = {
         let label = UILabel()
 
@@ -38,7 +38,7 @@ final class ViewController: UIViewController {
     }
 }
 
-private extension ViewController {
+private extension MainViewController {
     func configure() {
         configureLayout()
         configureSubviews()
