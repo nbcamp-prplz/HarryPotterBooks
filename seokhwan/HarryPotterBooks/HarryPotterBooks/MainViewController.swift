@@ -1,7 +1,11 @@
 import UIKit
+import Combine
 import SnapKit
 
 final class MainViewController: UIViewController {
+    private let viewModel = MainViewModel()
+    private var cancellables = Set<AnyCancellable>()
+
     private lazy var bookTitleLabel: UILabel = {
         let label = UILabel()
 
@@ -43,6 +47,7 @@ private extension MainViewController {
         configureLayout()
         configureSubviews()
         configureConstraints()
+        configureBind()
     }
 
     func configureLayout() {
@@ -70,5 +75,18 @@ private extension MainViewController {
         seriesNumberButton.snp.makeConstraints { make in
             make.size.equalTo(44)
         }
+    }
+
+    func configureBind() {
+        viewModel.$bookTitle
+            .sink { [weak self] bookTitle in
+                self?.bookTitleLabel.text = bookTitle
+            }
+            .store(in: &cancellables)
+        viewModel.$seriesNumber
+            .sink { [weak self] seriesNumber in
+                self?.seriesNumberButton.configuration?.title = seriesNumber
+            }
+            .store(in: &cancellables)
     }
 }
