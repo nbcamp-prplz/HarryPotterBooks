@@ -11,8 +11,7 @@ protocol BookNetworkProtocol {
     func fetchBooks() async -> Result<[Book], DataError>
 }
 
-class BookNetwork: BookNetworkProtocol {
-    
+class BookNetwork: BookNetworkProtocol {  
     func fetchBooks() async -> Result<[Book], DataError> {
         guard let path = Bundle.main.path(forResource: "data", ofType: "json") else {
             return .failure(.fileNotFound)
@@ -23,7 +22,7 @@ class BookNetwork: BookNetworkProtocol {
             let bookResponse = try JSONDecoder().decode(BookResponseDTO.self, from: data)
             return .success(bookResponse.data.map{$0.attributes})
         } catch {
-            return .failure(.parsingFaild)
+            return .failure(.parsingFailed)
         }
     }
 }
