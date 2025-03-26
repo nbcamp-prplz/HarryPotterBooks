@@ -8,12 +8,12 @@
 import Foundation
 
 protocol BookNetworkProtocol {
-    func fetchBookList() async -> Result<[Book], DataError>
+    func fetchBooks() async -> Result<[Book], DataError>
 }
 
 class BookNetwork: BookNetworkProtocol {
     
-    func fetchBookList() async -> Result<[Book], DataError> {
+    func fetchBooks() async -> Result<[Book], DataError> {
         guard let path = Bundle.main.path(forResource: "data", ofType: "json") else {
             return .failure(.fileNotFound)
         }

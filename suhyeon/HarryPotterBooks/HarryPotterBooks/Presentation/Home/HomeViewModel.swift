@@ -15,13 +15,13 @@ protocol HomeViewModelProtocol {
 
 class HomeViewModel: HomeViewModelProtocol {
     private let disposeBag = DisposeBag()
-    private let usecase: BookUsecaseProtocol
+    private let useCase: BookUseCaseProtocol
     
-    private let bookList = BehaviorRelay<[Book]>(value: [])
+    private let books = BehaviorRelay<[Book]>(value: [])
     private let error = PublishRelay<String>()
     
-    init(usecase: BookUsecaseProtocol) {
-        self.usecase = usecase
+    init(useCase: BookUseCaseProtocol) {
+        self.useCase = useCase
     }
     
     struct Input {
@@ -29,25 +29,25 @@ class HomeViewModel: HomeViewModelProtocol {
     }
     
     struct Output {
-        let bookList: Observable<[Book]>
+        let books: Observable<[Book]>
         let error: Observable<String>
     }
     
     func transform(input: Input) -> Output {
         input.viewDidLoad.bind { [weak self] in
-            self?.fetchBookList()
+            self?.fetchBooks()
         }.disposed(by: disposeBag)
         
-        return Output(bookList: bookList.asObservable(), error: error.asObservable())
+        return Output(books: books.asObservable(), error: error.asObservable())
     }
     
-    private func fetchBookList() {
+    private func fetchBooks() {
         Task {
-            let bookList = await usecase.fetchBookList()
-            switch bookList {
-            case .success(let bookList):
+            let books = await useCase.fetchBooks()
+            switch books {
+            case .success(let books):
                 await MainActor.run {
-                    self.bookList.accept(bookList)
+                    self.books.accept(books)
                 }
                 
             case .failure(let error):

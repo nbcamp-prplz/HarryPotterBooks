@@ -17,8 +17,8 @@ class HomeViewController: UIViewController {
     init() {
         let bookNetwork = BookNetwork()
         let bookRepository = BookRepository(network: bookNetwork)
-        let usecase = BookUsecase(bookRepository: bookRepository)
-        viewModel = HomeViewModel(usecase: usecase)
+        let useCase = BookUseCase(bookRepository: bookRepository)
+        viewModel = HomeViewModel(useCase: useCase)
         super.init(nibName: nil, bundle: nil)
         
 
@@ -39,8 +39,8 @@ class HomeViewController: UIViewController {
         let input = HomeViewModel.Input(viewDidLoad: .just(()))
         let output = viewModel.transform(input: input)
         
-        output.bookList.bind { [weak self] bookList in
-            self?.homeView.config(title: bookList.first?.title)
+        output.books.bind { [weak self] books in
+            self?.homeView.configure(title: books.first?.title)
         }.disposed(by: disposeBag)
         
         output.error.bind { error in

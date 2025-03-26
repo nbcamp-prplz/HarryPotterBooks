@@ -8,5 +8,5 @@
 import Foundation
 
 protocol BookRepositoryProtocol {
-    func fetchBookList() async -> Result<[Book], DataError> // 책 리스트 가져오기
+    func fetchBooks() async -> Result<[Book], DataError> // 책 리스트 가져오기
 }

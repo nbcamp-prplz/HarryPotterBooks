@@ -14,7 +14,7 @@ class BookRepository: BookRepositoryProtocol {
         self.network = network
     }
     
-    func fetchBookList() async -> Result<[Book], DataError> {
-        await network.fetchBookList()
+    func fetchBooks() async -> Result<[Book], DataError> {
+        await network.fetchBooks()
     }
 }

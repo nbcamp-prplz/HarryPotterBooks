@@ -10,7 +10,7 @@ import Then
 import SnapKit
 
 class HomeView: UIView {
-    private let widthHeightSize: CGFloat = 30 // 버튼의 너비, 높이 사이즈
+    private let widthHeightLength: CGFloat = 30 // 버튼의 너비, 높이 사이즈
     
     // 책 제목
     private let titleLabel = UILabel().then {
@@ -20,14 +20,14 @@ class HomeView: UIView {
     }
 
     // 시리즈 순서
-    lazy var seriesButton = SeriesButton(title: "1", widthHeightSize: widthHeightSize)
+    lazy var seriesButton = SeriesButton(title: "1", widthHeightLength: widthHeightLength)
     
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
         
-        setSubView()     // subView 설정
+        setSubview()     // setSubview 설정
         setConstraints() // 제약조건 설정
     }
     
@@ -36,7 +36,7 @@ class HomeView: UIView {
     }
     
     // subView 설정
-    private func setSubView() {
+    private func setSubview() {
         [
             titleLabel,
            seriesButton,
@@ -49,20 +49,20 @@ class HomeView: UIView {
         // 책 제목
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).inset(16)
-            make.horizontalEdges.equalToSuperview().inset(20)
+            make.directionalHorizontalEdges.equalToSuperview().inset(20)
         }
         
         // 시리즈 버튼
         seriesButton.snp.makeConstraints { make in
-            make.width.height.equalTo(widthHeightSize)
+            make.size.equalTo(widthHeightLength)
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
-            make.horizontalEdges.equalToSuperview().inset(20).priority(.low)
+            make.directionalHorizontalEdges.greaterThanOrEqualToSuperview().inset(20)
         }
     }
     
     // configuration
-    public func config(title: String?) {
+    public func configure(title: String?) {
         titleLabel.text = title
     }
 }

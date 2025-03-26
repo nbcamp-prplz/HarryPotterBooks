@@ -35,38 +35,9 @@
 		CBEFA9962D9279C6008D75E6 /* HarryPotterBooksUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HarryPotterBooksUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		CBEFA99E2D9279C6008D75E6 /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooks" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = CBEFA9752D9279C3008D75E6 /* HarryPotterBooks */;
-		};
-		CBEFA9AF2D927B08008D75E6 /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooksTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				data.json,
-			);
-			target = CBEFA98B2D9279C6008D75E6 /* HarryPotterBooksTests */;
-		};
-		CBEFA9B02D927B08008D75E6 /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooksUITests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				data.json,
-			);
-			target = CBEFA9952D9279C6008D75E6 /* HarryPotterBooksUITests */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CBEFA9782D9279C3008D75E6 /* HarryPotterBooks */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				CBEFA99E2D9279C6008D75E6 /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooks" target */,
-				CBEFA9AF2D927B08008D75E6 /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooksTests" target */,
-				CBEFA9B02D927B08008D75E6 /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooksUITests" target */,
-			);
 			path = HarryPotterBooks;
 			sourceTree = "<group>";
 		};

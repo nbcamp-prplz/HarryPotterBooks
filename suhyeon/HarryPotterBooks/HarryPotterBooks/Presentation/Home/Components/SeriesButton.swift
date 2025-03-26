@@ -8,12 +8,12 @@
 import UIKit
 
 class SeriesButton: UIButton {
-    private let widthHeightSize: CGFloat
+    private let widthHeightLength: CGFloat
     private let title: String
     
-    init(title: String, widthHeightSize: CGFloat) {
+    init(title: String, widthHeightLength: CGFloat) {
         self.title = title
-        self.widthHeightSize = widthHeightSize
+        self.widthHeightLength = widthHeightLength
         super.init(frame: .zero)
         
         setUI()
@@ -25,7 +25,8 @@ class SeriesButton: UIButton {
     
     private func setUI() {
         setTitle(title, for: .normal)
+        titleLabel?.font = .systemFont(ofSize: 16)
         backgroundColor = .systemBlue
-        layer.cornerRadius = widthHeightSize / 2
+        layer.cornerRadius = widthHeightLength / 2
     }
 }
