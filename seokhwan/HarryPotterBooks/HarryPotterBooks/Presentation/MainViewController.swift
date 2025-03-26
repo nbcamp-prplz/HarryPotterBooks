@@ -17,13 +17,7 @@ final class MainViewController: UIViewController {
 
         return label
     }()
-    private lazy var seriesNumberButtonsStackView: UIStackView = {
-        let stackView = UIStackView()
-
-        stackView.axis = .horizontal
-
-        return stackView
-    }()
+    private lazy var seriesNumberButtonsStackView = UIStackView()
     private lazy var seriesNumberButton: UIButton = {
         var container = AttributeContainer()
         container.font = UIFont.systemFont(ofSize: 16)
@@ -42,6 +36,12 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+    }
+
+    private func updateContents(with book: Book) {
+        bookTitleLabel.text = book.title
+        seriesNumberButton.configuration?.title = "\(book.seriesNumber)"
+        bookInformationView.updateContents(with: book)
     }
 
     private func presentErrorAlert(with message: String) {
@@ -93,22 +93,18 @@ private extension MainViewController {
     }
 
     func configureBind() {
-        viewModel.$bookTitle
-            .sink { [weak self] bookTitle in
-                self?.bookTitleLabel.text = bookTitle
-            }
-            .store(in: &cancellables)
-        viewModel.$seriesNumber
-            .sink { [weak self] seriesNumber in
-                self?.seriesNumberButton.configuration?.title = seriesNumber
+        viewModel.$selectedBook
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .sink { [weak self] book in
+                self?.updateContents(with: book)
             }
             .store(in: &cancellables)
         viewModel.$errorMessage
             .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
             .sink { [weak self] errorMessage in
-                if let errorMessage {
-                    self?.presentErrorAlert(with: errorMessage)
-                }
+                self?.presentErrorAlert(with: errorMessage)
             }
             .store(in: &cancellables)
     }

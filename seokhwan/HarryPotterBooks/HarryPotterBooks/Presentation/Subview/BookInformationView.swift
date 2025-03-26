@@ -89,6 +89,14 @@ final class BookInformationView: UIStackView {
         super.init(coder: coder)
         configure()
     }
+
+    func updateContents(with book: Book) {
+        coverImageView.image = UIImage(named: "harrypotter\(book.seriesNumber)")
+        titleLabel.text = book.title
+        authorContentsLabel.text = book.author
+        releasedContentsLabel.text = "\(book.releaseDate)"
+        pagesContentsLabel.text = "\(book.pages)"
+    }
 }
 
 private extension BookInformationView {

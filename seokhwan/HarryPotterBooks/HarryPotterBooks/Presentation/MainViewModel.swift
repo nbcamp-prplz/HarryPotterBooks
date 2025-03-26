@@ -4,8 +4,7 @@ import Combine
 final class MainViewModel {
     private var books = Books()
 
-    @Published var bookTitle = "HarryPotterBooks"
-    @Published var seriesNumber = "1"
+    @Published var selectedBook: Book?
     @Published var errorMessage: String?
 
     init() {
@@ -17,8 +16,13 @@ final class MainViewModel {
         case .failure(let error):
             errorMessage = error.localizedDescription
         case .success(let books):
-            bookTitle = books.first?.title ?? ""
-            seriesNumber = "\(books.first?.seriesNumber ?? 0)"
+            self.books = books
+            selectBook(at: books.startIndex)
         }
+    }
+
+    func selectBook(at index: Int) {
+        guard (0..<books.count) ~= index else { return }
+        selectedBook = books[index]
     }
 }
