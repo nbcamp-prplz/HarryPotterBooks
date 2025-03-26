@@ -41,8 +41,8 @@ class HomeViewController: UIViewController {
         let output = viewModel.transform(input: input)
         
         output.books.bind { [weak self] books in
-            guard let self else { return }
-            self.homeView.configure(title: books.first?.title)
+            guard let self, let book = books.first else { return }
+            self.homeView.configure(book: book, index: 1)
         }.disposed(by: disposeBag)
         
         output.error.bind {[weak self] error in
