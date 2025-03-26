@@ -35,9 +35,22 @@
 		CBEFA9962D9279C6008D75E6 /* HarryPotterBooksUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HarryPotterBooksUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CB3965F72D93BD4200A4F23F /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooks" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = CBEFA9752D9279C3008D75E6 /* HarryPotterBooks */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CBEFA9782D9279C3008D75E6 /* HarryPotterBooks */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CB3965F72D93BD4200A4F23F /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooks" target */,
+			);
 			path = HarryPotterBooks;
 			sourceTree = "<group>";
 		};
