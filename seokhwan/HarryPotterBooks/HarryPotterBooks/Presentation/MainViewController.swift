@@ -87,7 +87,7 @@ private extension MainViewController {
             make.size.equalTo(44)
         }
         bookInformationView.snp.makeConstraints { make in
-            make.top.equalTo(seriesNumberButtonsStackView.snp.bottom).offset(20)
+            make.top.equalTo(seriesNumberButtonsStackView.snp.bottom).offset(24)
             make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(5)
         }
     }

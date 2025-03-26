@@ -11,7 +11,7 @@ final class BookInformationView: UIStackView {
     private lazy var informationStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 5
+        stackView.spacing = 8
         stackView.alignment = .leading
         return stackView
     }()
@@ -110,8 +110,10 @@ private extension BookInformationView {
 
     func configureLayout() {
         axis = .horizontal
-        spacing = 10
+        spacing = 15
         alignment = .top
+        isLayoutMarginsRelativeArrangement = true
+        directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
     }
 
     func configureSubviews() {
