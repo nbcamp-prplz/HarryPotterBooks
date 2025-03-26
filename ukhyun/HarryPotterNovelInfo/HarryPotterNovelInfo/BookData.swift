@@ -15,7 +15,7 @@ struct BookAttributes: Codable {
     let title: String
     let author: String
     let pages: Int
-    let release_date: String
+    let releaseDate: String
     let dedication: String
     let summary: String
     let wiki: String
@@ -23,7 +23,7 @@ struct BookAttributes: Codable {
     
     enum CodingKeys: String, CodingKey {
         case title, author, pages, dedication, summary, wiki, chapters
-        case release_date = "releaseDate"
+        case releaseDate = "release_date"
     }
 }
 
