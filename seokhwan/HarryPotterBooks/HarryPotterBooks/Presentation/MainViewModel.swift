@@ -3,21 +3,28 @@ import Combine
 
 final class MainViewModel {
     private var books = Books()
+    @Published var selectedBook: Book?
+    @Published var errorMessage: String?
 
-    @Published var bookTitle = "HarryPotterBooks"
-    @Published var seriesNumber = "1"
+    private let fetchBooksUseCase: FetchableBooksUseCase
 
     init() {
+        fetchBooksUseCase = FetchBooksUseCase()
         loadBooks()
     }
 
     func loadBooks() {
-        switch DataService.fetchBooks() {
+        switch fetchBooksUseCase.execute() {
         case .failure(let error):
-            print(error.localizedDescription)
+            errorMessage = error.localizedDescription
         case .success(let books):
-            bookTitle = books.first?.title ?? ""
-            seriesNumber = "\(books.first?.seriesNumber ?? 0)"
+            self.books = books
+            selectBook(at: books.startIndex)
         }
+    }
+
+    func selectBook(at index: Int) {
+        guard books.indices.contains(index) else { return }
+        selectedBook = books[index]
     }
 }

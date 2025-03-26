@@ -10,11 +10,33 @@
 		44CA0E022D927EA10089E6B0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 44CA0E012D927EA10089E6B0 /* SnapKit */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4481445E2D93FB94007BDE19 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 44CA0DDE2D927C210089E6B0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 44CA0DE52D927C210089E6B0;
+			remoteInfo = HarryPotterBooks;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		4481445A2D93FB94007BDE19 /* HarryPotterBooksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HarryPotterBooksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		44CA0DE62D927C210089E6B0 /* HarryPotterBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarryPotterBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		448144642D93FBC5007BDE19 /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooksTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Domain/Entity/Book.swift,
+				Domain/UseCase/FetchBooksUseCase.swift,
+				Storage/DataService.swift,
+				Storage/DTO/BookDTO.swift,
+				"Utility/Date+Extensions.swift",
+			);
+			target = 448144592D93FB94007BDE19 /* HarryPotterBooksTests */;
+		};
 		44CA0DF82D927C220089E6B0 /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooks" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -25,10 +47,16 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4481445B2D93FB94007BDE19 /* HarryPotterBooksTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = HarryPotterBooksTests;
+			sourceTree = "<group>";
+		};
 		44CA0DE82D927C210089E6B0 /* HarryPotterBooks */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				44CA0DF82D927C220089E6B0 /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooks" target */,
+				448144642D93FBC5007BDE19 /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooksTests" target */,
 			);
 			path = HarryPotterBooks;
 			sourceTree = "<group>";
@@ -36,6 +64,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		448144572D93FB94007BDE19 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		44CA0DE32D927C210089E6B0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -51,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				44CA0DE82D927C210089E6B0 /* HarryPotterBooks */,
+				4481445B2D93FB94007BDE19 /* HarryPotterBooksTests */,
 				44CA0DE72D927C210089E6B0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				44CA0DE62D927C210089E6B0 /* HarryPotterBooks.app */,
+				4481445A2D93FB94007BDE19 /* HarryPotterBooksTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -66,6 +103,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		448144592D93FB94007BDE19 /* HarryPotterBooksTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 448144622D93FB94007BDE19 /* Build configuration list for PBXNativeTarget "HarryPotterBooksTests" */;
+			buildPhases = (
+				448144562D93FB94007BDE19 /* Sources */,
+				448144572D93FB94007BDE19 /* Frameworks */,
+				448144582D93FB94007BDE19 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4481445F2D93FB94007BDE19 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4481445B2D93FB94007BDE19 /* HarryPotterBooksTests */,
+			);
+			name = HarryPotterBooksTests;
+			packageProductDependencies = (
+			);
+			productName = HarryPotterBooksTests;
+			productReference = 4481445A2D93FB94007BDE19 /* HarryPotterBooksTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		44CA0DE52D927C210089E6B0 /* HarryPotterBooks */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44CA0DF92D927C220089E6B0 /* Build configuration list for PBXNativeTarget "HarryPotterBooks" */;
@@ -99,6 +159,10 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					448144592D93FB94007BDE19 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 44CA0DE52D927C210089E6B0;
+					};
 					44CA0DE52D927C210089E6B0 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -122,11 +186,19 @@
 			projectRoot = "";
 			targets = (
 				44CA0DE52D927C210089E6B0 /* HarryPotterBooks */,
+				448144592D93FB94007BDE19 /* HarryPotterBooksTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		448144582D93FB94007BDE19 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		44CA0DE42D927C210089E6B0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,6 +209,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		448144562D93FB94007BDE19 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		44CA0DE22D927C210089E6B0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -146,7 +225,63 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		4481445F2D93FB94007BDE19 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 44CA0DE52D927C210089E6B0 /* HarryPotterBooks */;
+			targetProxy = 4481445E2D93FB94007BDE19 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		448144602D93FB94007BDE19 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 37CRZBHS68;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = youseokhwan.HarryPotterBooksTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HarryPotterBooks.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HarryPotterBooks";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		448144612D93FB94007BDE19 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 37CRZBHS68;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = youseokhwan.HarryPotterBooksTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HarryPotterBooks.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HarryPotterBooks";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
 		44CA0DFA2D927C220089E6B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -331,6 +466,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		448144622D93FB94007BDE19 /* Build configuration list for PBXNativeTarget "HarryPotterBooksTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				448144602D93FB94007BDE19 /* Debug */,
+				448144612D93FB94007BDE19 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		44CA0DE12D927C210089E6B0 /* Build configuration list for PBXProject "HarryPotterBooks" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

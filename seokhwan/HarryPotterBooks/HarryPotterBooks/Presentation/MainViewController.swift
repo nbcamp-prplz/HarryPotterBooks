@@ -17,13 +17,7 @@ final class MainViewController: UIViewController {
 
         return label
     }()
-    private lazy var seriesNumberButtonsStackView: UIStackView = {
-        let stackView = UIStackView()
-
-        stackView.axis = .horizontal
-
-        return stackView
-    }()
+    private lazy var seriesNumberButtonsStackView = UIStackView()
     private lazy var seriesNumberButton: UIButton = {
         var container = AttributeContainer()
         container.font = UIFont.systemFont(ofSize: 16)
@@ -37,10 +31,25 @@ final class MainViewController: UIViewController {
 
         return button
     }()
+    private lazy var bookInformationView = BookInformationView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+    }
+
+    private func updateContents(with book: Book) {
+        bookTitleLabel.text = book.title
+        seriesNumberButton.configuration?.title = "\(book.seriesNumber)"
+        bookInformationView.updateContents(with: book)
+    }
+
+    private func presentErrorAlert(with message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okAction)
+
+        present(alert, animated: true)
     }
 }
 
@@ -60,7 +69,7 @@ private extension MainViewController {
         [seriesNumberButton].forEach {
             seriesNumberButtonsStackView.addArrangedSubview($0)
         }
-        [bookTitleLabel, seriesNumberButtonsStackView].forEach {
+        [bookTitleLabel, seriesNumberButtonsStackView, bookInformationView].forEach {
             view.addSubview($0)
         }
     }
@@ -77,17 +86,25 @@ private extension MainViewController {
         seriesNumberButton.snp.makeConstraints { make in
             make.size.equalTo(44)
         }
+        bookInformationView.snp.makeConstraints { make in
+            make.top.equalTo(seriesNumberButtonsStackView.snp.bottom).offset(24)
+            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(5)
+        }
     }
 
     func configureBind() {
-        viewModel.$bookTitle
-            .sink { [weak self] bookTitle in
-                self?.bookTitleLabel.text = bookTitle
+        viewModel.$selectedBook
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .sink { [weak self] book in
+                self?.updateContents(with: book)
             }
             .store(in: &cancellables)
-        viewModel.$seriesNumber
-            .sink { [weak self] seriesNumber in
-                self?.seriesNumberButton.configuration?.title = seriesNumber
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .sink { [weak self] errorMessage in
+                self?.presentErrorAlert(with: errorMessage)
             }
             .store(in: &cancellables)
     }

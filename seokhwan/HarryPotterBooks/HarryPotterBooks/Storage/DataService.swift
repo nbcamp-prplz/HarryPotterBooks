@@ -1,12 +1,16 @@
 import Foundation
 
-enum DataService {
-    enum DataError: Error {
-        case fileNotFound
-        case parsingFailed
-    }
+enum DataError: Error {
+    case fileNotFound
+    case parsingFailed
+}
 
-    static func fetchBooks() -> Result<Books, DataError> {
+protocol DataServiceProtocol {
+    func fetchBooks() -> Result<Books, DataError>
+}
+
+final class DataService: DataServiceProtocol {
+    func fetchBooks() -> Result<Books, DataError> {
         guard let path = Bundle.main.path(forResource: "data", ofType: "json") else {
             return .failure(.fileNotFound)
         }
