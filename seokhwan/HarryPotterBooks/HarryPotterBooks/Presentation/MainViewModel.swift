@@ -22,7 +22,7 @@ final class MainViewModel {
     }
 
     func selectBook(at index: Int) {
-        guard (0..<books.count) ~= index else { return }
+        guard books.indices.contains(index) else { return }
         selectedBook = books[index]
     }
 }
