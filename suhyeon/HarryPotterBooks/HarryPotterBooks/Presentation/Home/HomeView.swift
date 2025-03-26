@@ -57,7 +57,7 @@ class HomeView: UIView {
             make.size.equalTo(widthHeightLength)
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
-            make.directionalHorizontalEdges.greaterThanOrEqualToSuperview().inset(20)
+            make.directionalHorizontalEdges.greaterThanOrEqualToSuperview().inset(20).priority(.low)
         }
     }
     
