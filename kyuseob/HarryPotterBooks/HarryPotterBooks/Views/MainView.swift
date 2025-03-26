@@ -45,15 +45,15 @@ class MainView: UIView {
     }
     
     private func setupHierarchy() {
-        addSubview(titleLabel)
-        addSubview(seriesButton)
+        [titleLabel, seriesButton].forEach { addSubview($0) }
     }
     
     private func setupConstraints() {
         titleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.horizontalEdges.greaterThanOrEqualToSuperview().inset(20)
-            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(10)
+            $0.leading.greaterThanOrEqualToSuperview().inset(20)
+            $0.trailing.greaterThanOrEqualToSuperview().inset(20)
+            $0.top.equalTo(safeAreaLayoutGuide).offset(10)
         }
         
         seriesButton.snp.makeConstraints {
@@ -61,11 +61,11 @@ class MainView: UIView {
             $0.top.equalTo(titleLabel.snp.bottom).offset(16)
             $0.leading.greaterThanOrEqualToSuperview().offset(20)
             $0.trailing.lessThanOrEqualToSuperview().offset(-20)
-            $0.width.height.equalTo(32)
+            $0.size.equalTo(32)
         }
     }
     
-    func configureBook(book: Book, index: Int) {
+    func configure(book: Book, index: Int) {
         titleLabel.text = book.title
         seriesButton.setTitle(String(index), for: .normal)
     }

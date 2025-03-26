@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 struct BookResponse: Decodable {
     let data: [BookData]
@@ -20,11 +19,22 @@ struct Book: Decodable {
     let title: String
     let author: String
     let pages: Int
-    let release_date: String
+    let releaseDate: String
     let dedication: String
     let summary: String
     let wiki: String
     let chapters: [Title]
+    
+    enum CodingKeys: String, CodingKey {
+        case title
+        case author
+        case pages
+        case releaseDate = "release_date"
+        case dedication
+        case summary
+        case wiki
+        case chapters
+    }
 }
 
 struct Title: Decodable {

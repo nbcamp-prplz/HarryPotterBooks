@@ -19,8 +19,8 @@ class MainViewController: UIViewController {
         
         loadBook(index: 1)
         
-        guard let book = self.myBook else { print("[MainVC] book is nil"); return }
-        mainView.configureBook(book: book, index: 1)
+        guard let book = self.myBook else { return }
+        mainView.configure(book: book, index: 1)
     }
 
     override func loadView() {
@@ -29,10 +29,8 @@ class MainViewController: UIViewController {
  
     private func loadBook(index: Int) {
         mainViewModel.loadBooks()
-        guard let book = mainViewModel.getBook(index: index) else { print("getBook returned nil"); return }
-        print(book)
+        guard let book = mainViewModel.book(index: index) else { return }
         self.myBook = book
-        print(myBook)
     }
     
 }

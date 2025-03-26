@@ -13,7 +13,7 @@ class MainViewModel {
     
     func loadBooks() {
         dataService.loadBooks { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             
             switch result {
             case .success(let books):
@@ -25,8 +25,8 @@ class MainViewModel {
         }
     }
     
-    func getBook(index: Int) -> Book? {
-        guard 0 ..< books.count ~= index else { print("getBook range is unvalid."); return nil } // 로드된 책 개수 안에서 하나를 반환하도록 예외 처리
+    func book(index: Int) -> Book? {
+        guard 0 ..< books.count ~= index else { return nil } // 로드된 책 개수 안에서 하나를 반환하도록 예외 처리
         
         return books[index]
     }
