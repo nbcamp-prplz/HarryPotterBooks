@@ -6,6 +6,7 @@ final class MainViewModel {
 
     @Published var bookTitle = "HarryPotterBooks"
     @Published var seriesNumber = "1"
+    @Published var errorMessage: String?
 
     init() {
         loadBooks()
@@ -14,7 +15,7 @@ final class MainViewModel {
     func loadBooks() {
         switch DataService.fetchBooks() {
         case .failure(let error):
-            print(error.localizedDescription)
+            errorMessage = error.localizedDescription
         case .success(let books):
             bookTitle = books.first?.title ?? ""
             seriesNumber = "\(books.first?.seriesNumber ?? 0)"

@@ -42,6 +42,14 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         configure()
     }
+
+    private func presentErrorAlert(with message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okAction)
+
+        present(alert, animated: true)
+    }
 }
 
 private extension MainViewController {
@@ -88,6 +96,14 @@ private extension MainViewController {
         viewModel.$seriesNumber
             .sink { [weak self] seriesNumber in
                 self?.seriesNumberButton.configuration?.title = seriesNumber
+            }
+            .store(in: &cancellables)
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                if let errorMessage {
+                    self?.presentErrorAlert(with: errorMessage)
+                }
             }
             .store(in: &cancellables)
     }
