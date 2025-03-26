@@ -12,6 +12,6 @@ extension Date {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM dd, yyyy"
         let result = formatter.string(from: self)
-        return result
+        return "Released : \(result)"
     }
 }
