@@ -24,14 +24,14 @@ final class HPBExtensionsTests: XCTestCase {
         XCTAssertEqual(components.day, 26)
     }
 
-    func testtoReleasedString() throws {
+    func testReleasedString() throws {
         let dateString = "2025-03-26"
         let format = "yyyy-MM-dd"
         let date = Date.from(dateString: dateString, with: format)
 
         XCTAssertNotNil(date)
 
-        let releasedString = date!.toReleasedString()
+        let releasedString = date!.releasedString()
         let expectedReleasedString = "March 26, 2025"
 
         XCTAssertEqual(releasedString, expectedReleasedString)

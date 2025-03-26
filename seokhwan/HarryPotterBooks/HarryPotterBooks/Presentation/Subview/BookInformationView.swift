@@ -96,7 +96,7 @@ final class BookInformationView: UIStackView {
         coverImageView.image = UIImage(named: "harrypotter\(book.seriesNumber)")
         titleLabel.text = book.title
         authorContentsLabel.text = book.author
-        releasedContentsLabel.text = book.releaseDate.toReleasedString()
+        releasedContentsLabel.text = book.releaseDate.releasedString()
         pagesContentsLabel.text = "\(book.pages)"
     }
 }
