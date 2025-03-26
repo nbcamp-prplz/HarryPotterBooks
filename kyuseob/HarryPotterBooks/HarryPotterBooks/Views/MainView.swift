@@ -9,14 +9,17 @@ import UIKit
 import SnapKit
 import Then
 
-class MainView: UIView {
+final class MainView: UIView {
 
+    private let bookInfoMiddleView = BookInfoMiddleView()
+    
     private let titleLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         $0.text = "Title"
         $0.textAlignment = .center
         $0.textColor = .black
         $0.numberOfLines = 0
+        $0.lineBreakMode = .byWordWrapping
     }
     
     private let seriesButton = UIButton().then {
@@ -45,7 +48,7 @@ class MainView: UIView {
     }
     
     private func setupHierarchy() {
-        [titleLabel, seriesButton].forEach { addSubview($0) }
+        [titleLabel, seriesButton, bookInfoMiddleView].forEach { addSubview($0) }
     }
     
     private func setupConstraints() {
@@ -63,11 +66,19 @@ class MainView: UIView {
             $0.trailing.lessThanOrEqualToSuperview().offset(-20)
             $0.size.equalTo(32)
         }
+        
+        bookInfoMiddleView.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(5)
+            $0.trailing.equalToSuperview().offset(-5) // 요구사항대로 5만큼의 offset 조정
+            $0.top.equalTo(seriesButton.snp.bottom).offset(12)
+        }
     }
     
     func configure(book: Book, index: Int) {
         titleLabel.text = book.title
         seriesButton.setTitle(String(index), for: .normal)
+        
+        bookInfoMiddleView.configure(book: book, index: index)
     }
     
 }
