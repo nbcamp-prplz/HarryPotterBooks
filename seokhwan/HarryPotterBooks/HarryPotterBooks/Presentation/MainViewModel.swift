@@ -12,7 +12,7 @@ final class MainViewModel {
     }
 
     func loadBooks() {
-        switch DataService.fetchBooks() {
+        switch FetchBooksUseCase.execute() {
         case .failure(let error):
             errorMessage = error.localizedDescription
         case .success(let books):
