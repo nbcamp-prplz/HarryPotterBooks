@@ -20,6 +20,7 @@ struct BookAttributes: Codable {
     let summary: String
     let wiki: String
     let chapters: [Chapter]
+    
 }
 
 struct Book: Codable {

@@ -44,7 +44,7 @@ class ViewController: UIViewController {
     
     func configureLayout() {
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
             make.horizontalEdges.equalToSuperview().inset(20)
         }
         buttonStackView.snp.makeConstraints { make in
@@ -80,7 +80,7 @@ class ViewController: UIViewController {
     
     func loadBooks() {
         dataService.loadBooks { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .success(let books): self.books = books
             case .failure(let error): print("Error: \(error.localizedDescription)")
