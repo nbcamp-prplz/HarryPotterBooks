@@ -3,16 +3,18 @@ import Combine
 
 final class MainViewModel {
     private var books = Books()
-
     @Published var selectedBook: Book?
     @Published var errorMessage: String?
 
+    private let fetchBooksUseCase: FetchBooksUseCase
+
     init() {
+        fetchBooksUseCase = FetchBooksUseCase()
         loadBooks()
     }
 
     func loadBooks() {
-        switch FetchBooksUseCase.execute() {
+        switch fetchBooksUseCase.execute() {
         case .failure(let error):
             errorMessage = error.localizedDescription
         case .success(let books):

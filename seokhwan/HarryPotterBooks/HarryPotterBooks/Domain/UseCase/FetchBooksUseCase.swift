@@ -1,7 +1,17 @@
 import Foundation
 
-enum FetchBooksUseCase {
-    static func execute() -> Result<Books, DataService.DataError> {
-        return DataService.fetchBooks()
+final class FetchBooksUseCase {
+    let dataService: DataServiceProtocol
+
+    init() {
+        dataService = DataService()
+    }
+
+    init(dataService: DataServiceProtocol) {
+        self.dataService = dataService
+    }
+
+    func execute() -> Result<Books, DataError> {
+        return dataService.fetchBooks()
     }
 }
