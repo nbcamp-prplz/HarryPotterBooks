@@ -1,6 +1,10 @@
 import Foundation
 
-final class FetchBooksUseCase {
+protocol FetchableBooksUseCase {
+    func execute() -> Result<Books, DataError>
+}
+
+final class FetchBooksUseCase: FetchableBooksUseCase {
     let dataService: DataServiceProtocol
 
     init() {

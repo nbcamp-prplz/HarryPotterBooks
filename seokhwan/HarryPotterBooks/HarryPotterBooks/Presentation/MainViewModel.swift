@@ -6,7 +6,7 @@ final class MainViewModel {
     @Published var selectedBook: Book?
     @Published var errorMessage: String?
 
-    private let fetchBooksUseCase: FetchBooksUseCase
+    private let fetchBooksUseCase: FetchableBooksUseCase
 
     init() {
         fetchBooksUseCase = FetchBooksUseCase()
