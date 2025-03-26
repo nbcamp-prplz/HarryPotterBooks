@@ -37,6 +37,7 @@ final class MainViewController: UIViewController {
 
         return button
     }()
+    private lazy var bookInformationView = BookInformationView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,7 +69,7 @@ private extension MainViewController {
         [seriesNumberButton].forEach {
             seriesNumberButtonsStackView.addArrangedSubview($0)
         }
-        [bookTitleLabel, seriesNumberButtonsStackView].forEach {
+        [bookTitleLabel, seriesNumberButtonsStackView, bookInformationView].forEach {
             view.addSubview($0)
         }
     }
@@ -84,6 +85,10 @@ private extension MainViewController {
         }
         seriesNumberButton.snp.makeConstraints { make in
             make.size.equalTo(44)
+        }
+        bookInformationView.snp.makeConstraints { make in
+            make.top.equalTo(seriesNumberButtonsStackView.snp.bottom).offset(20)
+            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(5)
         }
     }
 
