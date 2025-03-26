@@ -19,6 +19,8 @@ final class BookInformationView: UIStackView {
         let label = UILabel()
         label.text = "title"
         label.font = .boldSystemFont(ofSize: 20)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         label.textColor = .black
         return label
     }()
@@ -94,7 +96,7 @@ final class BookInformationView: UIStackView {
         coverImageView.image = UIImage(named: "harrypotter\(book.seriesNumber)")
         titleLabel.text = book.title
         authorContentsLabel.text = book.author
-        releasedContentsLabel.text = "\(book.releaseDate)"
+        releasedContentsLabel.text = book.releaseDate.toReleasedString()
         pagesContentsLabel.text = "\(book.pages)"
     }
 }

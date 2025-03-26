@@ -7,4 +7,12 @@ extension Date {
 
         return dateFormatter.date(from: dateString)
     }
+
+    func toReleasedString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .none
+
+        return dateFormatter.string(from: self)
+    }
 }
