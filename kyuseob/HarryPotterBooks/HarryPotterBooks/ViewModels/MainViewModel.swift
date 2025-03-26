@@ -11,18 +11,9 @@ class MainViewModel {
     private let dataService = DataService()
     private var books: [Book] = []
     
-    func loadBooks() {
-        dataService.loadBooks { [weak self] result in
-            guard let self else { return }
-            
-            switch result {
-            case .success(let books):
-                self.books = books
-                
-            case .failure(let error):
-                print(error)
-            }
-        }
+    func loadBooks() throws {
+        let books = try dataService.loadBooks()
+        self.books = books
     }
     
     func book(index: Int) -> Book? {
