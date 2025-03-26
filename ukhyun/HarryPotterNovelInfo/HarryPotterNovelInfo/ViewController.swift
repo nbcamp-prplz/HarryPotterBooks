@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     
     private let titleLabel = {
         let title = UILabel()
+        title.text = "Harry Potter and the Philosopher's Stone"
         title.textAlignment = .center
         title.font = .boldSystemFont(ofSize: 24)
         title.numberOfLines = 0
@@ -26,6 +27,54 @@ class ViewController: UIViewController {
         return stack
     }()
     
+    private let bookImageView = {
+        let img = UIImageView()
+        img.image = UIImage(named: "harrypotter1")
+        img.contentMode = .scaleAspectFill
+        img.backgroundColor = .cyan
+        return img
+    }()
+    
+    private let bookTitle = {
+        let title = UILabel()
+        title.text = "Harry Potter and the Philosopher's Stone"
+        title.font = .boldSystemFont(ofSize: 20)
+        title.numberOfLines = 0
+        return title
+    }()
+    
+    private let author = {
+        let author = UILabel()
+        
+        let titleAttribute: [NSAttributedString.Key: Any] = [.font: UIFont.boldSystemFont(ofSize: 16), .foregroundColor: UIColor.black]
+        let titleAttributeString = NSAttributedString(string: "Author : ", attributes: titleAttribute)
+        
+        let authorAttribute: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor.darkGray]
+        let authorAttributeString = NSAttributedString(string: "J. K. Rowling", attributes: authorAttribute)
+        
+        let combineAttrubute = NSMutableAttributedString()
+        combineAttrubute.append(titleAttributeString)
+        combineAttrubute.append(authorAttributeString)
+        
+        author.attributedText = combineAttrubute
+        
+        return author
+    }()
+    
+    private let releaseDate = {
+        let date = UILabel()
+        date.text = "Released Date"
+        date.font = .boldSystemFont(ofSize: 14)
+        return date
+    }()
+    
+    private let bookPage = {
+        let pg = UILabel()
+        pg.text = "Page : Test"
+        pg.font = .boldSystemFont(ofSize: 14)
+        return pg
+    }()
+    
     private let dataService = DataService()
     private var books = [BookAttributes]()
     
@@ -37,21 +86,52 @@ class ViewController: UIViewController {
         configureView()
     }
     
+    
+}
+
+extension ViewController {
     func configureHierarchy() {
         view.backgroundColor = .white
-        [titleLabel, buttonStackView].forEach { view.addSubview($0) }
+        [titleLabel, buttonStackView, bookImageView, bookTitle, author, releaseDate, bookPage].forEach { view.addSubview($0) }
     }
     
     func configureLayout() {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
-            make.horizontalEdges.equalToSuperview().inset(20)
+            make.directionalHorizontalEdges.equalToSuperview().inset(20)
         }
         buttonStackView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.horizontalEdges.equalToSuperview().inset(20)
+            make.directionalHorizontalEdges.equalToSuperview().inset(20)
             make.height.equalTo(40)
         }
+        bookImageView.snp.makeConstraints { make in
+            make.top.equalTo(buttonStackView.snp.bottom).offset(24)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(5)
+            make.width.equalTo(100)
+            make.height.equalTo(150)
+        }
+        bookTitle.snp.makeConstraints { make in
+            make.top.equalTo(buttonStackView.snp.bottom).offset(28)
+            make.leading.equalTo(bookImageView.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().inset(5)
+        }
+        author.snp.makeConstraints { make in
+            make.top.equalTo(bookTitle.snp.bottom).offset(12)
+            make.leading.equalTo(bookImageView.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().inset(5)
+        }
+        releaseDate.snp.makeConstraints { make in
+            make.top.equalTo(author.snp.bottom).offset(12)
+            make.leading.equalTo(bookImageView.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().inset(5)
+        }
+        bookPage.snp.makeConstraints { make in
+            make.top.equalTo(releaseDate.snp.bottom).offset(12)
+            make.leading.equalTo(bookImageView.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().inset(5)
+        }
+        
     }
     
     func configureView() {
@@ -73,8 +153,17 @@ class ViewController: UIViewController {
     
     @objc func seriesButtonClicked(_ sender: UIButton) {
         if sender.tag <= books.count {
-            let bookTitle = books[sender.tag - 1].title
-            titleLabel.text = bookTitle
+            let tag = books[sender.tag - 1]
+            bookImageView.image = UIImage(named: "harrypotter\(sender.tag)")
+            titleLabel.text = tag.title
+            bookTitle.text = tag.title
+            bookPage.text = "Pages : \(tag.pages)"
+            
+            let releaseDateFormatter = DateFormatter()
+            releaseDateFormatter.dateFormat = "yyyy-MM-dd"
+            guard let date = releaseDateFormatter.date(from: tag.releaseDate) else { return print("Release Date Error")}
+            releaseDate.text = date.DateToString()
+            
         }
     }
     
@@ -88,4 +177,3 @@ class ViewController: UIViewController {
         }
     }
 }
-
