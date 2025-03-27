@@ -107,7 +107,8 @@ final class BookInfoMiddleView: UIView {
         bookTitleLabel.text = book.title
         
         authorStackView = createLabelStackView(isAuthor: true, title: "Author", value: book.author)
-        releasedStackView = createLabelStackView(isAuthor: false, title: "Released", value: book.releaseDate)
+        let convertedReleaseDate = DateManager.shared.convertDate(from: book.releaseDate)
+        releasedStackView = createLabelStackView(isAuthor: false, title: "Released", value: convertedReleaseDate)
         pagesStackView = createLabelStackView(isAuthor: false, title: "pages", value: String(book.pages))
         
         setupUI()
