@@ -22,6 +22,12 @@ class HomeView: UIView {
     // 시리즈 순서
     lazy var seriesButton = SeriesButton(title: "1", widthHeightLength: widthHeightLength)
     
+    // 스크롤뷰
+    private let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = false
+        $0.showsHorizontalScrollIndicator = false
+    }
+    
     // 전체 스택 뷰 (책 정보 영역 + 헌정사 + 요약)
     private let bookInfoStackView = UIStackView().then {
         $0.axis = .vertical
@@ -36,6 +42,9 @@ class HomeView: UIView {
     
     // 요약
     private let summaryStackView = InfoVerticalStackView(title: "Summary")
+    
+    // 챕터
+    private let chaptersStackView = ChaptersStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -54,13 +63,16 @@ class HomeView: UIView {
         [
             mainTitleLabel,
             seriesButton,
-            bookInfoStackView
+            scrollView,
         ].forEach { self.addSubview($0) } // HomeView
+        
+        scrollView.addSubview(bookInfoStackView) // 스크롤뷰
         
         [
             bookDetailStackView,
             dedicationStackView,
-            summaryStackView
+            summaryStackView,
+            chaptersStackView,
         ].forEach { bookInfoStackView.addArrangedSubview($0) } // bookInfoStackView
     }
     
@@ -81,18 +93,26 @@ class HomeView: UIView {
             make.directionalHorizontalEdges.greaterThanOrEqualToSuperview().inset(20).priority(.low)
         }
         
-        // 책 정보 스택 뷰
-        bookInfoStackView.snp.makeConstraints { make in
+        // 스크롤뷰
+        scrollView.snp.makeConstraints { make in
             make.top.equalTo(seriesButton.snp.bottom).offset(20)
             make.directionalHorizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            make.bottom.equalToSuperview()
+        }
+
+        // 전체 스택 뷰
+        bookInfoStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
         }
     }
     
     // configuration
     public func configure(book: Book, index: Int) {
-        mainTitleLabel.text = book.title
-        dedicationStackView.configure(content: book.dedication)
-        summaryStackView.configure(content: book.summary)
-        bookDetailStackView.configure(book: book, index: index)
+        mainTitleLabel.text = book.title    // 메인 타이틀
+        dedicationStackView.configure(content: book.dedication) // 헌정사
+        summaryStackView.configure(content: book.summary) // 요역
+        bookDetailStackView.configure(book: book, index: index) // 이미지 + 기본 정보
+        chaptersStackView.configure(contents: book.chapters.map{$0.title})
     }
 }
