@@ -13,6 +13,7 @@ final class MainView: UIView {
 
     private let bookInfoMiddleView = BookInfoMiddleView()
     private let bookInfoBottomView = BookInfoBottomView()
+    private let chapterView = ChapterView()
     
     private let titleLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 24, weight: .bold)
@@ -30,6 +31,12 @@ final class MainView: UIView {
         $0.setTitle("?", for: .normal)
         $0.isUserInteractionEnabled = false // 임시 레벨 1 기준 세팅
     }
+    
+    private let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = false
+    }
+    
+    private let contentView = UIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -49,7 +56,9 @@ final class MainView: UIView {
     }
     
     private func setupHierarchy() {
-        [titleLabel, seriesButton, bookInfoMiddleView, bookInfoBottomView].forEach { addSubview($0) }
+        [titleLabel, seriesButton, scrollView].forEach { addSubview($0) }
+        scrollView.addSubview(contentView)
+        [bookInfoMiddleView, bookInfoBottomView, chapterView].forEach { contentView.addSubview($0) }
     }
     
     private func setupConstraints() {
@@ -68,15 +77,38 @@ final class MainView: UIView {
             $0.size.equalTo(32)
         }
         
+        scrollView.snp.makeConstraints {
+            $0.directionalHorizontalEdges.equalToSuperview()
+            $0.top.equalTo(seriesButton.snp.bottom)
+            $0.bottom.equalToSuperview()
+            $0.width.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.directionalHorizontalEdges.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.width.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        
         bookInfoMiddleView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(5)
             $0.trailing.equalToSuperview().offset(-5) // 요구사항대로 5만큼의 offset 조정
-            $0.top.equalTo(seriesButton.snp.bottom).offset(12)
+            $0.top.equalToSuperview().offset(12)
         }
         
         bookInfoBottomView.snp.makeConstraints {
             $0.top.equalTo(bookInfoMiddleView.snp.bottom)
             $0.directionalHorizontalEdges.equalToSuperview()
+        }
+        
+        chapterView.snp.makeConstraints {
+            $0.top.equalTo(bookInfoBottomView.snp.bottom)
+            $0.directionalHorizontalEdges.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.bottom.equalTo(chapterView.snp.bottom).offset(20)
         }
     }
     
@@ -86,6 +118,7 @@ final class MainView: UIView {
         
         bookInfoMiddleView.configure(book: book, index: index)
         bookInfoBottomView.configure(dedication: book.dedication, summary: book.summary)
+        chapterView.configure(with: book.chapters)
     }
     
 }
