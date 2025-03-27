@@ -109,7 +109,7 @@ extension ViewController {
             make.top.equalTo(buttonStackView.snp.bottom).offset(24)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(5)
             make.width.equalTo(100)
-            make.height.equalTo(150)
+            make.height.equalTo(bookImageView.snp.width).multipliedBy(1.5)
         }
         bookTitle.snp.makeConstraints { make in
             make.top.equalTo(buttonStackView.snp.bottom).offset(28)
@@ -162,7 +162,7 @@ extension ViewController {
             let releaseDateFormatter = DateFormatter()
             releaseDateFormatter.dateFormat = "yyyy-MM-dd"
             guard let date = releaseDateFormatter.date(from: tag.releaseDate) else { return print("Release Date Error")}
-            releaseDate.text = date.DateToString()
+            releaseDate.text = date.dateFormatter()
             
         }
     }
