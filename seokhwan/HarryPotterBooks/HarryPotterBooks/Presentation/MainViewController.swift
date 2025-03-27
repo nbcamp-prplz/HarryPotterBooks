@@ -17,9 +17,9 @@ final class MainViewController: UIViewController {
         return stackView
     }()
     private lazy var informationView = HPBInformationView()
-    private lazy var dedicationView = HPBVerticalContentsView(.dedication)
-    private lazy var summaryView = HPBVerticalContentsView(.summary)
-    private lazy var chaptersView = HPBVerticalContentsView(.chapters)
+    private lazy var dedicationView = HPBVerticalContentView(.dedication)
+    private lazy var summaryView = HPBVerticalContentView(.summary)
+    private lazy var chaptersView = HPBVerticalContentView(.chapters)
 
     override func viewDidLoad() {
         super.viewDidLoad()

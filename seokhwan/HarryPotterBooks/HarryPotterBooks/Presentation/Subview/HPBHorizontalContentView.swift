@@ -1,6 +1,6 @@
 import UIKit
 
-final class HPBHorizontalContentsView: UIStackView {
+final class HPBHorizontalContentView: UIStackView {
     enum ContentsType: String {
         case none
         case author = "Author"
@@ -46,7 +46,7 @@ final class HPBHorizontalContentsView: UIStackView {
         super.init(frame: frame)
     }
 
-    convenience init(_ type: HPBHorizontalContentsView.ContentsType) {
+    convenience init(_ type: HPBHorizontalContentView.ContentsType) {
         self.init(frame: .zero)
         configure(type)
     }
@@ -61,13 +61,13 @@ final class HPBHorizontalContentsView: UIStackView {
     }
 }
 
-private extension HPBHorizontalContentsView {
-    func configure(_ type: HPBHorizontalContentsView.ContentsType) {
+private extension HPBHorizontalContentView {
+    func configure(_ type: HPBHorizontalContentView.ContentsType) {
         configureLayout(type)
         configureSubviews()
     }
 
-    func configureLayout(_ type: HPBHorizontalContentsView.ContentsType) {
+    func configureLayout(_ type: HPBHorizontalContentView.ContentsType) {
         spacing = 8
 
         headerLabel.text = type.rawValue

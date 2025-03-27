@@ -30,9 +30,9 @@ final class HPBInformationView: UIStackView {
 
         return label
     }()
-    private lazy var authorView = HPBHorizontalContentsView(.author)
-    private lazy var releasedView = HPBHorizontalContentsView(.released)
-    private lazy var pagesView = HPBHorizontalContentsView(.pages)
+    private lazy var authorView = HPBHorizontalContentView(.author)
+    private lazy var releasedView = HPBHorizontalContentView(.released)
+    private lazy var pagesView = HPBHorizontalContentView(.pages)
 
     override init(frame: CGRect) {
         super.init(frame: frame)

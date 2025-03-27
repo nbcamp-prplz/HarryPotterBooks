@@ -1,6 +1,6 @@
 import UIKit
 
-final class HPBVerticalContentsView: UIStackView {
+final class HPBVerticalContentView: UIStackView {
     enum ContentsType: String {
         case none
         case dedication = "Dedication"
@@ -42,7 +42,7 @@ final class HPBVerticalContentsView: UIStackView {
         super.init(frame: frame)
     }
 
-    convenience init(_ type: HPBVerticalContentsView.ContentsType) {
+    convenience init(_ type: HPBVerticalContentView.ContentsType) {
         self.init(frame: .zero)
         configure(type)
     }
@@ -58,13 +58,13 @@ final class HPBVerticalContentsView: UIStackView {
     }
 }
 
-private extension HPBVerticalContentsView {
-    func configure(_ type: HPBVerticalContentsView.ContentsType) {
+private extension HPBVerticalContentView {
+    func configure(_ type: HPBVerticalContentView.ContentsType) {
         configureLayout(type)
         configureSubviews()
     }
 
-    func configureLayout(_ type: HPBVerticalContentsView.ContentsType) {
+    func configureLayout(_ type: HPBVerticalContentView.ContentsType) {
         axis = .vertical
         spacing = 8
 
