@@ -58,17 +58,23 @@ private extension MainViewController {
 
     func configureBind() {
         viewModel.selectedBook
-            .receive(on: DispatchQueue.main)
             .compactMap { $0 }
             .sink { [weak self] book in
-                self?.updateContents(with: book)
+                Task {
+                    await MainActor.run {
+                        self?.updateContents(with: book)
+                    }
+                }
             }
             .store(in: &cancellables)
         viewModel.errorMessage
-            .receive(on: DispatchQueue.main)
             .compactMap { $0 }
             .sink { [weak self] errorMessage in
-                self?.presentErrorAlert(with: errorMessage)
+                Task {
+                    await MainActor.run {
+                        self?.presentErrorAlert(with: errorMessage)
+                    }
+                }
             }
             .store(in: &cancellables)
     }
