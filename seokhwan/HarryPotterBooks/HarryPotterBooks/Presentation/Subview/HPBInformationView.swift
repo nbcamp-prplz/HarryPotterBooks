@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class BookInformationView: UIStackView {
+final class HPBInformationView: UIStackView {
     private lazy var coverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -101,7 +101,7 @@ final class BookInformationView: UIStackView {
     }
 }
 
-private extension BookInformationView {
+private extension HPBInformationView {
     func configure() {
         configureLayout()
         configureSubviews()
