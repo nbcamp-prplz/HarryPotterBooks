@@ -1,14 +1,6 @@
 import XCTest
 import Combine
 
-struct FetchBooksUseCaseMock: FetchableBooksUseCase {
-    var result: Result<Books, DataError>
-
-    func execute() -> Result<Books, DataError> {
-        return result
-    }
-}
-
 final class HPBMainViewModelTests: XCTestCase {
     var mainViewModel: MainViewModel!
     var books: Books!
