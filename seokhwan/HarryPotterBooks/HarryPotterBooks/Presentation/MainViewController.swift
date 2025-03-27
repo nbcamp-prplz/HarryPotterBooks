@@ -57,14 +57,14 @@ private extension MainViewController {
     }
 
     func configureBind() {
-        viewModel.$selectedBook
+        viewModel.selectedBook
             .receive(on: DispatchQueue.main)
             .compactMap { $0 }
             .sink { [weak self] book in
                 self?.updateContents(with: book)
             }
             .store(in: &cancellables)
-        viewModel.$errorMessage
+        viewModel.errorMessage
             .receive(on: DispatchQueue.main)
             .compactMap { $0 }
             .sink { [weak self] errorMessage in
