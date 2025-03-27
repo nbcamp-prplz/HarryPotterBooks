@@ -6,31 +6,7 @@ final class MainViewController: UIViewController {
     private let viewModel = MainViewModel()
     private var cancellables = Set<AnyCancellable>()
 
-    private lazy var bookTitleLabel: UILabel = {
-        let label = UILabel()
-
-        label.text = "HarryPotterBooks"
-        label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: 24)
-        label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
-
-        return label
-    }()
-    private lazy var seriesNumberButtonsStackView = UIStackView()
-    private lazy var seriesNumberButton: UIButton = {
-        var container = AttributeContainer()
-        container.font = UIFont.systemFont(ofSize: 16)
-
-        var configuration = UIButton.Configuration.filled()
-        configuration.attributedTitle = AttributedString("1", attributes: container)
-
-        let button = UIButton(configuration: configuration)
-        button.layer.cornerRadius = 22
-        button.layer.masksToBounds = true
-
-        return button
-    }()
+    private lazy var headerView = HPBHeaderView()
     private lazy var informationView = HPBInformationView()
 
     override func viewDidLoad() {
@@ -39,8 +15,7 @@ final class MainViewController: UIViewController {
     }
 
     private func updateContents(with book: Book) {
-        bookTitleLabel.text = book.title
-        seriesNumberButton.configuration?.title = "\(book.seriesNumber)"
+        headerView.updateContents(with: book)
         informationView.updateContents(with: book)
     }
 
@@ -66,28 +41,18 @@ private extension MainViewController {
     }
 
     func configureSubviews() {
-        [seriesNumberButton].forEach {
-            seriesNumberButtonsStackView.addArrangedSubview($0)
-        }
-        [bookTitleLabel, seriesNumberButtonsStackView, informationView].forEach {
+        [headerView, informationView].forEach {
             view.addSubview($0)
         }
     }
 
     func configureConstraints() {
-        bookTitleLabel.snp.makeConstraints { make in
+        headerView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
             make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
-        seriesNumberButtonsStackView.snp.makeConstraints { make in
-            make.top.equalTo(bookTitleLabel.snp.bottom).offset(16)
-            make.centerX.equalTo(view.safeAreaLayoutGuide)
-        }
-        seriesNumberButton.snp.makeConstraints { make in
-            make.size.equalTo(44)
-        }
         informationView.snp.makeConstraints { make in
-            make.top.equalTo(seriesNumberButtonsStackView.snp.bottom).offset(24)
+            make.top.equalTo(headerView.snp.bottom).offset(24)
             make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(5)
         }
     }
