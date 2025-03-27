@@ -10,6 +10,7 @@ final class MainViewController: UIViewController {
     private lazy var informationView = HPBInformationView()
     private lazy var dedicationView = HPBVerticalContentsView(.dedication)
     private lazy var summaryView = HPBVerticalContentsView(.summary)
+    private lazy var chaptersView = HPBVerticalContentsView(.chapters)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +47,7 @@ private extension MainViewController {
     }
 
     func configureSubviews() {
-        [headerView, informationView, dedicationView, summaryView].forEach {
+        [headerView, informationView, dedicationView, summaryView, chaptersView].forEach {
             view.addSubview($0)
         }
     }
@@ -66,6 +67,10 @@ private extension MainViewController {
         }
         summaryView.snp.makeConstraints { make in
             make.top.equalTo(dedicationView.snp.bottom).offset(24)
+            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
+        chaptersView.snp.makeConstraints { make in
+            make.top.equalTo(summaryView.snp.bottom).offset(24)
             make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }

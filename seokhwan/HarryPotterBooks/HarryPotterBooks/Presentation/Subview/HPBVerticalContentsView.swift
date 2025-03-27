@@ -5,7 +5,19 @@ final class HPBVerticalContentsView: UIStackView {
         case none
         case dedication = "Dedication"
         case summary = "Summary"
+        case chapters = "Chapters"
+
+        var lineSpacing: CGFloat {
+            switch self {
+            case .chapters:
+                return 8
+            default:
+                return 0
+            }
+        }
     }
+
+    private var contentsAttributes = [NSAttributedString.Key: Any]()
 
     private lazy var headerLabel: UILabel = {
         let label = UILabel()
@@ -22,7 +34,7 @@ final class HPBVerticalContentsView: UIStackView {
         label.textColor = .darkGray
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
-        
+
         return label
     }()
 
@@ -41,7 +53,8 @@ final class HPBVerticalContentsView: UIStackView {
     }
 
     func update(contents: String) {
-        contentsLabel.text = contents
+        let attributedString = NSAttributedString(string: contents, attributes: contentsAttributes)
+        contentsLabel.attributedText = attributedString
     }
 }
 
@@ -56,6 +69,10 @@ private extension HPBVerticalContentsView {
         spacing = 8
 
         headerLabel.text = type.rawValue
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = type.lineSpacing
+        contentsAttributes = [.paragraphStyle: paragraphStyle]
     }
 
     func configureSubviews() {
