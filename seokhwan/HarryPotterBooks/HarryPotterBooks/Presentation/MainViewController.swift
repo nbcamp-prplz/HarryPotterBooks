@@ -8,18 +8,7 @@ final class MainViewController: UIViewController {
 
     private lazy var headerView = HPBHeaderView()
     private lazy var scrollView = UIScrollView()
-    private lazy var contentsStackView: UIStackView = {
-        let stackView = UIStackView()
-
-        stackView.axis = .vertical
-        stackView.spacing = 24
-
-        return stackView
-    }()
-    private lazy var informationView = HPBInformationView()
-    private lazy var dedicationView = HPBVerticalContentView(.dedication)
-    private lazy var summaryView = HPBVerticalContentView(.summary)
-    private lazy var chaptersView = HPBVerticalContentView(.chapters)
+    private lazy var contentsView = HPBContainerView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,10 +17,7 @@ final class MainViewController: UIViewController {
 
     private func updateContents(with book: Book) {
         headerView.updateContents(with: book)
-        informationView.updateContents(with: book)
-        dedicationView.update(contents: book.dedication)
-        summaryView.update(contents: book.summary)
-        chaptersView.update(contents: book.chapters.joinedTitles)
+        contentsView.updateContents(with: book)
     }
 
     private func presentErrorAlert(with message: String) {
@@ -56,10 +42,7 @@ private extension MainViewController {
     }
 
     func configureSubviews() {
-        [informationView, dedicationView, summaryView, chaptersView].forEach {
-            contentsStackView.addArrangedSubview($0)
-        }
-        scrollView.addSubview(contentsStackView)
+        scrollView.addSubview(contentsView)
         [headerView, scrollView].forEach {
             view.addSubview($0)
         }
@@ -75,7 +58,7 @@ private extension MainViewController {
             make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-        contentsStackView.snp.makeConstraints { make in
+        contentsView.snp.makeConstraints { make in
             make.directionalEdges.width.equalToSuperview()
         }
     }
