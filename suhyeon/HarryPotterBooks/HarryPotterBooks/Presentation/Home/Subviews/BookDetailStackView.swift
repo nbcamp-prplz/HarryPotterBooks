@@ -7,7 +7,7 @@
 
 import UIKit
 
-// 책 정보 영역 스택뷰 (이미지 + 텍스트)
+// 책 정보 영역 스택뷰 (이미지 + 제목 + 저자 + 출간일 + 페이지)
 class BookDetailStackView: UIStackView {
     
     // 책 표지 이미지
@@ -85,7 +85,7 @@ class BookDetailStackView: UIStackView {
     
     private func setUI() {
         self.axis = .horizontal
-        self.alignment = .center
+        self.alignment = .top
         self.spacing = 10
     }
     

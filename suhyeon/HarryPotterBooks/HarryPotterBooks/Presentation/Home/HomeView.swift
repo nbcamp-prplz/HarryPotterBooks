@@ -22,8 +22,20 @@ class HomeView: UIView {
     // 시리즈 순서
     lazy var seriesButton = SeriesButton(title: "1", widthHeightLength: widthHeightLength)
     
-    // 책 정보 영역 스택뷰 (이미지 + 텍스트)
+    // 전체 스택 뷰 (책 정보 영역 + 헌정사 + 요약)
+    private let bookInfoStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 24
+    }
+    
+    // 책 정보 영역 스택뷰 (이미지 + 제목 + 저자 + 출간일 + 페이지)
     private let bookDetailStackView = BookDetailStackView()
+    
+    // 헌정사
+    private let dedicationStackView = InfoVerticalStackView(title: "Dedication")
+    
+    // 요약
+    private let summaryStackView = InfoVerticalStackView(title: "Summary")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,10 +54,14 @@ class HomeView: UIView {
         [
             mainTitleLabel,
             seriesButton,
-            bookDetailStackView
+            bookInfoStackView
         ].forEach { self.addSubview($0) } // HomeView
         
-
+        [
+            bookDetailStackView,
+            dedicationStackView,
+            summaryStackView
+        ].forEach { bookInfoStackView.addArrangedSubview($0) } // bookInfoStackView
     }
     
     // 제약조건 설정
@@ -66,15 +82,17 @@ class HomeView: UIView {
         }
         
         // 책 정보 스택 뷰
-        bookDetailStackView.snp.makeConstraints { make in
+        bookInfoStackView.snp.makeConstraints { make in
             make.top.equalTo(seriesButton.snp.bottom).offset(20)
-            make.directionalHorizontalEdges.equalTo(safeAreaLayoutGuide).inset(5)
+            make.directionalHorizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
         }
     }
     
     // configuration
     public func configure(book: Book, index: Int) {
         mainTitleLabel.text = book.title
+        dedicationStackView.configure(content: book.dedication)
+        summaryStackView.configure(content: book.summary)
         bookDetailStackView.configure(book: book, index: index)
     }
 }

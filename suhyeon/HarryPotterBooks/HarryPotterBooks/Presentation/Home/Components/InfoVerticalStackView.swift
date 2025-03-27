@@ -20,6 +20,7 @@ class InfoVerticalStackView: UIStackView {
     private let contentLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14)
         $0.textColor = .darkGray
+        $0.numberOfLines = 0
     }
     
     init(title: String) {
