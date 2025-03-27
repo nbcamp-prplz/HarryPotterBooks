@@ -21,6 +21,7 @@ final class MainViewController: UIViewController {
         informationView.updateContents(with: book)
         dedicationView.update(contents: book.dedication)
         summaryView.update(contents: book.summary)
+        chaptersView.update(contents: book.chapters.joinedTitles)
     }
 
     private func presentErrorAlert(with message: String) {
