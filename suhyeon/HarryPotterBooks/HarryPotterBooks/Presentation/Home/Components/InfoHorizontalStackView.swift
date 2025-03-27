@@ -1,5 +1,5 @@
 //
-//  InfoStackView.swift
+//  InfoHorizontalStackView.swift
 //  HarryPotterBooks
 //
 //  Created by 이수현 on 3/26/25.
@@ -8,7 +8,7 @@
 import UIKit
 
 // 책 설명 수평 스택 뷰 
-class InfoStackView: UIStackView {
+class InfoHorizontalStackView: UIStackView {
     private let title: String
     private let titleFont: UIFont
     private let titleColor: UIColor
