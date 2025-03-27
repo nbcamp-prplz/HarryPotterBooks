@@ -7,6 +7,15 @@ final class MainViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
 
     private lazy var headerView = HPBHeaderView()
+    private lazy var scrollView = UIScrollView()
+    private lazy var contentsStackView: UIStackView = {
+        let stackView = UIStackView()
+
+        stackView.axis = .vertical
+        stackView.spacing = 24
+
+        return stackView
+    }()
     private lazy var informationView = HPBInformationView()
     private lazy var dedicationView = HPBVerticalContentsView(.dedication)
     private lazy var summaryView = HPBVerticalContentsView(.summary)
@@ -47,7 +56,11 @@ private extension MainViewController {
     }
 
     func configureSubviews() {
-        [headerView, informationView, dedicationView, summaryView, chaptersView].forEach {
+        [informationView, dedicationView, summaryView, chaptersView].forEach {
+            contentsStackView.addArrangedSubview($0)
+        }
+        scrollView.addSubview(contentsStackView)
+        [headerView, scrollView].forEach {
             view.addSubview($0)
         }
     }
@@ -57,21 +70,13 @@ private extension MainViewController {
             make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
             make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
-        informationView.snp.makeConstraints { make in
+        scrollView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(24)
-            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(5)
-        }
-        dedicationView.snp.makeConstraints { make in
-            make.top.equalTo(informationView.snp.bottom).offset(24)
             make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-        summaryView.snp.makeConstraints { make in
-            make.top.equalTo(dedicationView.snp.bottom).offset(24)
-            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
-        }
-        chaptersView.snp.makeConstraints { make in
-            make.top.equalTo(summaryView.snp.bottom).offset(24)
-            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        contentsStackView.snp.makeConstraints { make in
+            make.directionalEdges.width.equalToSuperview()
         }
     }
 

@@ -64,8 +64,6 @@ private extension HPBInformationView {
         axis = .horizontal
         spacing = 15
         alignment = .top
-        isLayoutMarginsRelativeArrangement = true
-        directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15)
     }
 
     func configureSubviews() {
