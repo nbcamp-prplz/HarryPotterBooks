@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9537BF562D94220D00DB43CC /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9537BF552D94220D00DB43CC /* DateManager.swift */; };
 		959724CE2D918CD600DEB155 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724CD2D918CD600DEB155 /* AppDelegate.swift */; };
 		959724D02D918CD600DEB155 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724CF2D918CD600DEB155 /* SceneDelegate.swift */; };
 		959724D22D918CD600DEB155 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724D12D918CD600DEB155 /* MainViewController.swift */; };
@@ -19,9 +20,13 @@
 		959724F12D927DA300DEB155 /* BookResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724F02D927DA300DEB155 /* BookResponse.swift */; };
 		959724F42D928F0A00DEB155 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 959724F32D928F0A00DEB155 /* SnapKit */; };
 		959724F72D928F3C00DEB155 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 959724F62D928F3C00DEB155 /* Then */; };
+		959724FB2D93C05900DEB155 /* BookInfoMiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724FA2D93C05900DEB155 /* BookInfoMiddleView.swift */; };
+		959724FD2D93F25C00DEB155 /* DataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724FC2D93F25C00DEB155 /* DataError.swift */; };
+		959725002D93F37900DEB155 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724FF2D93F37900DEB155 /* UIViewController+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9537BF552D94220D00DB43CC /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		959724CA2D918CD600DEB155 /* HarryPotterBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarryPotterBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		959724CD2D918CD600DEB155 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		959724CF2D918CD600DEB155 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +39,9 @@
 		959724EB2D9276EF00DEB155 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		959724ED2D9279F000DEB155 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		959724F02D927DA300DEB155 /* BookResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookResponse.swift; sourceTree = "<group>"; };
+		959724FA2D93C05900DEB155 /* BookInfoMiddleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfoMiddleView.swift; sourceTree = "<group>"; };
+		959724FC2D93F25C00DEB155 /* DataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataError.swift; sourceTree = "<group>"; };
+		959724FF2D93F37900DEB155 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,10 +76,10 @@
 		959724CC2D918CD600DEB155 /* HarryPotterBooks */ = {
 			isa = PBXGroup;
 			children = (
-				959724F92D92A5DD00DEB155 /* Networking */,
-				959724F82D92A56F00DEB155 /* Resources */,
-				959724EF2D927D7300DEB155 /* Model */,
 				959724E82D9276C700DEB155 /* Global */,
+				959724F82D92A56F00DEB155 /* Resources */,
+				959724F92D92A5DD00DEB155 /* Networking */,
+				959724EF2D927D7300DEB155 /* Model */,
 				959724E72D91ADB600DEB155 /* ViewControllers */,
 				959724E62D91ADB100DEB155 /* ViewModels */,
 				959724E52D91ADA800DEB155 /* Views */,
@@ -85,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				959724E92D9276E600DEB155 /* MainView.swift */,
+				959724FA2D93C05900DEB155 /* BookInfoMiddleView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -108,8 +117,10 @@
 		959724E82D9276C700DEB155 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				959724FE2D93F36300DEB155 /* Extension */,
 				959724CD2D918CD600DEB155 /* AppDelegate.swift */,
 				959724CF2D918CD600DEB155 /* SceneDelegate.swift */,
+				9537BF552D94220D00DB43CC /* DateManager.swift */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -135,8 +146,17 @@
 			isa = PBXGroup;
 			children = (
 				959724ED2D9279F000DEB155 /* DataService.swift */,
+				959724FC2D93F25C00DEB155 /* DataError.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		959724FE2D93F36300DEB155 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				959724FF2D93F37900DEB155 /* UIViewController+.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,11 +240,15 @@
 			files = (
 				959724EC2D9276EF00DEB155 /* MainViewModel.swift in Sources */,
 				959724D22D918CD600DEB155 /* MainViewController.swift in Sources */,
+				959725002D93F37900DEB155 /* UIViewController+.swift in Sources */,
 				959724EA2D9276E600DEB155 /* MainView.swift in Sources */,
 				959724EE2D9279F000DEB155 /* DataService.swift in Sources */,
 				959724CE2D918CD600DEB155 /* AppDelegate.swift in Sources */,
 				959724D02D918CD600DEB155 /* SceneDelegate.swift in Sources */,
+				9537BF562D94220D00DB43CC /* DateManager.swift in Sources */,
+				959724FD2D93F25C00DEB155 /* DataError.swift in Sources */,
 				959724F12D927DA300DEB155 /* BookResponse.swift in Sources */,
+				959724FB2D93C05900DEB155 /* BookInfoMiddleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
