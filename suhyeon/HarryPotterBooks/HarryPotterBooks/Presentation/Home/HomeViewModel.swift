@@ -17,7 +17,7 @@ class HomeViewModel: HomeViewModelProtocol {
     private let disposeBag = DisposeBag()
     private let useCase: BookUseCaseProtocol
     
-    private let books = BehaviorRelay<[Book]>(value: [])
+    private let books = BehaviorRelay<[Book]>(content: [])
     private let error = PublishRelay<String>()
     
     init(useCase: BookUseCaseProtocol) {

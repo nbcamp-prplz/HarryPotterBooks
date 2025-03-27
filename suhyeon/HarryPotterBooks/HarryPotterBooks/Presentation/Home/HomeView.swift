@@ -53,21 +53,21 @@ class HomeView: UIView {
     private let authorStackView = InfoStackView(title: "Author",
                                                 titleFont:  .systemFont(ofSize: 16, weight: .bold),
                                                 titleColor: .black,
-                                                valueFont: .systemFont(ofSize: 18),
-                                                valueColor: .darkGray)
+                                                contentFont: .systemFont(ofSize: 18),
+                                                contentColor: .darkGray)
     
     // 출간일 스택뷰
     private let releaseStackView = InfoStackView(title: "Released",
                                                 titleFont:  .systemFont(ofSize: 14, weight: .bold),
                                                 titleColor: .black,
-                                                valueFont: .systemFont(ofSize: 14),
-                                                 valueColor: .gray)
+                                                contentFont: .systemFont(ofSize: 14),
+                                                contentColor: .gray)
     // 페이지 스택뷰
     private let pageStackView = InfoStackView(title: "Pages",
                                                 titleFont:  .systemFont(ofSize: 14, weight: .bold),
                                                 titleColor: .black,
-                                                valueFont: .systemFont(ofSize: 14),
-                                                 valueColor: .gray)
+                                                contentFont: .systemFont(ofSize: 14),
+                                                contentColor: .gray)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -137,8 +137,8 @@ class HomeView: UIView {
         mainTitleLabel.text = book.title
         bookTitleLabel.text = book.title
         bookImageView.image = UIImage(named: "harrypotter\(index)")
-        authorStackView.configure(value: book.author)
-        releaseStackView.configure(value: book.releaseDate)
-        pageStackView.configure(value: "\(book.pages)")
+        authorStackView.configure(content: book.author)
+        releaseStackView.configure(content: book.releaseDate)
+        pageStackView.configure(content: "\(book.pages)")
     }
 }
