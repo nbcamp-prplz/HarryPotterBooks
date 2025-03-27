@@ -75,6 +75,38 @@ class ViewController: UIViewController {
         return pg
     }()
     
+    private let dedicationTitle = {
+        let dd = UILabel()
+        dd.text = "Dedication"
+        dd.font = .boldSystemFont(ofSize: 18)
+        return dd
+    }()
+    
+    private let dedicationDetail = {
+        let detail = UILabel()
+        detail.text = "Test Text"
+        detail.font = .systemFont(ofSize: 14)
+        detail.textColor = .darkGray
+        detail.numberOfLines = 0
+        return detail
+    }()
+    
+    private let summaryTitle = {
+        let title = UILabel()
+        title.text = "Summary"
+        title.font = .boldSystemFont(ofSize: 18)
+        return title
+    }()
+    
+    private let summaryDetail = {
+        let detail = UILabel()
+        detail.text = "Test Text"
+        detail.font = .systemFont(ofSize: 14)
+        detail.textColor = .darkGray
+        detail.numberOfLines = 0
+        return detail
+    }()
+    
     private let dataService = DataService()
     private var books = [BookAttributes]()
     
@@ -92,7 +124,11 @@ class ViewController: UIViewController {
 extension ViewController {
     func configureHierarchy() {
         view.backgroundColor = .white
-        [titleLabel, buttonStackView, bookImageView, bookTitle, author, releaseDate, bookPage].forEach { view.addSubview($0) }
+        [titleLabel, buttonStackView, bookImageView,
+         bookTitle, author, releaseDate, bookPage,
+         dedicationTitle, dedicationDetail, summaryTitle,
+         summaryDetail]
+            .forEach { view.addSubview($0) }
     }
     
     func configureLayout() {
@@ -131,6 +167,22 @@ extension ViewController {
             make.leading.equalTo(bookImageView.snp.trailing).offset(16)
             make.trailing.equalToSuperview().inset(5)
         }
+        dedicationTitle.snp.makeConstraints { make in
+            make.top.equalTo(bookImageView.snp.bottom).offset(24)
+            make.leading.equalToSuperview().offset(20)
+        }
+        dedicationDetail.snp.makeConstraints { make in
+            make.top.equalTo(dedicationTitle.snp.bottom).offset(8)
+            make.directionalHorizontalEdges.equalToSuperview().inset(20)
+        }
+        summaryTitle.snp.makeConstraints { make in
+            make.top.equalTo(dedicationDetail.snp.bottom).offset(24)
+            make.leading.equalToSuperview().offset(20)
+        }
+        summaryDetail.snp.makeConstraints { make in
+            make.top.equalTo(summaryTitle.snp.bottom).offset(8)
+            make.directionalHorizontalEdges.equalToSuperview().inset(20)
+        }
         
     }
     
@@ -164,6 +216,8 @@ extension ViewController {
             guard let date = releaseDateFormatter.date(from: tag.releaseDate) else { return print("Release Date Error")}
             releaseDate.text = date.dateFormatter()
             
+            dedicationDetail.text = tag.dedication
+            summaryDetail.text = tag.summary
         }
     }
     
