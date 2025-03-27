@@ -31,6 +31,7 @@ private extension MainViewController {
 
     func configureLayout() {
         view.backgroundColor = .systemBackground
+        scrollView.showsVerticalScrollIndicator = false
     }
 
     func configureSubviews() {
