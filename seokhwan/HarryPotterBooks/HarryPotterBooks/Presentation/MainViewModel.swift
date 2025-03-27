@@ -23,9 +23,7 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
     }
 
     func selectBook(at index: Int) {
-        guard let selectedIndex = selectedBook.value?.seriesNumber,
-              selectedIndex != index,
-              books.indices.contains(index) else { return }
+        guard books.indices.contains(index) else { return }
         selectedBook.send(books[index])
     }
 
