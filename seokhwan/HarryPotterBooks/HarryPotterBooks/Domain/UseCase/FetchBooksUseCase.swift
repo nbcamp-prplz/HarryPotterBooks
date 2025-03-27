@@ -6,12 +6,8 @@ protocol FetchableBooksUseCase {
 
 final class FetchBooksUseCase: FetchableBooksUseCase {
     let dataService: DataServiceProtocol
-
-    init() {
-        dataService = DataService()
-    }
-
-    init(dataService: DataServiceProtocol) {
+    
+    init(dataService: DataServiceProtocol = DataService()) {
         self.dataService = dataService
     }
 
