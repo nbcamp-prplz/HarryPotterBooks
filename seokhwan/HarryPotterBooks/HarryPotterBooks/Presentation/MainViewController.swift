@@ -8,6 +8,8 @@ final class MainViewController: UIViewController {
 
     private lazy var headerView = HPBHeaderView()
     private lazy var informationView = HPBInformationView()
+    private lazy var dedicationView = HPBVerticalContentsView(.dedication)
+    private lazy var summaryView = HPBVerticalContentsView(.summary)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,6 +19,8 @@ final class MainViewController: UIViewController {
     private func updateContents(with book: Book) {
         headerView.updateContents(with: book)
         informationView.updateContents(with: book)
+        dedicationView.update(contents: book.dedication)
+        summaryView.update(contents: book.summary)
     }
 
     private func presentErrorAlert(with message: String) {
@@ -41,7 +45,7 @@ private extension MainViewController {
     }
 
     func configureSubviews() {
-        [headerView, informationView].forEach {
+        [headerView, informationView, dedicationView, summaryView].forEach {
             view.addSubview($0)
         }
     }
@@ -54,6 +58,14 @@ private extension MainViewController {
         informationView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(24)
             make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(5)
+        }
+        dedicationView.snp.makeConstraints { make in
+            make.top.equalTo(informationView.snp.bottom).offset(24)
+            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
+        summaryView.snp.makeConstraints { make in
+            make.top.equalTo(dedicationView.snp.bottom).offset(24)
+            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }
 
