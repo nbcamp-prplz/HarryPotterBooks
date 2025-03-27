@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9537BF562D94220D00DB43CC /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9537BF552D94220D00DB43CC /* DateManager.swift */; };
+		9552526E2D94EECA00EF3ED8 /* BookInfoBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9552526D2D94EECA00EF3ED8 /* BookInfoBottomView.swift */; };
+		955252702D94F30200EF3ED8 /* TitleContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9552526F2D94F30200EF3ED8 /* TitleContentView.swift */; };
 		959724CE2D918CD600DEB155 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724CD2D918CD600DEB155 /* AppDelegate.swift */; };
 		959724D02D918CD600DEB155 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724CF2D918CD600DEB155 /* SceneDelegate.swift */; };
 		959724D22D918CD600DEB155 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959724D12D918CD600DEB155 /* MainViewController.swift */; };
@@ -27,6 +29,8 @@
 
 /* Begin PBXFileReference section */
 		9537BF552D94220D00DB43CC /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
+		9552526D2D94EECA00EF3ED8 /* BookInfoBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfoBottomView.swift; sourceTree = "<group>"; };
+		9552526F2D94F30200EF3ED8 /* TitleContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleContentView.swift; sourceTree = "<group>"; };
 		959724CA2D918CD600DEB155 /* HarryPotterBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HarryPotterBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		959724CD2D918CD600DEB155 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		959724CF2D918CD600DEB155 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -94,6 +98,8 @@
 			children = (
 				959724E92D9276E600DEB155 /* MainView.swift */,
 				959724FA2D93C05900DEB155 /* BookInfoMiddleView.swift */,
+				9552526D2D94EECA00EF3ED8 /* BookInfoBottomView.swift */,
+				9552526F2D94F30200EF3ED8 /* TitleContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -248,6 +254,8 @@
 				9537BF562D94220D00DB43CC /* DateManager.swift in Sources */,
 				959724FD2D93F25C00DEB155 /* DataError.swift in Sources */,
 				959724F12D927DA300DEB155 /* BookResponse.swift in Sources */,
+				955252702D94F30200EF3ED8 /* TitleContentView.swift in Sources */,
+				9552526E2D94EECA00EF3ED8 /* BookInfoBottomView.swift in Sources */,
 				959724FB2D93C05900DEB155 /* BookInfoMiddleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

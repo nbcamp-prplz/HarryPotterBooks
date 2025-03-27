@@ -12,6 +12,7 @@ import Then
 final class MainView: UIView {
 
     private let bookInfoMiddleView = BookInfoMiddleView()
+    private let bookInfoBottomView = BookInfoBottomView()
     
     private let titleLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 24, weight: .bold)
@@ -48,7 +49,7 @@ final class MainView: UIView {
     }
     
     private func setupHierarchy() {
-        [titleLabel, seriesButton, bookInfoMiddleView].forEach { addSubview($0) }
+        [titleLabel, seriesButton, bookInfoMiddleView, bookInfoBottomView].forEach { addSubview($0) }
     }
     
     private func setupConstraints() {
@@ -72,6 +73,11 @@ final class MainView: UIView {
             $0.trailing.equalToSuperview().offset(-5) // 요구사항대로 5만큼의 offset 조정
             $0.top.equalTo(seriesButton.snp.bottom).offset(12)
         }
+        
+        bookInfoBottomView.snp.makeConstraints {
+            $0.top.equalTo(bookInfoMiddleView.snp.bottom)
+            $0.directionalHorizontalEdges.equalToSuperview()
+        }
     }
     
     func configure(book: Book, index: Int) {
@@ -79,6 +85,7 @@ final class MainView: UIView {
         seriesButton.setTitle(String(index), for: .normal)
         
         bookInfoMiddleView.configure(book: book, index: index)
+        bookInfoBottomView.configure(dedication: book.dedication, summary: book.summary)
     }
     
 }
