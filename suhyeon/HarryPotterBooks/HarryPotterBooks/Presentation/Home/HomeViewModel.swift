@@ -41,17 +41,20 @@ class HomeViewModel: HomeViewModelProtocol {
         return Output(books: books.asObservable(), error: error.asObservable())
     }
     
+    // 책 정보 불러오기
     private func fetchBooks() {
         Task {
             let books = await useCase.fetchBooks()
             switch books {
             case .success(let books):
-                await MainActor.run {
+                await MainActor.run { // books를 바인딩한 ViewController에서 UI를 변경하므로 메인 스레드에서 진행
                     self.books.accept(books)
                 }
                 
             case .failure(let error):
-                self.error.accept(error.description)
+                await MainActor.run { // error를 바인딩한 ViewController에서 Alert으로 UI를 변경하므로 메인 스레드에서 진행
+                    self.error.accept(error.description)
+                }
             }
         }
     }

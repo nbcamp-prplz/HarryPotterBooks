@@ -13,6 +13,7 @@ class HomeViewController: UIViewController {
     private let homeView = HomeView()
     private let viewModel: HomeViewModelProtocol
     private let disposeBag = DisposeBag()
+    private let alertService = AlertService()
     
     init() {
         let bookNetwork = BookNetwork()
@@ -40,11 +41,14 @@ class HomeViewController: UIViewController {
         let output = viewModel.transform(input: input)
         
         output.books.bind { [weak self] books in
-            self?.homeView.configure(title: books.first?.title)
+            guard let self, let book = books.first else { return }
+            self.homeView.configure(book: book, index: 1)
         }.disposed(by: disposeBag)
         
-        output.error.bind { error in
-            print(error)
+        output.error.bind {[weak self] error in
+            guard let self else { return }
+            let alert = self.alertService.createErrorAlert(title: "데이터 불러오기 실패", message: error.description)
+            self.present(alert, animated: true)
         }.disposed(by: disposeBag)
     }
 }
