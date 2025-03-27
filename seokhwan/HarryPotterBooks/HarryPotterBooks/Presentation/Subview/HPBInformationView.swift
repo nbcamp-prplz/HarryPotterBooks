@@ -4,24 +4,30 @@ import SnapKit
 final class HPBInformationView: UIStackView {
     private lazy var coverImageView: UIImageView = {
         let imageView = UIImageView()
+
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(systemName: "book.fill")
+
         return imageView
     }()
     private lazy var informationStackView: UIStackView = {
         let stackView = UIStackView()
+
         stackView.axis = .vertical
         stackView.spacing = 8
         stackView.alignment = .leading
+
         return stackView
     }()
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
+
         label.text = "title"
         label.font = .boldSystemFont(ofSize: 20)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textColor = .black
+
         return label
     }()
     private lazy var authorView = HPBHorizontalContentsView(.author)

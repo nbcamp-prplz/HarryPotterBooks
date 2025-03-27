@@ -9,16 +9,20 @@ final class HPBVerticalContentsView: UIStackView {
 
     private lazy var headerLabel: UILabel = {
         let label = UILabel()
+
         label.font = .boldSystemFont(ofSize: 18)
         label.textColor = .black
+
         return label
     }()
     private lazy var contentsLabel: UILabel = {
         let label = UILabel()
+
         label.font = .systemFont(ofSize: 14)
         label.textColor = .darkGray
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        
         return label
     }()
 
