@@ -19,14 +19,6 @@ final class MainViewController: UIViewController {
         headerView.updateContents(with: book)
         contentsView.updateContents(with: book)
     }
-
-    private func presentErrorAlert(with message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default)
-        alert.addAction(okAction)
-
-        present(alert, animated: true)
-    }
 }
 
 private extension MainViewController {
