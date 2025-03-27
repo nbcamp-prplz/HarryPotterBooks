@@ -24,63 +24,9 @@ final class HPBInformationView: UIStackView {
         label.textColor = .black
         return label
     }()
-    private lazy var authorStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.spacing = 8
-        return stackView
-    }()
-    private lazy var authorHeaderLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Author"
-        label.font = .boldSystemFont(ofSize: 16)
-        label.textColor = .black
-        return label
-    }()
-    private lazy var authorContentsLabel: UILabel = {
-        let label = UILabel()
-        label.text = "author contents"
-        label.font = .systemFont(ofSize: 18)
-        label.textColor = .darkGray
-        return label
-    }()
-    private lazy var releasedStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.spacing = 8
-        return stackView
-    }()
-    private lazy var releasedHeaderLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Released"
-        label.font = .boldSystemFont(ofSize: 14)
-        label.textColor = .black
-        return label
-    }()
-    private lazy var releasedContentsLabel: UILabel = {
-        let label = UILabel()
-        label.text = "released contents"
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .gray
-        return label
-    }()
-    private lazy var pagesStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.spacing = 8
-        return stackView
-    }()
-    private lazy var pagesHeaderLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Pages"
-        label.font = .boldSystemFont(ofSize: 14)
-        label.textColor = .black
-        return label
-    }()
-    private lazy var pagesContentsLabel: UILabel = {
-        let label = UILabel()
-        label.text = "pages contents"
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .gray
-        return label
-    }()
+    private lazy var authorView = HPBHorizontalContentsView(.author)
+    private lazy var releasedView = HPBHorizontalContentsView(.released)
+    private lazy var pagesView = HPBHorizontalContentsView(.pages)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -95,9 +41,9 @@ final class HPBInformationView: UIStackView {
     func updateContents(with book: Book) {
         coverImageView.image = UIImage(named: "harrypotter\(book.seriesNumber)")
         titleLabel.text = book.title
-        authorContentsLabel.text = book.author
-        releasedContentsLabel.text = book.releaseDate.releasedString()
-        pagesContentsLabel.text = "\(book.pages)"
+        authorView.update(contents: book.author)
+        releasedView.update(contents: book.releaseDate.releasedString())
+        pagesView.update(contents: "\(book.pages)")
     }
 }
 
@@ -117,16 +63,7 @@ private extension HPBInformationView {
     }
 
     func configureSubviews() {
-        [authorHeaderLabel, authorContentsLabel].forEach {
-            authorStackView.addArrangedSubview($0)
-        }
-        [releasedHeaderLabel, releasedContentsLabel].forEach {
-            releasedStackView.addArrangedSubview($0)
-        }
-        [pagesHeaderLabel, pagesContentsLabel].forEach {
-            pagesStackView.addArrangedSubview($0)
-        }
-        [titleLabel, authorStackView, releasedStackView, pagesStackView].forEach {
+        [titleLabel, authorView, releasedView, pagesView].forEach {
             informationStackView.addArrangedSubview($0)
         }
         [coverImageView, informationStackView].forEach {
