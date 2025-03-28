@@ -22,15 +22,21 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
     private let fetchBooksUseCase: FetchableBooksUseCase
     private let fetchExpandedStateUseCase: FetchExpandedStateUseCase
     private let updateExpandedStateUseCase: UpdateExpandedStateUseCase
+    private let fetchLastSelectedSeriesNumberUseCase: FetchLastSelectedSeriesNumberUseCase
+    private let updateLastSelectedSeriesNumberUseCase: UpdateLastSelectedSeriesNumberUseCase
 
     init(
         fetchBooksUseCase: FetchableBooksUseCase = FetchBooksUseCase(),
         fetchExpandedStateUseCase: FetchExpandedStateUseCase = FetchExpandedStateUseCase(),
-        updateExpandedStateUseCase: UpdateExpandedStateUseCase = UpdateExpandedStateUseCase()
+        updateExpandedStateUseCase: UpdateExpandedStateUseCase = UpdateExpandedStateUseCase(),
+        fetchLastSelectedSeriesNumberUseCase: FetchLastSelectedSeriesNumberUseCase = FetchLastSelectedSeriesNumberUseCase(),
+        updateLastSelectedSeriesNumberUseCase: UpdateLastSelectedSeriesNumberUseCase = UpdateLastSelectedSeriesNumberUseCase()
     ) {
         self.fetchBooksUseCase = fetchBooksUseCase
         self.fetchExpandedStateUseCase = fetchExpandedStateUseCase
         self.updateExpandedStateUseCase = updateExpandedStateUseCase
+        self.fetchLastSelectedSeriesNumberUseCase = fetchLastSelectedSeriesNumberUseCase
+        self.updateLastSelectedSeriesNumberUseCase = updateLastSelectedSeriesNumberUseCase
 
         loadBooks()
     }
@@ -40,6 +46,7 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
 
         books[seriesNumber - 1].isExpanded = fetchExpandedStateUseCase.execute(at: seriesNumber)
         selectedBook.send(books[seriesNumber - 1])
+        updateLastSelectedSeriesNumberUseCase.execute(to: seriesNumber)
     }
 
     func toggleExpandedStateOfSelectedBook() {
@@ -58,7 +65,8 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
         case .success(let books):
             self.books = books
             numberOfBooks.send(books.count)
-            selectBook(at: 1)
+            let lastSelectedSeriesNumber = fetchLastSelectedSeriesNumberUseCase.execute()
+            selectBook(at: lastSelectedSeriesNumber)
         }
     }
 }
