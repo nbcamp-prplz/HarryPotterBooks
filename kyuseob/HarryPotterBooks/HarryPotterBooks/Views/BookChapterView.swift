@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ChapterView: UIView {
+class BookChapterView: UIView {
     
     private let titleLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 18, weight: .bold)

@@ -44,8 +44,6 @@ class MainViewController: UIViewController {
                 self.showMessage(title: nil, message: "예기치 못한 오류가 발생했습니다.")
             }
         }
-        
-        
     }
     
 }

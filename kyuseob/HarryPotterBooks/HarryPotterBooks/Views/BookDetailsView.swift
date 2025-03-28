@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BookInfoBottomView: UIView {
+class BookDetailsView: UIView {
     
     private let dedicationStackView = TitleContentView()
     

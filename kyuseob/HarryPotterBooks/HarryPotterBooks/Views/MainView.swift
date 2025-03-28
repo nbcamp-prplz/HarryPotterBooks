@@ -11,9 +11,9 @@ import Then
 
 final class MainView: UIView {
 
-    private let bookInfoMiddleView = BookInfoMiddleView()
-    private let bookInfoBottomView = BookInfoBottomView()
-    private let chapterView = ChapterView()
+    private let bookOverviewView = BookOverviewView()
+    private let bookDetailsView = BookDetailsView()
+    private let bookChapterView = BookChapterView()
     
     private let titleLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 24, weight: .bold)
@@ -58,7 +58,7 @@ final class MainView: UIView {
     private func setupHierarchy() {
         [titleLabel, seriesButton, scrollView].forEach { addSubview($0) }
         scrollView.addSubview(contentView)
-        [bookInfoMiddleView, bookInfoBottomView, chapterView].forEach { contentView.addSubview($0) }
+        [bookOverviewView, bookDetailsView, bookChapterView].forEach { contentView.addSubview($0) }
     }
     
     private func setupConstraints() {
@@ -85,30 +85,28 @@ final class MainView: UIView {
         }
         
         contentView.snp.makeConstraints {
-            $0.directionalHorizontalEdges.equalToSuperview()
-            $0.top.equalToSuperview()
+            $0.directionalEdges.equalToSuperview()
             $0.width.equalToSuperview()
-            $0.bottom.equalToSuperview()
         }
         
-        bookInfoMiddleView.snp.makeConstraints {
+        bookOverviewView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(5)
             $0.trailing.equalToSuperview().offset(-5) // 요구사항대로 5만큼의 offset 조정
             $0.top.equalToSuperview().offset(12)
         }
         
-        bookInfoBottomView.snp.makeConstraints {
-            $0.top.equalTo(bookInfoMiddleView.snp.bottom)
+        bookDetailsView.snp.makeConstraints {
+            $0.top.equalTo(bookOverviewView.snp.bottom)
             $0.directionalHorizontalEdges.equalToSuperview()
         }
         
-        chapterView.snp.makeConstraints {
-            $0.top.equalTo(bookInfoBottomView.snp.bottom)
+        bookChapterView.snp.makeConstraints {
+            $0.top.equalTo(bookDetailsView.snp.bottom)
             $0.directionalHorizontalEdges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
-            $0.bottom.equalTo(chapterView.snp.bottom).offset(20)
+            $0.bottom.equalTo(bookChapterView.snp.bottom).offset(20)
         }
     }
     
@@ -116,9 +114,9 @@ final class MainView: UIView {
         titleLabel.text = book.title
         seriesButton.setTitle(String(index), for: .normal)
         
-        bookInfoMiddleView.configure(book: book, index: index)
-        bookInfoBottomView.configure(dedication: book.dedication, summary: book.summary)
-        chapterView.configure(with: book.chapters)
+        bookOverviewView.configure(book: book, index: index)
+        bookDetailsView.configure(dedication: book.dedication, summary: book.summary)
+        bookChapterView.configure(with: book.chapters)
     }
     
 }
