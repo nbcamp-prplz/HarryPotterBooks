@@ -27,6 +27,7 @@ private extension MainViewController {
         configureSubviews()
         configureConstraints()
         configureBind()
+        configureActions()
     }
 
     func configureLayout() {
@@ -77,5 +78,11 @@ private extension MainViewController {
                 }
             }
             .store(in: &cancellables)
+    }
+
+    func configureActions() {
+        contentsView.moreButtonTapAction = { [weak self] in
+            self?.viewModel.toggleExpandedStateOfSelectedBook()
+        }
     }
 }

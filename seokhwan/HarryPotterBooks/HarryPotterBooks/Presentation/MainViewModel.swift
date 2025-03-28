@@ -3,6 +3,7 @@ import Combine
 
 protocol MainViewModelInput {
     func selectBook(at seriesNumber: Int)
+    func toggleExpandedStateOfSelectedBook()
 }
 
 protocol MainViewModelOutput {
@@ -18,13 +19,16 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
 
     private let fetchBooksUseCase: FetchableBooksUseCase
     private let fetchExpandedStateUseCase: FetchExpandedStateUseCase
+    private let updateExpandedStateUseCase: UpdateExpandedStateUseCase
 
     init(
         fetchBooksUseCase: FetchableBooksUseCase = FetchBooksUseCase(),
-        fetchExpandedStateUseCase: FetchExpandedStateUseCase = FetchExpandedStateUseCase()
+        fetchExpandedStateUseCase: FetchExpandedStateUseCase = FetchExpandedStateUseCase(),
+        updateExpandedStateUseCase: UpdateExpandedStateUseCase = UpdateExpandedStateUseCase()
     ) {
         self.fetchBooksUseCase = fetchBooksUseCase
         self.fetchExpandedStateUseCase = fetchExpandedStateUseCase
+        self.updateExpandedStateUseCase = updateExpandedStateUseCase
 
         loadBooks()
     }
@@ -34,6 +38,15 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
 
         books[seriesNumber - 1].isExpanded = fetchExpandedStateUseCase.execute(at: seriesNumber)
         selectedBook.send(books[seriesNumber - 1])
+    }
+
+    func toggleExpandedStateOfSelectedBook() {
+        guard let seriesNumber = selectedBook.value?.seriesNumber else { return }
+
+        books[seriesNumber - 1].isExpanded.toggle()
+        selectedBook.send(books[seriesNumber - 1])
+
+        updateExpandedStateUseCase.execute(at: seriesNumber, isExpanded: books[seriesNumber - 1].isExpanded)
     }
 
     private func loadBooks() {

@@ -17,6 +17,8 @@ final class HPBVerticalContentView: UIStackView {
         }
     }
 
+    var moreButtonTapAction: (() -> Void)?
+
     private var contentsType: ContentsType = .none
     private var contentsAttributes = [NSAttributedString.Key: Any]()
 
@@ -43,6 +45,7 @@ final class HPBVerticalContentView: UIStackView {
     private lazy var moreButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("more", for: .normal)
+        button.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
         return button
     }()
 
@@ -72,6 +75,10 @@ final class HPBVerticalContentView: UIStackView {
         let truncatedContents = shouldTruncateContents ? contents.prefix(maxContentsCount) + "..." : contents
         let attributedString = NSAttributedString(string: truncatedContents, attributes: contentsAttributes)
         contentsLabel.attributedText = attributedString
+    }
+
+    @objc private func didTapMoreButton() {
+        moreButtonTapAction?()
     }
 }
 

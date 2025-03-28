@@ -1,6 +1,8 @@
 import UIKit
 
 final class HPBContainerView: UIStackView {
+    var moreButtonTapAction: (() -> Void)?
+
     private lazy var informationView = HPBInformationView()
     private lazy var dedicationView = HPBVerticalContentView(.dedication)
     private lazy var summaryView = HPBVerticalContentView(.summary)
@@ -19,7 +21,7 @@ final class HPBContainerView: UIStackView {
     func updateContents(with book: Book) {
         informationView.updateContents(with: book)
         dedicationView.update(contents: book.dedication)
-        summaryView.update(contents: book.summary, isExpanded: false)
+        summaryView.update(contents: book.summary, isExpanded: book.isExpanded)
         chaptersView.update(contents: book.chapters.joinedTitles)
     }
 }
@@ -28,6 +30,7 @@ private extension HPBContainerView {
     func configure() {
         configureLayout()
         configureSubviews()
+        configureActions()
     }
 
     func configureLayout() {
@@ -38,6 +41,12 @@ private extension HPBContainerView {
     func configureSubviews() {
         [informationView, dedicationView, summaryView, chaptersView].forEach {
             addArrangedSubview($0)
+        }
+    }
+
+    func configureActions() {
+        summaryView.moreButtonTapAction = { [weak self] in
+            self?.moreButtonTapAction?()
         }
     }
 }
