@@ -26,11 +26,13 @@ class HomeViewModel: HomeViewModelProtocol {
     
     struct Input {
         let viewDidLoad: Observable<Void>
+        let isExpandContent: Observable<Bool>
     }
     
     struct Output {
         let books: Observable<[Book]>
         let error: Observable<String>
+        let isExpandContent: Observable<Bool>
     }
     
     func transform(input: Input) -> Output {
@@ -38,7 +40,7 @@ class HomeViewModel: HomeViewModelProtocol {
             self?.fetchBooks()
         }.disposed(by: disposeBag)
         
-        return Output(books: books.asObservable(), error: error.asObservable())
+        return Output(books: books.asObservable(), error: error.asObservable(), isExpandContent: input.isExpandContent)
     }
     
     // 책 정보 불러오기

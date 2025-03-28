@@ -32,7 +32,7 @@ class HomeView: UIView {
     private let dedicationStackView = InfoVerticalStackView(type: .dedication)
     
     // 요약
-    private let summaryStackView = InfoVerticalStackView(type: .summary)
+    let summaryStackView = InfoVerticalStackView(type: .summary)
     
     // 챕터
     private let chaptersStackView = ChaptersStackView()
@@ -89,10 +89,10 @@ class HomeView: UIView {
     }
     
     // configuration
-    public func configure(book: Book, index: Int) {
+    public func configure(book: Book, index: Int, isExpandContent: Bool) {
         topView.configure(book: book, index: index)
         dedicationStackView.configure(content: book.dedication) // 헌정사
-        summaryStackView.configure(content: book.summary) // 요역
+        summaryStackView.configure(content: book.summary, isExpandContent: isExpandContent) // 요역
         bookDetailStackView.configure(book: book, index: index) // 이미지 + 기본 정보
         chaptersStackView.configure(contents: book.chapters.map{$0.title})
     }
