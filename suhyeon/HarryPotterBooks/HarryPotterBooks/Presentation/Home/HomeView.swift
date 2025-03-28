@@ -22,52 +22,29 @@ class HomeView: UIView {
     // 시리즈 순서
     lazy var seriesButton = SeriesButton(title: "1", widthHeightLength: widthHeightLength)
     
-    // 책 정보 영역 스택뷰 (이미지 + 텍스트)
+    // 스크롤뷰
+    private let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = false
+        $0.showsHorizontalScrollIndicator = false
+    }
+    
+    // 전체 스택 뷰 (책 정보 영역 + 헌정사 + 요약)
     private let bookInfoStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.alignment = .center
-        $0.spacing = 10
-        
-    }
-    
-    // 책 표지 이미지
-    private let bookImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFit
-    }
-    
-    // 책 정보 스택뷰 (이미지 x)
-    private let bookDescriptionStackView = UIStackView().then {
         $0.axis = .vertical
-        $0.alignment = .leading
-        $0.spacing = 8
+        $0.spacing = 24
     }
     
-    // 책 제목
-    private let bookTitleLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 20, weight: .bold)
-        $0.textColor = .black
-        $0.numberOfLines = 0
-    }
+    // 책 정보 영역 스택뷰 (이미지 + 제목 + 저자 + 출간일 + 페이지)
+    private let bookDetailStackView = BookDetailStackView()
     
-    // 저자 스택뷰
-    private let authorStackView = InfoStackView(title: "Author",
-                                                titleFont:  .systemFont(ofSize: 16, weight: .bold),
-                                                titleColor: .black,
-                                                valueFont: .systemFont(ofSize: 18),
-                                                valueColor: .darkGray)
+    // 헌정사
+    private let dedicationStackView = InfoVerticalStackView(title: "Dedication")
     
-    // 출간일 스택뷰
-    private let releaseStackView = InfoStackView(title: "Released",
-                                                titleFont:  .systemFont(ofSize: 14, weight: .bold),
-                                                titleColor: .black,
-                                                valueFont: .systemFont(ofSize: 14),
-                                                 valueColor: .gray)
-    // 페이지 스택뷰
-    private let pageStackView = InfoStackView(title: "Pages",
-                                                titleFont:  .systemFont(ofSize: 14, weight: .bold),
-                                                titleColor: .black,
-                                                valueFont: .systemFont(ofSize: 14),
-                                                 valueColor: .gray)
+    // 요약
+    private let summaryStackView = InfoVerticalStackView(title: "Summary")
+    
+    // 챕터
+    private let chaptersStackView = ChaptersStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -86,20 +63,17 @@ class HomeView: UIView {
         [
             mainTitleLabel,
             seriesButton,
-            bookInfoStackView
+            scrollView,
         ].forEach { self.addSubview($0) } // HomeView
         
-        [
-            bookImageView,
-            bookDescriptionStackView
-        ].forEach { bookInfoStackView.addArrangedSubview($0) } // BookInfoStackView (이미지 + 책 설명)
+        scrollView.addSubview(bookInfoStackView) // 스크롤뷰
         
         [
-            bookTitleLabel,
-            authorStackView,
-            releaseStackView,
-            pageStackView
-        ].forEach { bookDescriptionStackView.addArrangedSubview($0) } // 책 설명 스택뷰
+            bookDetailStackView,
+            dedicationStackView,
+            summaryStackView,
+            chaptersStackView,
+        ].forEach { bookInfoStackView.addArrangedSubview($0) } // bookInfoStackView
     }
     
     // 제약조건 설정
@@ -119,26 +93,26 @@ class HomeView: UIView {
             make.directionalHorizontalEdges.greaterThanOrEqualToSuperview().inset(20).priority(.low)
         }
         
-        // 책 정보 스택 뷰
-        bookInfoStackView.snp.makeConstraints { make in
+        // 스크롤뷰
+        scrollView.snp.makeConstraints { make in
             make.top.equalTo(seriesButton.snp.bottom).offset(20)
-            make.directionalHorizontalEdges.equalTo(safeAreaLayoutGuide).inset(5)
+            make.directionalHorizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            make.bottom.equalToSuperview()
         }
-        
-        // 책 이미지
-        bookImageView.snp.makeConstraints { make in
-            make.width.equalTo(100)
-            make.height.equalTo(bookImageView.snp.width).multipliedBy(1.5)
+
+        // 전체 스택 뷰
+        bookInfoStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
         }
     }
     
     // configuration
     public func configure(book: Book, index: Int) {
-        mainTitleLabel.text = book.title
-        bookTitleLabel.text = book.title
-        bookImageView.image = UIImage(named: "harrypotter\(index)")
-        authorStackView.configure(value: book.author)
-        releaseStackView.configure(value: book.releaseDate)
-        pageStackView.configure(value: "\(book.pages)")
+        mainTitleLabel.text = book.title    // 메인 타이틀
+        dedicationStackView.configure(content: book.dedication) // 헌정사
+        summaryStackView.configure(content: book.summary) // 요역
+        bookDetailStackView.configure(book: book, index: index) // 이미지 + 기본 정보
+        chaptersStackView.configure(contents: book.chapters.map{$0.title})
     }
 }

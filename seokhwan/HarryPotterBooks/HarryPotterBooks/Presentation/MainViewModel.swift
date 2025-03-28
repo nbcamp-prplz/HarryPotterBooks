@@ -1,30 +1,39 @@
 import Foundation
 import Combine
 
-final class MainViewModel {
-    private var books = Books()
-    @Published var selectedBook: Book?
-    @Published var errorMessage: String?
+protocol MainViewModelInput {
+    func selectBook(at index: Int)
+}
 
+protocol MainViewModelOutput {
+    var selectedBook: CurrentValueSubject<Book?, Never> { get }
+    var errorMessage: CurrentValueSubject<String?, Never> { get }
+}
+
+final class MainViewModel: MainViewModelInput, MainViewModelOutput {
+    private var books = Books()
     private let fetchBooksUseCase: FetchableBooksUseCase
 
-    init() {
-        fetchBooksUseCase = FetchBooksUseCase()
-        loadBooks()
-    }
+    var selectedBook = CurrentValueSubject<Book?, Never>(nil)
+    var errorMessage = CurrentValueSubject<String?, Never>(nil)
 
-    func loadBooks() {
-        switch fetchBooksUseCase.execute() {
-        case .failure(let error):
-            errorMessage = error.localizedDescription
-        case .success(let books):
-            self.books = books
-            selectBook(at: books.startIndex)
-        }
+    init(fetchBooksUseCase: FetchableBooksUseCase = FetchBooksUseCase()) {
+        self.fetchBooksUseCase = fetchBooksUseCase
+        loadBooks()
     }
 
     func selectBook(at index: Int) {
         guard books.indices.contains(index) else { return }
-        selectedBook = books[index]
+        selectedBook.send(books[index])
+    }
+
+    private func loadBooks() {
+        switch fetchBooksUseCase.execute() {
+        case .failure(let error):
+            errorMessage.send(error.localizedDescription)
+        case .success(let books):
+            self.books = books
+            selectBook(at: books.startIndex)
+        }
     }
 }
