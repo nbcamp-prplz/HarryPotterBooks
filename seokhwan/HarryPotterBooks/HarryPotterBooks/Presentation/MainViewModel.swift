@@ -7,11 +7,13 @@ protocol MainViewModelInput {
 }
 
 protocol MainViewModelOutput {
+    var numberOfBooks: CurrentValueSubject<Int, Never> { get }
     var selectedBook: CurrentValueSubject<Book?, Never> { get }
     var errorMessage: CurrentValueSubject<String?, Never> { get }
 }
 
 final class MainViewModel: MainViewModelInput, MainViewModelOutput {
+    var numberOfBooks = CurrentValueSubject<Int, Never>(0)
     var selectedBook = CurrentValueSubject<Book?, Never>(nil)
     var errorMessage = CurrentValueSubject<String?, Never>(nil)
 
@@ -55,6 +57,7 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
             errorMessage.send(error.localizedDescription)
         case .success(let books):
             self.books = books
+            numberOfBooks.send(books.count)
             selectBook(at: 1)
         }
     }

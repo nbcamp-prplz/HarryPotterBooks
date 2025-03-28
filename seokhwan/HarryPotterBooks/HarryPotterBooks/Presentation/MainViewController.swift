@@ -15,6 +15,10 @@ final class MainViewController: UIViewController {
         configure()
     }
 
+    private func generateSeriesNumberButtons(with count: Int) {
+        headerView.generateSeriesNumberButtons(numberOf: count)
+    }
+
     private func updateContents(with book: Book) {
         headerView.updateContents(with: book)
         containerView.updateContents(with: book)
@@ -58,6 +62,15 @@ private extension MainViewController {
     }
 
     func configureBind() {
+        viewModel.numberOfBooks
+            .sink { [weak self] count in
+                Task {
+                    await MainActor.run {
+                        self?.generateSeriesNumberButtons(with: count)
+                    }
+                }
+            }
+            .store(in: &cancellables)
         viewModel.selectedBook
             .compactMap { $0 }
             .sink { [weak self] book in
