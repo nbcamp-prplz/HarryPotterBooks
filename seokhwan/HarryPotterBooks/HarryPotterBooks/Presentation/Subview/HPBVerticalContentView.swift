@@ -37,6 +37,13 @@ final class HPBVerticalContentView: UIStackView {
 
         return label
     }()
+    private lazy var moreButtonStackView = UIStackView()
+    private lazy var spacer = UIView()
+    private lazy var moreButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("more", for: .normal)
+        return button
+    }()
 
     private override init(frame: CGRect) {
         super.init(frame: frame)
@@ -56,12 +63,18 @@ final class HPBVerticalContentView: UIStackView {
         let attributedString = NSAttributedString(string: contents, attributes: contentsAttributes)
         contentsLabel.attributedText = attributedString
     }
+
+    func update(contents: String, isExpanded: Bool) {
+        update(contents: contents)
+        moreButton.setTitle(isExpanded ? "접기" : "더 보기", for: .normal)
+
+    }
 }
 
 private extension HPBVerticalContentView {
     func configure(_ type: HPBVerticalContentView.ContentsType) {
         configureLayout(type)
-        configureSubviews()
+        configureSubviews(type)
     }
 
     func configureLayout(_ type: HPBVerticalContentView.ContentsType) {
@@ -75,9 +88,15 @@ private extension HPBVerticalContentView {
         contentsAttributes = [.paragraphStyle: paragraphStyle]
     }
 
-    func configureSubviews() {
+    func configureSubviews(_ type: HPBVerticalContentView.ContentsType) {
         [headerLabel, contentsLabel].forEach {
             addArrangedSubview($0)
+        }
+        if type == .summary {
+            [spacer, moreButton].forEach {
+                moreButtonStackView.addArrangedSubview($0)
+            }
+            addArrangedSubview(moreButtonStackView)
         }
     }
 }
