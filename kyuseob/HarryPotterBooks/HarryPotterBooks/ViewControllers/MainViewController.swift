@@ -16,6 +16,8 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mainView.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -23,7 +25,10 @@ class MainViewController: UIViewController {
         loadBook(index: 1)
         
         guard let book = self.myBook else { return }
-        mainView.configure(book: book, index: 1)
+        
+        mainViewModel.loadReadMoreStates()
+        
+        mainView.configure(book: book, index: 1, readMoreState: mainViewModel.isReadMore(index: 1))
     }
 
     override func loadView() {
@@ -48,3 +53,8 @@ class MainViewController: UIViewController {
     
 }
 
+extension MainViewController: MainViewDelegate {
+    func mainViewDidTapReadMore() {
+        mainViewModel.toggleReadMore(index: 1)
+    }
+}

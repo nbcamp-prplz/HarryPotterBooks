@@ -9,8 +9,14 @@ import UIKit
 import SnapKit
 import Then
 
+protocol MainViewDelegate: AnyObject {
+    func mainViewDidTapReadMore()
+}
+
 final class MainView: UIView {
 
+    weak var delegate: MainViewDelegate?
+    
     private let bookOverviewView = BookOverviewView()
     private let bookDetailsView = BookDetailsView()
     private let bookChapterView = BookChapterView()
@@ -42,6 +48,7 @@ final class MainView: UIView {
         super.init(frame: frame)
         
         setupUI()
+        bookDetailsView.delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -110,13 +117,19 @@ final class MainView: UIView {
         }
     }
     
-    func configure(book: Book, index: Int) {
+    func configure(book: Book, index: Int, readMoreState: Bool) {
         titleLabel.text = book.title
         seriesButton.setTitle(String(index), for: .normal)
         
         bookOverviewView.configure(book: book, index: index)
-        bookDetailsView.configure(dedication: book.dedication, summary: book.summary)
+        bookDetailsView.configure(dedication: book.dedication, summary: book.summary, isReadMore: readMoreState)
         bookChapterView.configure(with: book.chapters)
     }
     
+}
+
+extension MainView: BookDetailsViewDelegate {
+    func bookDetailsViewDidTapReadMore() {
+        delegate?.mainViewDidTapReadMore()
+    }
 }

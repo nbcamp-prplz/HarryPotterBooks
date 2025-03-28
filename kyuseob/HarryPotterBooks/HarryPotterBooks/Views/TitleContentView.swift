@@ -9,20 +9,22 @@ import UIKit
 
 class TitleContentView: UIView {
     
-    let stackView = UIStackView().then {
+    private var isExpanded: Bool = false
+    
+    private let stackView = UIStackView().then {
         $0.spacing = 8
         $0.axis = .vertical
         $0.alignment = .leading
     }
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         $0.textColor = .black
         $0.lineBreakMode = .byWordWrapping
         $0.numberOfLines = 0
     }
     
-    let contentLabel = UILabel().then {
+    private let contentLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 14)
         $0.textColor = .darkGray
         $0.lineBreakMode = .byWordWrapping
@@ -63,6 +65,15 @@ class TitleContentView: UIView {
     func configure(title: String, content: String) {
         titleLabel.text = title
         contentLabel.text = content
+    }
+    
+    func setExpandedLabel(isExpanded: Bool) {
+        contentLabel.numberOfLines = isExpanded ? 0 : 5
+        contentLabel.lineBreakMode = isExpanded ? .byWordWrapping : .byTruncatingTail
+    }
+    
+    func contentLength() -> Int {
+        contentLabel.text?.count ?? 0
     }
     
 }
