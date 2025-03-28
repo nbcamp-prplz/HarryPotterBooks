@@ -1,5 +1,5 @@
 //
-//  InfoStackView.swift
+//  InfoHorizontalStackView.swift
 //  HarryPotterBooks
 //
 //  Created by 이수현 on 3/26/25.
@@ -8,34 +8,34 @@
 import UIKit
 
 // 책 설명 수평 스택 뷰 
-class InfoStackView: UIStackView {
+class InfoHorizontalStackView: UIStackView {
     private let title: String
     private let titleFont: UIFont
     private let titleColor: UIColor
-    private let valueFont: UIFont
-    private let valueColor: UIColor
+    private let contentFont: UIFont
+    private let contentColor: UIColor
     
-    // 저자 타이틀
+    // 타이틀
     private lazy var titleLabel = UILabel().then {
         $0.text = title
         $0.font = titleFont
         $0.textColor = titleColor
     }
     
-    // 저자
-    private lazy var valueLabel = UILabel().then {
-        $0.font = valueFont
-        $0.textColor = valueColor
+    // 컨텐츠
+    private lazy var contentLabel = UILabel().then {
+        $0.font = contentFont
+        $0.textColor = contentColor
     }
     
     init(title: String, titleFont: UIFont, titleColor: UIColor,
-         valueFont: UIFont, valueColor: UIColor) {
+         contentFont: UIFont, contentColor: UIColor) {
         self.title = title
         self.titleFont = titleFont
         self.titleColor = titleColor
 
-        self.valueFont = valueFont
-        self.valueColor = valueColor
+        self.contentFont = contentFont
+        self.contentColor = contentColor
         super.init(frame: .zero)
     
         setSubview()
@@ -49,7 +49,7 @@ class InfoStackView: UIStackView {
     private func setSubview(){
         [
             titleLabel,
-            valueLabel
+            contentLabel
         ].forEach { self.addArrangedSubview($0) }
     }
     
@@ -58,7 +58,7 @@ class InfoStackView: UIStackView {
         self.spacing = 8
     }
     
-    func configure(value: String) {
-        valueLabel.text = value
+    func configure(content: String) {
+        contentLabel.text = content
     }
 }
