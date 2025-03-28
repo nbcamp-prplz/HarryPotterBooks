@@ -16,7 +16,10 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
         loadBook(index: 1)
         
         guard let book = self.myBook else { return }
@@ -33,16 +36,14 @@ class MainViewController: UIViewController {
             guard let book = mainViewModel.book(index: index) else { return }
             self.myBook = book
         } catch let error as DataError {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { // ViewController가 display 준비되기 전 메시지를 띄우지 않도록
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // ViewController가 display 준비되기 전 메시지를 띄우지 않도록
                 self.showMessage(title: nil, message: error.errorMessage)
             }
         } catch {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.showMessage(title: nil, message: "예기치 못한 오류가 발생했습니다.")
             }
         }
-        
-        
     }
     
 }

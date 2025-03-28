@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class BookInfoMiddleView: UIView {
+final class BookOverviewView: UIView {
     
     private let bookCoverImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
