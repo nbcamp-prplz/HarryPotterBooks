@@ -1,7 +1,7 @@
 import Foundation
 
 final class FetchExpandedStateUseCase {
-    let appStatesStorage: AppStatesStorage
+    private let appStatesStorage: AppStatesStorage
 
     init(appStatesStorage: AppStatesStorage = AppStatesStorage()) {
         self.appStatesStorage = appStatesStorage
