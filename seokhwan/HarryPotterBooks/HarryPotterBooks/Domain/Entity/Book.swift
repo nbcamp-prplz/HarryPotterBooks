@@ -12,6 +12,7 @@ struct Book: Codable {
     let summary: String
     let wiki: String
     let chapters: Chapters
+    var isExpanded: Bool
 
     init(from dto: BookDTO, with seriesNumber: Int) {
         self.seriesNumber = seriesNumber
@@ -23,6 +24,7 @@ struct Book: Codable {
         summary = dto.summary
         wiki = dto.wiki
         chapters = dto.chapters.map { Chapter(from: $0) }
+        isExpanded = false
     }
 }
 

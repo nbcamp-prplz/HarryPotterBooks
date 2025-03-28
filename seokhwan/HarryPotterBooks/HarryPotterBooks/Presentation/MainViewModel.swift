@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 protocol MainViewModelInput {
-    func selectBook(at index: Int)
+    func selectBook(at seriesNumber: Int)
 }
 
 protocol MainViewModelOutput {
@@ -11,20 +11,29 @@ protocol MainViewModelOutput {
 }
 
 final class MainViewModel: MainViewModelInput, MainViewModelOutput {
-    private var books = Books()
-    private let fetchBooksUseCase: FetchableBooksUseCase
-
     var selectedBook = CurrentValueSubject<Book?, Never>(nil)
     var errorMessage = CurrentValueSubject<String?, Never>(nil)
 
-    init(fetchBooksUseCase: FetchableBooksUseCase = FetchBooksUseCase()) {
+    private var books = Books()
+
+    private let fetchBooksUseCase: FetchableBooksUseCase
+    private let fetchExpandedStateUseCase: FetchExpandedStateUseCase
+
+    init(
+        fetchBooksUseCase: FetchableBooksUseCase = FetchBooksUseCase(),
+        fetchExpandedStateUseCase: FetchExpandedStateUseCase = FetchExpandedStateUseCase()
+    ) {
         self.fetchBooksUseCase = fetchBooksUseCase
+        self.fetchExpandedStateUseCase = fetchExpandedStateUseCase
+
         loadBooks()
     }
 
-    func selectBook(at index: Int) {
-        guard books.indices.contains(index) else { return }
-        selectedBook.send(books[index])
+    func selectBook(at seriesNumber: Int) {
+        guard books.indices.contains(seriesNumber - 1) else { return }
+
+        books[seriesNumber - 1].isExpanded = fetchExpandedStateUseCase.execute(at: seriesNumber)
+        selectedBook.send(books[seriesNumber - 1])
     }
 
     private func loadBooks() {
@@ -33,7 +42,7 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
             errorMessage.send(error.localizedDescription)
         case .success(let books):
             self.books = books
-            selectBook(at: books.startIndex)
+            selectBook(at: 1)
         }
     }
 }

@@ -17,6 +17,7 @@ final class HPBVerticalContentView: UIStackView {
         }
     }
 
+    private var contentsType: ContentsType = .none
     private var contentsAttributes = [NSAttributedString.Key: Any]()
 
     private lazy var headerLabel: UILabel = {
@@ -49,54 +50,54 @@ final class HPBVerticalContentView: UIStackView {
         super.init(frame: frame)
     }
 
-    convenience init(_ type: HPBVerticalContentView.ContentsType) {
+    convenience init(_ contentsType: HPBVerticalContentView.ContentsType) {
         self.init(frame: .zero)
-        configure(type)
+        self.contentsType = contentsType
+        configure()
     }
 
     required init(coder: NSCoder) {
         super.init(coder: coder)
-        configure(.none)
+        configure()
     }
 
-    func update(contents: String) {
-        let attributedString = NSAttributedString(string: contents, attributes: contentsAttributes)
-        contentsLabel.attributedText = attributedString
-    }
+    func update(contents: String, isExpanded: Bool = false) {
+        let maxContentsCount = 450
+        let shouldShowMoreButton = contentsType == .summary && contents.count >= maxContentsCount
+        let shouldTruncateContents = shouldShowMoreButton && !isExpanded
 
-    func update(contents: String, isExpanded: Bool) {
-        update(contents: contents)
+        moreButtonStackView.isHidden = !shouldShowMoreButton
         moreButton.setTitle(isExpanded ? "접기" : "더 보기", for: .normal)
 
+        let truncatedContents = shouldTruncateContents ? contents.prefix(maxContentsCount) + "..." : contents
+        let attributedString = NSAttributedString(string: truncatedContents, attributes: contentsAttributes)
+        contentsLabel.attributedText = attributedString
     }
 }
 
 private extension HPBVerticalContentView {
-    func configure(_ type: HPBVerticalContentView.ContentsType) {
-        configureLayout(type)
-        configureSubviews(type)
+    func configure() {
+        configureLayout()
+        configureSubviews()
     }
 
-    func configureLayout(_ type: HPBVerticalContentView.ContentsType) {
+    func configureLayout() {
         axis = .vertical
         spacing = 8
 
-        headerLabel.text = type.rawValue
+        headerLabel.text = contentsType.rawValue
 
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = type.lineSpacing
+        paragraphStyle.lineSpacing = contentsType.lineSpacing
         contentsAttributes = [.paragraphStyle: paragraphStyle]
     }
 
-    func configureSubviews(_ type: HPBVerticalContentView.ContentsType) {
-        [headerLabel, contentsLabel].forEach {
-            addArrangedSubview($0)
+    func configureSubviews() {
+        [spacer, moreButton].forEach {
+            moreButtonStackView.addArrangedSubview($0)
         }
-        if type == .summary {
-            [spacer, moreButton].forEach {
-                moreButtonStackView.addArrangedSubview($0)
-            }
-            addArrangedSubview(moreButtonStackView)
+        [headerLabel, contentsLabel, moreButtonStackView].forEach {
+            addArrangedSubview($0)
         }
     }
 }
