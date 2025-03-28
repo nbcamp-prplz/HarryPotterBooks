@@ -1,7 +1,7 @@
 import UIKit
 
 final class HPBVerticalContentView: UIStackView {
-    enum ContentsType: String {
+    enum ContentType: String {
         case none
         case dedication = "Dedication"
         case summary = "Summary"
@@ -19,8 +19,8 @@ final class HPBVerticalContentView: UIStackView {
 
     var moreButtonTapAction: (() -> Void)?
 
-    private var contentsType: ContentsType = .none
-    private var contentsAttributes = [NSAttributedString.Key: Any]()
+    private var contentType: ContentType = .none
+    private var contentAttributes = [NSAttributedString.Key: Any]()
 
     private lazy var headerLabel: UILabel = {
         let label = UILabel()
@@ -30,7 +30,7 @@ final class HPBVerticalContentView: UIStackView {
 
         return label
     }()
-    private lazy var contentsLabel: UILabel = {
+    private lazy var contentLabel: UILabel = {
         let label = UILabel()
 
         label.font = .systemFont(ofSize: 14)
@@ -53,9 +53,9 @@ final class HPBVerticalContentView: UIStackView {
         super.init(frame: frame)
     }
 
-    convenience init(_ contentsType: HPBVerticalContentView.ContentsType) {
+    convenience init(_ contentType: HPBVerticalContentView.ContentType) {
         self.init(frame: .zero)
-        self.contentsType = contentsType
+        self.contentType = contentType
         configure()
     }
 
@@ -64,17 +64,17 @@ final class HPBVerticalContentView: UIStackView {
         configure()
     }
 
-    func update(contents: String, isExpanded: Bool = false) {
-        let maxContentsCount = 450
-        let shouldShowMoreButton = contentsType == .summary && contents.count >= maxContentsCount
-        let shouldTruncateContents = shouldShowMoreButton && !isExpanded
+    func update(content: String, isExpanded: Bool = false) {
+        let maxContentCount = 450
+        let shouldShowMoreButton = contentType == .summary && content.count >= maxContentCount
+        let shouldTruncateContent = shouldShowMoreButton && !isExpanded
 
         moreButtonStackView.isHidden = !shouldShowMoreButton
         moreButton.setTitle(isExpanded ? "접기" : "더 보기", for: .normal)
 
-        let truncatedContents = shouldTruncateContents ? contents.prefix(maxContentsCount) + "..." : contents
-        let attributedString = NSAttributedString(string: truncatedContents, attributes: contentsAttributes)
-        contentsLabel.attributedText = attributedString
+        let truncatedContent = shouldTruncateContent ? content.prefix(maxContentCount) + "..." : content
+        let attributedString = NSAttributedString(string: truncatedContent, attributes: contentAttributes)
+        contentLabel.attributedText = attributedString
     }
 
     @objc private func didTapMoreButton() {
@@ -92,18 +92,18 @@ private extension HPBVerticalContentView {
         axis = .vertical
         spacing = 8
 
-        headerLabel.text = contentsType.rawValue
+        headerLabel.text = contentType.rawValue
 
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = contentsType.lineSpacing
-        contentsAttributes = [.paragraphStyle: paragraphStyle]
+        paragraphStyle.lineSpacing = contentType.lineSpacing
+        contentAttributes = [.paragraphStyle: paragraphStyle]
     }
 
     func configureSubviews() {
         [spacer, moreButton].forEach {
             moreButtonStackView.addArrangedSubview($0)
         }
-        [headerLabel, contentsLabel, moreButtonStackView].forEach {
+        [headerLabel, contentLabel, moreButtonStackView].forEach {
             addArrangedSubview($0)
         }
     }

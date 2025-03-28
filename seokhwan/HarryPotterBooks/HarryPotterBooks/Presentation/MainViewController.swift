@@ -8,7 +8,7 @@ final class MainViewController: UIViewController {
 
     private lazy var headerView = HPBHeaderView()
     private lazy var scrollView = UIScrollView()
-    private lazy var contentsView = HPBContainerView()
+    private lazy var containerView = HPBContainerView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,7 +17,7 @@ final class MainViewController: UIViewController {
 
     private func updateContents(with book: Book) {
         headerView.updateContents(with: book)
-        contentsView.updateContents(with: book)
+        containerView.updateContents(with: book)
     }
 }
 
@@ -36,7 +36,7 @@ private extension MainViewController {
     }
 
     func configureSubviews() {
-        scrollView.addSubview(contentsView)
+        scrollView.addSubview(containerView)
         [headerView, scrollView].forEach {
             view.addSubview($0)
         }
@@ -52,7 +52,7 @@ private extension MainViewController {
             make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-        contentsView.snp.makeConstraints { make in
+        containerView.snp.makeConstraints { make in
             make.directionalEdges.width.equalToSuperview()
         }
     }
@@ -81,7 +81,7 @@ private extension MainViewController {
     }
 
     func configureActions() {
-        contentsView.moreButtonTapAction = { [weak self] in
+        containerView.moreButtonTapAction = { [weak self] in
             self?.viewModel.toggleExpandedStateOfSelectedBook()
         }
     }
