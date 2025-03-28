@@ -31,6 +31,8 @@
 			membershipExceptions = (
 				Domain/Entity/Book.swift,
 				Domain/UseCase/FetchBooksUseCase.swift,
+				Domain/UseCase/FetchExpandedStateUseCase.swift,
+				Domain/UseCase/UpdateExpandedStateUseCase.swift,
 				Presentation/MainViewModel.swift,
 				Storage/AppStatesStorage.swift,
 				Storage/DataService.swift,
