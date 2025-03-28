@@ -70,7 +70,10 @@ final class HPBVerticalContentView: UIStackView {
         let shouldTruncateContent = shouldShowMoreButton && !isExpanded
 
         moreButtonStackView.isHidden = !shouldShowMoreButton
-        moreButton.setTitle(isExpanded ? "접기" : "더 보기", for: .normal)
+        UIView.performWithoutAnimation {
+            moreButton.setTitle(isExpanded ? "접기" : "더 보기", for: .normal)
+            moreButton.layoutIfNeeded()
+        }
 
         let truncatedContent = shouldTruncateContent ? content.prefix(maxContentCount) + "..." : content
         let attributedString = NSAttributedString(string: truncatedContent, attributes: contentAttributes)

@@ -74,9 +74,12 @@ private extension MainViewController {
         viewModel.selectedBook
             .compactMap { $0 }
             .sink { [weak self] book in
+                guard let self else { return }
                 Task {
                     await MainActor.run {
-                        self?.updateContents(with: book)
+                        UIView.transition(with: self.view, duration: 0.1, options: .transitionCrossDissolve) {
+                            self.updateContents(with: book)
+                        }
                     }
                 }
             }
