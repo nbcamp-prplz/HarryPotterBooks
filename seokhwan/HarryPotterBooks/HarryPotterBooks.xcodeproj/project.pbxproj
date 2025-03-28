@@ -32,6 +32,7 @@
 				Domain/Entity/Book.swift,
 				Domain/UseCase/FetchBooksUseCase.swift,
 				Presentation/MainViewModel.swift,
+				Storage/AppStatesStorage.swift,
 				Storage/DataService.swift,
 				Storage/DTO/BookDTO.swift,
 				"Utility/Array+Extensions.swift",
