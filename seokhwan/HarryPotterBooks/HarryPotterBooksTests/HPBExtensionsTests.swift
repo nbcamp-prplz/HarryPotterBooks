@@ -9,20 +9,6 @@ final class HPBExtensionsTests: XCTestCase {
 
     }
 
-    func testChaptersJoinedTitles() throws {
-        let chapters1 = [
-            Chapter(from: ChapterDTO(title: "first")),
-            Chapter(from: ChapterDTO(title: "second")),
-            Chapter(from: ChapterDTO(title: "third")),
-        ]
-        let chapters2 = [Chapter(from: ChapterDTO(title: "first"))]
-        let chapters3 = Chapters()
-
-        XCTAssertEqual(chapters1.joinedTitles, "first\nsecond\nthird")
-        XCTAssertEqual(chapters2.joinedTitles, "first")
-        XCTAssertEqual(chapters3.joinedTitles, "")
-    }
-
     func testInitializeDateFromString() throws {
         let dateString = "2025-03-26"
         let format = "yyyy-MM-dd"

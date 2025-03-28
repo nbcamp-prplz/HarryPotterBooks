@@ -5,9 +5,9 @@
 //  Created by GO on 3/25/25.
 //
 
-import UIKit
+import Foundation
 
-class DataService: UIViewController {
+class DataService {
     
     enum DataError: Error, LocalizedError {
         case fileNotFound
@@ -35,7 +35,6 @@ class DataService: UIViewController {
             completion(.success(books))
         } catch {
             print("🚨 JSON 파싱 에러 : \(error)")
-            showAlert(text: "JSON 데이터 파싱 실패", message: "확인")
             completion(.failure(DataError.parsingFailed(error)))
         }
     }

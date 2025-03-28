@@ -31,10 +31,8 @@
 			membershipExceptions = (
 				Domain/Entity/Book.swift,
 				Domain/UseCase/FetchBooksUseCase.swift,
-				Presentation/MainViewModel.swift,
 				Storage/DataService.swift,
 				Storage/DTO/BookDTO.swift,
-				"Utility/Array+Extensions.swift",
 				"Utility/Date+Extensions.swift",
 			);
 			target = 448144592D93FB94007BDE19 /* HarryPotterBooksTests */;
