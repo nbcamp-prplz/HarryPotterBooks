@@ -8,16 +8,20 @@ final class MainViewController: UIViewController {
 
     private lazy var headerView = HPBHeaderView()
     private lazy var scrollView = UIScrollView()
-    private lazy var contentsView = HPBContainerView()
+    private lazy var containerView = HPBContainerView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
 
+    private func generateSeriesNumberButtons(with count: Int) {
+        headerView.generateSeriesNumberButtons(numberOf: count)
+    }
+
     private func updateContents(with book: Book) {
         headerView.updateContents(with: book)
-        contentsView.updateContents(with: book)
+        containerView.updateContents(with: book)
     }
 }
 
@@ -27,6 +31,7 @@ private extension MainViewController {
         configureSubviews()
         configureConstraints()
         configureBind()
+        configureActions()
     }
 
     func configureLayout() {
@@ -35,7 +40,7 @@ private extension MainViewController {
     }
 
     func configureSubviews() {
-        scrollView.addSubview(contentsView)
+        scrollView.addSubview(containerView)
         [headerView, scrollView].forEach {
             view.addSubview($0)
         }
@@ -51,18 +56,30 @@ private extension MainViewController {
             make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-        contentsView.snp.makeConstraints { make in
+        containerView.snp.makeConstraints { make in
             make.directionalEdges.width.equalToSuperview()
         }
     }
 
     func configureBind() {
+        viewModel.numberOfBooks
+            .sink { [weak self] count in
+                Task {
+                    await MainActor.run {
+                        self?.generateSeriesNumberButtons(with: count)
+                    }
+                }
+            }
+            .store(in: &cancellables)
         viewModel.selectedBook
             .compactMap { $0 }
             .sink { [weak self] book in
+                guard let self else { return }
                 Task {
                     await MainActor.run {
-                        self?.updateContents(with: book)
+                        UIView.transition(with: self.view, duration: 0.1, options: .transitionCrossDissolve) {
+                            self.updateContents(with: book)
+                        }
                     }
                 }
             }
@@ -77,5 +94,14 @@ private extension MainViewController {
                 }
             }
             .store(in: &cancellables)
+    }
+
+    func configureActions() {
+        headerView.seriesNumberButtonOnTap = { [weak self] seriesNumber in
+            self?.viewModel.selectBook(at: seriesNumber)
+        }
+        containerView.moreButtonOnTap = { [weak self] in
+            self?.viewModel.toggleExpandedStateOfSelectedBook()
+        }
     }
 }

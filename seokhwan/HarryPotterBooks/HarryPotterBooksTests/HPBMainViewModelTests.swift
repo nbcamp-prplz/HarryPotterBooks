@@ -75,7 +75,7 @@ final class HPBMainViewModelTests: XCTestCase {
             .dropFirst()
             .compactMap { $0 }
             .sink { book in
-                XCTAssertEqual(book.seriesNumber - 1, nextIndex)
+                XCTAssertEqual(book.seriesNumber, nextIndex)
             }
             .store(in: &cancellables)
 

@@ -47,9 +47,9 @@ final class HPBInformationView: UIStackView {
     func updateContents(with book: Book) {
         coverImageView.image = UIImage(named: "harrypotter\(book.seriesNumber)")
         titleLabel.text = book.title
-        authorView.update(contents: book.author)
-        releasedView.update(contents: book.releaseDate.releasedString())
-        pagesView.update(contents: "\(book.pages)")
+        authorView.update(content: book.author)
+        releasedView.update(content: book.releaseDate.releasedString())
+        pagesView.update(content: "\(book.pages)")
     }
 }
 
