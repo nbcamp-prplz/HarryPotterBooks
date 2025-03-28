@@ -94,7 +94,7 @@ private extension MainViewController {
     }
 
     func configureActions() {
-        containerView.moreButtonTapAction = { [weak self] in
+        containerView.moreButtonOnTap = { [weak self] in
             self?.viewModel.toggleExpandedStateOfSelectedBook()
         }
     }

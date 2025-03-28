@@ -17,7 +17,7 @@ final class HPBVerticalContentView: UIStackView {
         }
     }
 
-    var moreButtonTapAction: (() -> Void)?
+    var moreButtonOnTap: (() -> Void)?
 
     private var contentType: ContentType = .none
     private var contentAttributes = [NSAttributedString.Key: Any]()
@@ -78,7 +78,7 @@ final class HPBVerticalContentView: UIStackView {
     }
 
     @objc private func didTapMoreButton() {
-        moreButtonTapAction?()
+        moreButtonOnTap?()
     }
 }
 

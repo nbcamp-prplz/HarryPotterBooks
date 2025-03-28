@@ -1,7 +1,7 @@
 import UIKit
 
 final class HPBContainerView: UIStackView {
-    var moreButtonTapAction: (() -> Void)?
+    var moreButtonOnTap: (() -> Void)?
 
     private lazy var informationView = HPBInformationView()
     private lazy var dedicationView = HPBVerticalContentView(.dedication)
@@ -45,8 +45,8 @@ private extension HPBContainerView {
     }
 
     func configureActions() {
-        summaryView.moreButtonTapAction = { [weak self] in
-            self?.moreButtonTapAction?()
+        summaryView.moreButtonOnTap = { [weak self] in
+            self?.moreButtonOnTap?()
         }
     }
 }
