@@ -1,6 +1,8 @@
 import UIKit
 
 final class HPBSeriesNumberButtonsView: UIStackView {
+    var seriesNumberButtonOnTap: ((Int) -> Void)?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -16,11 +18,13 @@ final class HPBSeriesNumberButtonsView: UIStackView {
             $0.removeFromSuperview()
         }
 
-        (1...count)
-            .map { HPBSeriesNumberButton(seriesNumber: $0) }
-            .forEach {
-                addArrangedSubview($0)
+        (1...count).forEach {
+            let button = HPBSeriesNumberButton(seriesNumber: $0)
+            button.onTap = { [weak self] seriesNumber in
+                self?.seriesNumberButtonOnTap?(seriesNumber)
             }
+            addArrangedSubview(button)
+        }
     }
 
     func updateStates(with selectedSeriesNumber: Int) {

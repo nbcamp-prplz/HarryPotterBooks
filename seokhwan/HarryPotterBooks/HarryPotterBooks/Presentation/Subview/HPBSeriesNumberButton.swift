@@ -25,6 +25,8 @@ final class HPBSeriesNumberButton: UIButton {
         }
     }
 
+    var onTap: ((Int) -> Void)?
+
     private override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -42,12 +44,18 @@ final class HPBSeriesNumberButton: UIButton {
         setTitleColor(state.titleColor, for: .normal)
         backgroundColor = state.backgroundColor
     }
+
+    @objc func didTap() {
+        guard let seriesNumber = Int(currentTitle ?? "") else { return }
+        onTap?(seriesNumber)
+    }
 }
 
 private extension HPBSeriesNumberButton {
     func configure(seriesNumber: Int) {
         configureLayout(seriesNumber)
         configureConstraints()
+        configureActions()
     }
 
     func configureLayout(_ seriesNumber: Int) {
@@ -61,5 +69,9 @@ private extension HPBSeriesNumberButton {
         snp.makeConstraints { make in
             make.size.equalTo(44)
         }
+    }
+
+    func configureActions() {
+        addTarget(self, action: #selector(didTap), for: .touchUpInside)
     }
 }

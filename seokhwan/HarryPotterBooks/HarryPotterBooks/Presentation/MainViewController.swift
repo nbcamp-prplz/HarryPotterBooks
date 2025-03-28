@@ -94,6 +94,9 @@ private extension MainViewController {
     }
 
     func configureActions() {
+        headerView.seriesNumberButtonOnTap = { [weak self] seriesNumber in
+            self?.viewModel.selectBook(at: seriesNumber)
+        }
         containerView.moreButtonOnTap = { [weak self] in
             self?.viewModel.toggleExpandedStateOfSelectedBook()
         }

@@ -2,6 +2,8 @@ import UIKit
 import SnapKit
 
 final class HPBHeaderView: UIView {
+    var seriesNumberButtonOnTap: ((Int) -> Void)?
+
     private lazy var bookTitleLabel: UILabel = {
         let label = UILabel()
 
@@ -34,6 +36,7 @@ private extension HPBHeaderView {
     func configure() {
         configureSubviews()
         configureConstraints()
+        configureActions()
     }
 
     func configureSubviews() {
@@ -50,6 +53,12 @@ private extension HPBHeaderView {
         seriesNumberButtonsView.snp.makeConstraints { make in
             make.top.equalTo(bookTitleLabel.snp.bottom).offset(16)
             make.centerX.bottom.equalToSuperview()
+        }
+    }
+
+    func configureActions() {
+        seriesNumberButtonsView.seriesNumberButtonOnTap = { [weak self] seriesNumber in
+            self?.seriesNumberButtonOnTap?(seriesNumber)
         }
     }
 }
