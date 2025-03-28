@@ -91,9 +91,9 @@ class HomeView: UIView {
     // configuration
     public func configure(book: Book, index: Int, isExpandContent: Bool) {
         topView.configure(book: book, index: index)
-        dedicationStackView.configure(content: book.dedication) // 헌정사
-        summaryStackView.configure(content: book.summary, isExpandContent: isExpandContent) // 요역
         bookDetailStackView.configure(book: book, index: index) // 이미지 + 기본 정보
+        dedicationStackView.configure(content: book.dedication) // 헌정사
+        summaryStackView.configure(content: book.summary) // 요역
         chaptersStackView.configure(contents: book.chapters.map{$0.title})
     }
 }

@@ -35,6 +35,7 @@ class ChaptersStackView: UIStackView {
     }
     
     func configure(contents: [String]) {
+        if arrangedSubviews.count > 1 { return } // 이미 추가되어있으면 종료 (titleLabel은 이미 포함됨)
         contents.forEach { content in
             let contentLabel = ContentLabel()
             contentLabel.configure(content: content)
