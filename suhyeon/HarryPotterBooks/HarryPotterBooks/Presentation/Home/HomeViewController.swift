@@ -42,7 +42,7 @@ class HomeViewController: UIViewController {
         
         output.books.bind { [weak self] books in
             guard let self, let book = books.first else { return }
-            self.homeView.configure(book: book, index: 1)
+            self.homeView.configure(book: books[1], index: 1)
         }.disposed(by: disposeBag)
         
         output.error.bind {[weak self] error in

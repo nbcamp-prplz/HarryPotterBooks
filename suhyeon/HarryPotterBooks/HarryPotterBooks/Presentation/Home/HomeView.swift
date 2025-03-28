@@ -29,10 +29,10 @@ class HomeView: UIView {
     private let bookDetailStackView = BookDetailStackView()
     
     // 헌정사
-    private let dedicationStackView = InfoVerticalStackView(title: "Dedication")
+    private let dedicationStackView = InfoVerticalStackView(type: .dedication)
     
     // 요약
-    private let summaryStackView = InfoVerticalStackView(title: "Summary")
+    private let summaryStackView = InfoVerticalStackView(type: .summary)
     
     // 챕터
     private let chaptersStackView = ChaptersStackView()
