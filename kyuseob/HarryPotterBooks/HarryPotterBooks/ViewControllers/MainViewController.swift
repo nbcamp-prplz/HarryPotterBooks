@@ -12,34 +12,28 @@ class MainViewController: UIViewController {
     private let mainView = MainView()
     private let mainViewModel = MainViewModel()
     
-    private var myBook: Book? = nil
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadBooks()
+        mainViewModel.loadReadMoreStates()
         
         mainView.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        loadBook(index: 1)
         
-        guard let book = self.myBook else { return }
-        
-        mainViewModel.loadReadMoreStates()
-        
-        mainView.configure(book: book, index: 1, readMoreState: mainViewModel.isReadMore(index: 1))
+        mainView.configure(books: mainViewModel.books, index: 0, readMoreState: mainViewModel.isReadMore(index: 0))
     }
 
     override func loadView() {
         view = mainView
     }
  
-    private func loadBook(index: Int) {
+    private func loadBooks() {
         do {
             try mainViewModel.loadBooks()
-            guard let book = mainViewModel.book(index: index) else { return }
-            self.myBook = book
         } catch let error as DataError {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // ViewController가 display 준비되기 전 메시지를 띄우지 않도록
                 self.showMessage(title: nil, message: error.errorMessage)
@@ -54,6 +48,10 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: MainViewDelegate {
+    func didChangeSelectedIndex(to index: Int) {
+        mainView.configure(books: mainViewModel.books, index: index, readMoreState: mainViewModel.isReadMore(index: index))
+    }
+    
     func mainViewDidTapReadMore() {
         mainViewModel.toggleReadMore(index: 1)
     }

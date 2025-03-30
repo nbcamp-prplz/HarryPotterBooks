@@ -47,10 +47,6 @@ final class BookOverviewView: UIView {
     
     private func setupHierarchy() {
         [bookCoverImageView, bookTitleLabel, bookInfoStackView].forEach { addSubview($0) }
-        
-        [authorStackView, releasedStackView, pagesStackView].forEach { stackView in
-            bookInfoStackView.addArrangedSubview(stackView)
-        }
     }
     
     private func setupConstraints() {
@@ -103,13 +99,18 @@ final class BookOverviewView: UIView {
     
     func configure(book: Book, index: Int) {
         bookCoverImageView.image = UIImage(named: "harrypotter\(index+1)")
-        
         bookTitleLabel.text = book.title
+        
+        bookInfoStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         authorStackView = createLabelStackView(isAuthor: true, title: "Author", value: book.author)
         let convertedReleaseDate = DateManager.shared.convertDate(from: book.releaseDate)
         releasedStackView = createLabelStackView(isAuthor: false, title: "Released", value: convertedReleaseDate)
         pagesStackView = createLabelStackView(isAuthor: false, title: "pages", value: String(book.pages))
+        
+        [authorStackView, releasedStackView, pagesStackView].forEach {
+            bookInfoStackView.addArrangedSubview($0)
+        }
         
         setupUI()
     }
