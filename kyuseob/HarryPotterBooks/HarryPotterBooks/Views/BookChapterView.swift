@@ -57,6 +57,8 @@ class BookChapterView: UIView {
     }
     
     private func setupContentStackView(with titles: [Title]) {
+        contentStackView.arrangedSubviews.forEach { $0.removeFromSuperview() } 
+        
         for title in titles {
             let label = UILabel().then {
                 $0.font = UIFont.systemFont(ofSize: 14)

@@ -10,7 +10,7 @@ import Foundation
 class MainViewModel {
     private let dataService = DataService()
     
-    private var books: [Book] = []
+    private(set) var books: [Book] = []
     private var readMoreStates: [Bool] = []
     
     func loadBooks() throws {
