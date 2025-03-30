@@ -8,7 +8,7 @@
 import UIKit
 
 protocol BookDetailsViewDelegate: AnyObject {
-    func bookDetailsViewDidTapReadMore()
+    func bookDetailsViewDidTapReadMore(index: Int)
 }
 
 class BookDetailsView: UIView {
@@ -16,6 +16,7 @@ class BookDetailsView: UIView {
     weak var delegate: BookDetailsViewDelegate?
     
     private var isReadMore: Bool?
+    private var currentIndex: Int = 0
     
     private let dedicationStackView = TitleContentView()
     private let summaryStackView = TitleContentView()
@@ -70,18 +71,19 @@ class BookDetailsView: UIView {
         readMoreButton.addTarget(self, action: #selector(didTapReadMoreButton), for: .touchUpInside)
     }
 
-    func configure(dedication: String, summary: String, isReadMore: Bool) {
+    func configure(dedication: String, summary: String, isReadMore: Bool, index: Int) {
+        self.isReadMore = isReadMore
+        self.currentIndex = index
         dedicationStackView.configure(title: "Dedication", content: dedication)
         summaryStackView.configure(title: "Summary", content: summary)
         summaryStackView.setExpandedLabel(isExpanded: isReadMore)
          
         readMoreButton.isHidden = summaryStackView.contentLength() <= 450 ? true : false
         readMoreButton.setTitle(isReadMore ? "접기" : "더보기", for: .normal)
-        self.isReadMore = isReadMore
     }
     
     @objc private func didTapReadMoreButton() {
-        delegate?.bookDetailsViewDidTapReadMore() // viewModel 측 데이터 변경은 viewController에서 할 수 있도록
+        delegate?.bookDetailsViewDidTapReadMore(index: currentIndex) // viewModel 측 데이터 변경은 viewController에서 할 수 있도록
 
         self.isReadMore?.toggle()
         

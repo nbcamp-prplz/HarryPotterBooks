@@ -52,7 +52,7 @@ extension MainViewController: MainViewDelegate {
         mainView.configure(books: mainViewModel.books, index: index, readMoreState: mainViewModel.isReadMore(index: index))
     }
     
-    func mainViewDidTapReadMore() {
-        mainViewModel.toggleReadMore(index: 1)
+    func mainViewDidTapReadMore(index: Int) {
+        mainViewModel.toggleReadMore(index: index)
     }
 }

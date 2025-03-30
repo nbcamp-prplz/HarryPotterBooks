@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 protocol MainViewDelegate: AnyObject {
-    func mainViewDidTapReadMore()
+    func mainViewDidTapReadMore(index: Int)
     func didChangeSelectedIndex(to index: Int)
 }
 
@@ -113,12 +113,11 @@ final class MainView: UIView {
     
     func configure(books: [Book], index: Int, readMoreState: Bool) {
         let book = books[index]
-        print("[MenuView] 현재 인덱스는 \(index)입니다.")
         
         titleLabel.text = book.title
 
         bookOverviewView.configure(book: book, index: index)
-        bookDetailsView.configure(dedication: book.dedication, summary: book.summary, isReadMore: readMoreState)
+        bookDetailsView.configure(dedication: book.dedication, summary: book.summary, isReadMore: readMoreState, index: index)
         bookChapterView.configure(with: book.chapters)
         bookSeriesView.configure(books.count)
     }
@@ -126,8 +125,8 @@ final class MainView: UIView {
 }
 
 extension MainView: BookDetailsViewDelegate {
-    func bookDetailsViewDidTapReadMore() {
-        delegate?.mainViewDidTapReadMore()
+    func bookDetailsViewDidTapReadMore(index: Int) {
+        delegate?.mainViewDidTapReadMore(index: index)
     }
 }
 
