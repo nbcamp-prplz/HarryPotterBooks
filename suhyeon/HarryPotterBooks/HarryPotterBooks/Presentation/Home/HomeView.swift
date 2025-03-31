@@ -90,7 +90,7 @@ class HomeView: UIView {
     
     // configuration
     public func configure(books: [(Book, Bool)], index: Int) {
-        let selectedBook = books[index] 
+        let selectedBook = books[index]
         topView.configure(book: selectedBook.0, index: index)
         bookDetailStackView.configure(book: selectedBook.0, index: index) // 이미지 + 기본 정보
         dedicationStackView.configure(content: selectedBook.0.dedication) // 헌정사

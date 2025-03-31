@@ -25,7 +25,7 @@ class ExpandableContentView: UIView {
         $0.titleLabel?.font = .systemFont(ofSize: 14)
         $0.isHidden = type != .summary
     }
-
+    
     init(type: InfoVerticalStackViewType) {
         self.type = type
         super.init(frame: .zero)
@@ -64,19 +64,31 @@ class ExpandableContentView: UIView {
     
     func configure(content: String, isExpandedSummary: Bool = false) {
         contentLabel.text = content
-       
+        if type != .summary { return }
+        
         expandFoldButton.isSelected = isExpandedSummary
         if !expandFoldButton.isSelected { contentLabel.setTruncatedText() } // 전체 내용을 보지 않으면 450자 이상이면 ... 표시
         
+        let isShortSummary = type == .summary && content.count < 450
         // 타입이 summary면서 글자가 450자 미만이면 버튼 숨기고 contentLabel을 전체 범위로 잡아줌
-        if type == .summary && content.count < 450 {
-            expandFoldButton.isHidden = true
+        expandFoldButton.isHidden = isShortSummary
+        
+        if isShortSummary {
+            // contentLabel부터 constraints를 수정하면 오토레이아웃 경고 발생
             expandFoldButton.snp.remakeConstraints { make in
                 make.height.equalTo(0)
             }
-            
             contentLabel.snp.remakeConstraints { make in
                 make.directionalEdges.equalToSuperview()
+            }
+
+        } else {
+            contentLabel.snp.remakeConstraints { make in
+                make.top.directionalHorizontalEdges.equalToSuperview()
+            }
+            expandFoldButton.snp.remakeConstraints { make in
+                make.top.equalTo(contentLabel.snp.bottom).offset(10)
+                make.bottom.trailing.equalToSuperview()
             }
         }
     }
