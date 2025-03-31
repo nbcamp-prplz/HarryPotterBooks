@@ -48,7 +48,7 @@ class InfoVerticalStackView: UIStackView {
         self.spacing = 8
     }
     
-    func configure(content: String) {
-        contentView.configure(content: content)
+    func configure(content: String, isExpandedSummary: Bool = false) {
+        contentView.configure(content: content, isExpandedSummary: isExpandedSummary)
     }
 }

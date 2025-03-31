@@ -68,7 +68,7 @@ class HomeView: UIView {
     
     // 제약조건 설정
     private func setConstraints() {
-        // 탑 뷰
+        // 탑
         topView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).inset(16)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
@@ -89,11 +89,12 @@ class HomeView: UIView {
     }
     
     // configuration
-    public func configure(book: Book, index: Int, isExpandContent: Bool) {
-        topView.configure(book: book, index: index)
-        bookDetailStackView.configure(book: book, index: index) // 이미지 + 기본 정보
-        dedicationStackView.configure(content: book.dedication) // 헌정사
-        summaryStackView.configure(content: book.summary) // 요역
-        chaptersStackView.configure(contents: book.chapters.map{$0.title})
+    public func configure(books: [(Book, Bool)], index: Int) {
+        let selectedBook = books[index] 
+        topView.configure(book: selectedBook.0, index: index)
+        bookDetailStackView.configure(book: selectedBook.0, index: index) // 이미지 + 기본 정보
+        dedicationStackView.configure(content: selectedBook.0.dedication) // 헌정사
+        summaryStackView.configure(content: selectedBook.0.summary, isExpandedSummary: selectedBook.1) // 요역
+        chaptersStackView.configure(contents: selectedBook.0.chapters.map{$0.title})
     }
 }

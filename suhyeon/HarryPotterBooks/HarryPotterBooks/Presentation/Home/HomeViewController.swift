@@ -15,8 +15,9 @@ class HomeViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let alertService = AlertService()
     
-    private let selectdIndex = BehaviorRelay<Int>(value: 0)
-    private let isExpandedSummary = PublishRelay<Bool>()
+    private let books = BehaviorRelay<[(Book, Bool)]>(value: [])
+    private let selectedIndex = BehaviorRelay<Int>(value: 0)
+    private let isExpandedSummary = PublishRelay<(String, Bool)>() // (책 제목, 확정 여부)
     
     
     init() {
@@ -37,6 +38,7 @@ class HomeViewController: UIViewController {
         view = homeView
         bindView()
         bindViewModel()
+        setDataSource()
     }
     
     private func bindView() {
@@ -44,27 +46,45 @@ class HomeViewController: UIViewController {
             .bind { [weak self] in
                 guard let self else { return }
                 let expandFoldButton = self.homeView.summaryStackView.contentView.expandFoldButton
+                let title = self.books.value[selectedIndex.value].0.title
                 expandFoldButton.isSelected = !expandFoldButton.isSelected
-                self.isExpandedSummary.accept(expandFoldButton.isSelected)
+                self.isExpandedSummary.accept((title, expandFoldButton.isSelected))
             }.disposed(by: disposeBag)
+        
+        homeView.topView.seriesButtonCollectionView.rx.itemSelected.bind {[weak self] indexPath in
+            self?.selectedIndex.accept(indexPath.row)
+            self?.homeView.topView.seriesButtonCollectionView.reloadData()
+        }.disposed(by: disposeBag)
     }
     
     private func bindViewModel() {
-        let input = HomeViewModel.Input(viewDidLoad: .just(()), selectedIndex: .just(0), isExpandedSummary: self.isExpandedSummary.asObservable())
+        let input = HomeViewModel.Input(viewDidLoad: .just(()), isExpandedSummary: isExpandedSummary.asObservable())
+        
         let output = viewModel.transform(input: input)
         
-        output.selectedBook.bind {[weak self] book in
-            guard let self else { return }
-            
-            // 탭을 할 때는 바뀌지만, 기기에 저장된 데이터를 꺼낼 때 초기화 용도
-            self.homeView.summaryStackView.contentView.expandFoldButton.isSelected = book.1
-            self.homeView.configure(book: book.0, index: self.selectdIndex.value, isExpandContent: book.1)
-        }.disposed(by: disposeBag)
+        output.books
+            .do(onNext: {[weak self] books in
+                self?.books.accept(books)
+            })
+            .bind(to: homeView.topView.seriesButtonCollectionView.rx.items(
+                cellIdentifier: SeriesNumberCell.id, cellType: SeriesNumberCell.self)) { index, book, cell in
+                    cell.configure(title: "\(index + 1)", isSelected: index == self.selectedIndex.value)
+                }
+                .disposed(by: disposeBag)
         
         output.error.bind {[weak self] error in
             guard let self else { return }
             let alert = self.alertService.createErrorAlert(title: "데이터 불러오기 실패", message: error.description)
             self.present(alert, animated: true)
         }.disposed(by: disposeBag)
+    }
+    
+    private func setDataSource() {
+        Observable.combineLatest(books, selectedIndex)
+            .filter {books, _ in books.count > 0 } // 비어있을 때는 제외
+            .bind {[weak self] books, selectedIndex in
+                self?.homeView.configure(books: books, index: selectedIndex)
+            }
+            .disposed(by: disposeBag)
     }
 }
