@@ -19,7 +19,6 @@ class HomeViewController: UIViewController {
     private let selectedIndex = BehaviorRelay<Int>(value: 0)
     private let isExpandedSummary = PublishRelay<(String, Bool)>() // (책 제목, 확정 여부)
     
-    
     init() {
         let bookNetwork = BookNetwork()
         let bookRepository = BookRepository(network: bookNetwork)
@@ -60,7 +59,6 @@ class HomeViewController: UIViewController {
     
     private func bindViewModel() {
         let input = HomeViewModel.Input(viewDidLoad: .just(()), isExpandedSummary: isExpandedSummary.asObservable())
-        
         let output = viewModel.transform(input: input)
         
         output.books
@@ -89,6 +87,7 @@ class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    // 컬렉션뷰의 bounds와 책 개수에 따라 컬렉션뷰의 셀 인셋 설정
     private func bindCollectionViewInsets() {
         Observable.combineLatest(
             books.map { $0.count }, // 현재 책 개수
@@ -117,5 +116,4 @@ class HomeViewController: UIViewController {
         }
         .disposed(by: disposeBag)
     }
-
 }

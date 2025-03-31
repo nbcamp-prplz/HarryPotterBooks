@@ -8,7 +8,6 @@
 import UIKit
 
 class HomeTopView: UIView {
-    
     // 상단 책 제목
     private let mainTitleLabel = UILabel().then {
         $0.textAlignment = .center

@@ -44,7 +44,6 @@ class ExpandableContentView: UIView {
     }
     
     private func setConstraints() {
-        
         switch type {
         case .dedication:
             contentLabel.snp.makeConstraints { make in
@@ -64,15 +63,16 @@ class ExpandableContentView: UIView {
     
     func configure(content: String, isExpandedSummary: Bool = false) {
         contentLabel.text = content
-        if type != .summary { return }
+        if type != .summary { return } // summary가 아니면 종료
         
+        // 더보기 버튼 로직
         expandFoldButton.isSelected = isExpandedSummary
-        if !expandFoldButton.isSelected { contentLabel.setTruncatedText() } // 전체 내용을 보지 않으면 450자 이상이면 ... 표시
+        if !isExpandedSummary { contentLabel.setTruncatedText() } // 전체 내용을 보지 않으면 450자 이상이면 ... 표시
         
-        let isShortSummary = type == .summary && content.count < 450
-        // 타입이 summary면서 글자가 450자 미만이면 버튼 숨기고 contentLabel을 전체 범위로 잡아줌
-        expandFoldButton.isHidden = isShortSummary
+        let isShortSummary = type == .summary && content.count < 450 // 타입이 summary면서 글자가 450자 미만인지 확인
+        expandFoldButton.isHidden = isShortSummary // 450자 미만이면 더보기 버튼 숨김
         
+        // 짧은 컨텐츠라면
         if isShortSummary {
             // contentLabel부터 constraints를 수정하면 오토레이아웃 경고 발생
             expandFoldButton.snp.remakeConstraints { make in
@@ -81,7 +81,6 @@ class ExpandableContentView: UIView {
             contentLabel.snp.remakeConstraints { make in
                 make.directionalEdges.equalToSuperview()
             }
-
         } else {
             contentLabel.snp.remakeConstraints { make in
                 make.top.directionalHorizontalEdges.equalToSuperview()

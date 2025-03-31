@@ -12,7 +12,6 @@ enum DataError: Error {
     case parsingFailed   // 데이터 파싱에 실패했을 때
 }
 
-
 extension DataError {
     var description: String {
         switch self {

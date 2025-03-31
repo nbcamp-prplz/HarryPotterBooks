@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 enum UserDefaultsKey: String {
     case summaryExpandStatus = "summaryExpandStatus"
 }
