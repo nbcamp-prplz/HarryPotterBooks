@@ -17,20 +17,19 @@ class HomeTopView: UIView {
         $0.numberOfLines = 0
     }
     
-    // 버튼 컬렉션 뷰
-    lazy var seriesButtonCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then({
+    // 시리즈 컬렉션 뷰
+    lazy var seriesNumberCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then({
         // 레이아웃
-//        $0.minimumInteritemSpacing = 8
+        $0.minimumInteritemSpacing = 8
         $0.itemSize = CGSize(width: self.widthHeightLength, height: self.widthHeightLength)
     })).then {
         // 컬렉션뷰
         $0.register(SeriesNumberCell.self, forCellWithReuseIdentifier: SeriesNumberCell.id)
         $0.isScrollEnabled = false
         $0.isUserInteractionEnabled = true
+        $0.showsVerticalScrollIndicator = false
+        $0.showsHorizontalScrollIndicator = false
     }
-
-    // 시리즈 순서
-//    lazy var seriesButton = SeriesButton(title: "1", widthHeightLength: widthHeightLength)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,8 +47,7 @@ class HomeTopView: UIView {
     private func setSubview() {
         [
             mainTitleLabel,
-//            seriesButton,
-            seriesButtonCollectionView
+            seriesNumberCollectionView
         ].forEach { self.addSubview($0) } // HomeTopView
     }
     
@@ -62,22 +60,13 @@ class HomeTopView: UIView {
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
         }
         
-        seriesButtonCollectionView.snp.makeConstraints { make in
+        seriesNumberCollectionView.snp.makeConstraints { make in
             make.top.equalTo(mainTitleLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
             make.directionalHorizontalEdges.greaterThanOrEqualToSuperview().inset(20).priority(.low)
             make.height.equalTo(widthHeightLength)
             make.bottom.equalToSuperview()
         }
-        
-        // 시리즈 버튼
-//        seriesButton.snp.makeConstraints { make in
-//            make.size.equalTo(widthHeightLength)
-//            make.top.equalTo(mainTitleLabel.snp.bottom).offset(20)
-//            make.centerX.equalToSuperview()
-//            make.directionalHorizontalEdges.greaterThanOrEqualToSuperview().inset(20).priority(.low)
-//            make.bottom.equalToSuperview()
-//        }
     }
     
     // configuration

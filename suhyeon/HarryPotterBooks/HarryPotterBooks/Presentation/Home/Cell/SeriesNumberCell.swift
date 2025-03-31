@@ -10,9 +10,9 @@ import UIKit
 class SeriesNumberCell: UICollectionViewCell {
     static let id = "SeriesNumberCell"
     
-    private let titleLabel = UILabel().then { lbl in
-        lbl.font = .systemFont(ofSize: 16)
-        lbl.textAlignment = .center
+    private let titleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 16)
+        $0.textAlignment = .center
     }
     
     override init(frame: CGRect) {

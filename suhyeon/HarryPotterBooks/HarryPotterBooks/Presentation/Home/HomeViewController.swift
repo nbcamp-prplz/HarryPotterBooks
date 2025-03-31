@@ -39,6 +39,7 @@ class HomeViewController: UIViewController {
         bindView()
         bindViewModel()
         setDataSource()
+        bindCollectionViewInsets()
     }
     
     private func bindView() {
@@ -51,9 +52,9 @@ class HomeViewController: UIViewController {
                 self.isExpandedSummary.accept((title, expandFoldButton.isSelected))
             }.disposed(by: disposeBag)
         
-        homeView.topView.seriesButtonCollectionView.rx.itemSelected.bind {[weak self] indexPath in
+        homeView.topView.seriesNumberCollectionView.rx.itemSelected.bind {[weak self] indexPath in
             self?.selectedIndex.accept(indexPath.row)
-            self?.homeView.topView.seriesButtonCollectionView.reloadData()
+            self?.homeView.topView.seriesNumberCollectionView.reloadData()
         }.disposed(by: disposeBag)
     }
     
@@ -66,7 +67,7 @@ class HomeViewController: UIViewController {
             .do(onNext: {[weak self] books in
                 self?.books.accept(books)
             })
-            .bind(to: homeView.topView.seriesButtonCollectionView.rx.items(
+            .bind(to: homeView.topView.seriesNumberCollectionView.rx.items(
                 cellIdentifier: SeriesNumberCell.id, cellType: SeriesNumberCell.self)) { index, book, cell in
                     cell.configure(title: "\(index + 1)", isSelected: index == self.selectedIndex.value)
                 }
@@ -87,4 +88,34 @@ class HomeViewController: UIViewController {
             }
             .disposed(by: disposeBag)
     }
+    
+    private func bindCollectionViewInsets() {
+        Observable.combineLatest(
+            books.map { $0.count }, // 현재 책 개수
+            homeView.topView.seriesNumberCollectionView.rx.observe(CGRect.self, "bounds") // 뷰 크기 변화 감지 (옵셔널 타입)
+        )
+        .compactMap { itemCount, bounds -> UIEdgeInsets? in // bounds가 옵셔널 타입이므로 compactMap 사용
+            guard let bounds = bounds else { return nil }
+            
+            let flowLayout = self.homeView.topView.seriesNumberCollectionView.collectionViewLayout as? UICollectionViewFlowLayout
+            let itemSize = flowLayout?.itemSize.width ?? 0
+            let spacing = flowLayout?.minimumInteritemSpacing ?? 0
+
+            let totalItemWidth = CGFloat(itemCount) * itemSize + CGFloat(itemCount - 1) * spacing
+            let horizontalInset = max((bounds.width - totalItemWidth) / 2, 0) // 음수 방지
+            return UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
+        }
+        .bind { [weak self] insets in
+            guard let self = self else { return }
+            if let flowLayout = self.homeView.topView.seriesNumberCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+                flowLayout.sectionInset = insets
+                
+                DispatchQueue.main.async {
+                    self.homeView.topView.seriesNumberCollectionView.collectionViewLayout.invalidateLayout() // 레이아웃 갱신
+                }
+            }
+        }
+        .disposed(by: disposeBag)
+    }
+
 }
