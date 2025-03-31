@@ -101,4 +101,16 @@ final class HPBMainViewModelTests: XCTestCase {
         mainViewModel.selectBook(at: 9)
         XCTAssertEqual(updateCount, 0)
     }
+
+    func testToggleExpandedStateOfSelectedBook() throws {
+        let mockTrue = MockFetchExpandedStateUseCase(result: true)
+        mainViewModel = MainViewModel(fetchExpandedStateUseCase: mockTrue)
+        mainViewModel.toggleExpandedStateOfSelectedBook()
+        XCTAssertEqual(mainViewModel.selectedBook.value?.isExpanded, false)
+
+        let mockFalse = MockFetchExpandedStateUseCase(result: false)
+        mainViewModel = MainViewModel(fetchExpandedStateUseCase: mockFalse)
+        mainViewModel.toggleExpandedStateOfSelectedBook()
+        XCTAssertEqual(mainViewModel.selectedBook.value?.isExpanded, true)
+    }
 }

@@ -20,17 +20,17 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
     private var books = Books()
 
     private let fetchBooksUseCase: FetchableBooksUseCase
-    private let fetchExpandedStateUseCase: FetchExpandedStateUseCase
-    private let updateExpandedStateUseCase: UpdateExpandedStateUseCase
-    private let fetchLastSelectedSeriesNumberUseCase: FetchLastSelectedSeriesNumberUseCase
-    private let updateLastSelectedSeriesNumberUseCase: UpdateLastSelectedSeriesNumberUseCase
+    private let fetchExpandedStateUseCase: FetchableExpandedStateUseCase
+    private let updateExpandedStateUseCase: UpdatableExpandedStateUseCase
+    private let fetchLastSelectedSeriesNumberUseCase: FetchableLastSelectedSeriesNumberUseCase
+    private let updateLastSelectedSeriesNumberUseCase: UpdatableLastSelectedSeriesNumberUseCase
 
     init(
         fetchBooksUseCase: FetchableBooksUseCase = FetchBooksUseCase(),
-        fetchExpandedStateUseCase: FetchExpandedStateUseCase = FetchExpandedStateUseCase(),
-        updateExpandedStateUseCase: UpdateExpandedStateUseCase = UpdateExpandedStateUseCase(),
-        fetchLastSelectedSeriesNumberUseCase: FetchLastSelectedSeriesNumberUseCase = FetchLastSelectedSeriesNumberUseCase(),
-        updateLastSelectedSeriesNumberUseCase: UpdateLastSelectedSeriesNumberUseCase = UpdateLastSelectedSeriesNumberUseCase()
+        fetchExpandedStateUseCase: FetchableExpandedStateUseCase = FetchExpandedStateUseCase(),
+        updateExpandedStateUseCase: UpdatableExpandedStateUseCase = UpdateExpandedStateUseCase(),
+        fetchLastSelectedSeriesNumberUseCase: FetchableLastSelectedSeriesNumberUseCase = FetchLastSelectedSeriesNumberUseCase(),
+        updateLastSelectedSeriesNumberUseCase: UpdatableLastSelectedSeriesNumberUseCase = UpdateLastSelectedSeriesNumberUseCase()
     ) {
         self.fetchBooksUseCase = fetchBooksUseCase
         self.fetchExpandedStateUseCase = fetchExpandedStateUseCase
@@ -54,7 +54,6 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
 
         books[seriesNumber - 1].isExpanded.toggle()
         selectedBook.send(books[seriesNumber - 1])
-
         updateExpandedStateUseCase.execute(at: seriesNumber, isExpanded: books[seriesNumber - 1].isExpanded)
     }
 
