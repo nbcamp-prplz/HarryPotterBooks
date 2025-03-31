@@ -41,8 +41,8 @@ final class HPBMainViewModelTests: XCTestCase {
     }
 
     func testLoadBooksSuccess() throws {
-        let fetchBooksUseCaseMock = FetchBooksUseCaseMock(result: .success(books))
-        mainViewModel = MainViewModel(fetchBooksUseCase: fetchBooksUseCaseMock)
+        let mock = MockFetchBooksUseCase(result: .success(books))
+        mainViewModel = MainViewModel(fetchBooksUseCase: mock)
 
         mainViewModel.selectedBook
             .dropFirst()
@@ -54,8 +54,8 @@ final class HPBMainViewModelTests: XCTestCase {
 
     func testLoadBooksFailure() throws {
         let error = DataError.parsingFailed
-        let fetchBooksUseCaseMock = FetchBooksUseCaseMock(result: .failure(error))
-        mainViewModel = MainViewModel(fetchBooksUseCase: fetchBooksUseCaseMock)
+        let mock = MockFetchBooksUseCase(result: .failure(error))
+        mainViewModel = MainViewModel(fetchBooksUseCase: mock)
 
         mainViewModel.errorMessage
             .dropFirst()
@@ -66,7 +66,7 @@ final class HPBMainViewModelTests: XCTestCase {
     }
 
     func testSelectBookAtValidIndex() throws {
-        let mock = FetchBooksUseCaseMock(result: .success(books))
+        let mock = MockFetchBooksUseCase(result: .success(books))
         mainViewModel = MainViewModel(fetchBooksUseCase: mock)
 
         let nextIndex = 1
@@ -83,7 +83,7 @@ final class HPBMainViewModelTests: XCTestCase {
     }
 
     func testSelectBookAtInvalidIndex() throws {
-        let mock = FetchBooksUseCaseMock(result: .success(books))
+        let mock = MockFetchBooksUseCase(result: .success(books))
         mainViewModel = MainViewModel(fetchBooksUseCase: mock)
 
         var updateCount = 0

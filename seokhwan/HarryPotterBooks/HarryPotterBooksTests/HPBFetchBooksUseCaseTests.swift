@@ -4,8 +4,8 @@ final class HPBFetchBooksUseCaseTests: XCTestCase {
     var fetchBooksUseCase: FetchableBooksUseCase!
 
     override func setUpWithError() throws {
-        let dataServiceMock = DataServiceMock()
-        fetchBooksUseCase = FetchBooksUseCase(dataService: dataServiceMock)
+        let mock = MockDataService()
+        fetchBooksUseCase = FetchBooksUseCase(dataService: mock)
     }
 
     override func tearDownWithError() throws {
