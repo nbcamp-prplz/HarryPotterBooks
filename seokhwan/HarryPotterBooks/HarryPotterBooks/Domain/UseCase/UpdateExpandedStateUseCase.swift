@@ -1,9 +1,13 @@
 import Foundation
 
-final class UpdateExpandedStateUseCase {
-    private let appStatesStorage: AppStatesStorage
+protocol UpdatableExpandedStateUseCase {
+    func execute(at seriesNumber: Int, isExpanded: Bool)
+}
 
-    init(appStatesStorage: AppStatesStorage = AppStatesStorage()) {
+final class UpdateExpandedStateUseCase: UpdatableExpandedStateUseCase {
+    private let appStatesStorage: AppStatesStorageProtocol
+
+    init(appStatesStorage: AppStatesStorageProtocol = AppStatesStorage()) {
         self.appStatesStorage = appStatesStorage
     }
 

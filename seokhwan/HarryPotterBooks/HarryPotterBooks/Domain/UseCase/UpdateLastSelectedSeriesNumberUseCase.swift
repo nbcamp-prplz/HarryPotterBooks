@@ -1,9 +1,13 @@
 import Foundation
 
-final class UpdateLastSelectedSeriesNumberUseCase {
-    private let appStatesStorage: AppStatesStorage
+protocol UpdatableLastSelectedSeriesNumberUseCase {
+    func execute(to seriesNumber: Int)
+}
 
-    init(appStatesStorage: AppStatesStorage = AppStatesStorage()) {
+final class UpdateLastSelectedSeriesNumberUseCase: UpdatableLastSelectedSeriesNumberUseCase {
+    private let appStatesStorage: AppStatesStorageProtocol
+
+    init(appStatesStorage: AppStatesStorageProtocol = AppStatesStorage()) {
         self.appStatesStorage = appStatesStorage
     }
 

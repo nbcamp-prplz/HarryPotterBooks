@@ -1,9 +1,13 @@
 import Foundation
 
-final class FetchExpandedStateUseCase {
-    private let appStatesStorage: AppStatesStorage
+protocol FetchableExpandedStateUseCase {
+    func execute(at seriesNumber: Int) -> Bool
+}
 
-    init(appStatesStorage: AppStatesStorage = AppStatesStorage()) {
+final class FetchExpandedStateUseCase: FetchableExpandedStateUseCase {
+    private let appStatesStorage: AppStatesStorageProtocol
+
+    init(appStatesStorage: AppStatesStorageProtocol = AppStatesStorage()) {
         self.appStatesStorage = appStatesStorage
     }
 

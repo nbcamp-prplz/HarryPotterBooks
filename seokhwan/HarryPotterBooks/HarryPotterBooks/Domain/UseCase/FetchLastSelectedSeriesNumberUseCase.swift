@@ -1,9 +1,13 @@
 import Foundation
 
-final class FetchLastSelectedSeriesNumberUseCase {
-    private let appStatesStorage: AppStatesStorage
+protocol FetchableLastSelectedSeriesNumberUseCase {
+    func execute() -> Int
+}
 
-    init(appStatesStorage: AppStatesStorage = AppStatesStorage()) {
+final class FetchLastSelectedSeriesNumberUseCase: FetchableLastSelectedSeriesNumberUseCase {
+    private let appStatesStorage: AppStatesStorageProtocol
+
+    init(appStatesStorage: AppStatesStorageProtocol = AppStatesStorage()) {
         self.appStatesStorage = appStatesStorage
     }
 
