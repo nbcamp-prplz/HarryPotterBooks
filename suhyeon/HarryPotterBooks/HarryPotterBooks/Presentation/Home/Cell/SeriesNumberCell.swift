@@ -13,6 +13,8 @@ class SeriesNumberCell: UICollectionViewCell {
     private let titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
         $0.textAlignment = .center
+        $0.layer.cornerRadius = Constant.seriesNumberWidthHeight / 2
+        $0.clipsToBounds = true
     }
     
     override init(frame: CGRect) {
@@ -38,6 +40,6 @@ class SeriesNumberCell: UICollectionViewCell {
     public func configure(title: String, isSelected: Bool) {
         titleLabel.text = title
         titleLabel.textColor = isSelected ? .white : .systemBlue
-        titleLabel.backgroundColor = isSelected ? .systemBlue : .systemGray
+        titleLabel.backgroundColor = isSelected ? .systemBlue : .systemGray5
     }
 }

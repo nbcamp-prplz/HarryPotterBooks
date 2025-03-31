@@ -8,7 +8,6 @@
 import UIKit
 
 class HomeTopView: UIView {
-    private let widthHeightLength: CGFloat = 30 // 버튼의 너비, 높이 사이즈
     
     // 상단 책 제목
     private let mainTitleLabel = UILabel().then {
@@ -18,10 +17,10 @@ class HomeTopView: UIView {
     }
     
     // 시리즈 컬렉션 뷰
-    lazy var seriesNumberCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then({
+    let seriesNumberCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then({
         // 레이아웃
         $0.minimumInteritemSpacing = 8
-        $0.itemSize = CGSize(width: self.widthHeightLength, height: self.widthHeightLength)
+        $0.itemSize = CGSize(width: Constant.seriesNumberWidthHeight, height: Constant.seriesNumberWidthHeight)
     })).then {
         // 컬렉션뷰
         $0.register(SeriesNumberCell.self, forCellWithReuseIdentifier: SeriesNumberCell.id)
@@ -64,7 +63,7 @@ class HomeTopView: UIView {
             make.top.equalTo(mainTitleLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
             make.directionalHorizontalEdges.greaterThanOrEqualToSuperview().inset(20).priority(.low)
-            make.height.equalTo(widthHeightLength)
+            make.height.equalTo(Constant.seriesNumberWidthHeight)
             make.bottom.equalToSuperview()
         }
     }
