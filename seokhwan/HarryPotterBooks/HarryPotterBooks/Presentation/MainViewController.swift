@@ -31,7 +31,6 @@ private extension MainViewController {
         configureSubviews()
         configureConstraints()
         configureBind()
-        configureActions()
     }
 
     func configureLayout() {
@@ -94,14 +93,15 @@ private extension MainViewController {
                 }
             }
             .store(in: &cancellables)
-    }
-
-    func configureActions() {
-        headerView.seriesNumberButtonOnTap = { [weak self] seriesNumber in
-            self?.viewModel.selectBook(at: seriesNumber)
-        }
-        containerView.moreButtonOnTap = { [weak self] in
-            self?.viewModel.toggleExpandedStateOfSelectedBook()
-        }
+        headerView.seriesNumberButtonTapPublisher
+            .sink { [weak self] seriesNumber in
+                self?.viewModel.selectBook(at: seriesNumber)
+            }
+            .store(in: &cancellables)
+        containerView.moreButtonTapPublisher
+            .sink { [weak self] in
+                self?.viewModel.toggleExpandedStateOfSelectedBook()
+            }
+            .store(in: &cancellables)
     }
 }

@@ -1,7 +1,9 @@
 import UIKit
+import Combine
 
 final class HPBContainerView: UIStackView {
-    var moreButtonOnTap: (() -> Void)?
+    let moreButtonTapPublisher = PassthroughSubject<Void, Never>()
+    private var cancellables = Set<AnyCancellable>()
 
     private lazy var informationView = HPBInformationView()
     private lazy var dedicationView = HPBVerticalContentView(.dedication)
@@ -30,7 +32,7 @@ private extension HPBContainerView {
     func configure() {
         configureLayout()
         configureSubviews()
-        configureActions()
+        configureBind()
     }
 
     func configureLayout() {
@@ -44,9 +46,11 @@ private extension HPBContainerView {
         }
     }
 
-    func configureActions() {
-        summaryView.moreButtonOnTap = { [weak self] in
-            self?.moreButtonOnTap?()
-        }
+    func configureBind() {
+        summaryView.moreButtonTapPublisher
+            .sink { [weak self] in
+                self?.moreButtonTapPublisher.send()
+            }
+            .store(in: &cancellables)
     }
 }

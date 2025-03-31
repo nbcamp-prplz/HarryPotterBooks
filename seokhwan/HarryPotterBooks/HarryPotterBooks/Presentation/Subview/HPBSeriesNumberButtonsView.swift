@@ -1,7 +1,10 @@
 import UIKit
+import Combine
 
 final class HPBSeriesNumberButtonsView: UIStackView {
-    var seriesNumberButtonOnTap: ((Int) -> Void)?
+    let seriesNumberButtonOnTapPublisher = PassthroughSubject<Int, Never>()
+
+    private var cancellables = Set<AnyCancellable>()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,13 +21,18 @@ final class HPBSeriesNumberButtonsView: UIStackView {
             $0.removeFromSuperview()
         }
 
-        (1...count).forEach {
+        let publishers = (1...count).map {
             let button = HPBSeriesNumberButton(seriesNumber: $0)
-            button.onTap = { [weak self] seriesNumber in
-                self?.seriesNumberButtonOnTap?(seriesNumber)
-            }
             addArrangedSubview(button)
+
+            return button.tapPublisher.eraseToAnyPublisher()
         }
+
+        Publishers.MergeMany(publishers)
+            .sink { [weak self] seriesNumber in
+                self?.seriesNumberButtonOnTapPublisher.send(seriesNumber)
+            }
+            .store(in: &cancellables)
     }
 
     func updateStates(with selectedSeriesNumber: Int) {

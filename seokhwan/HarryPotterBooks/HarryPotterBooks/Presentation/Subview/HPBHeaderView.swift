@@ -1,8 +1,11 @@
 import UIKit
+import Combine
 import SnapKit
 
 final class HPBHeaderView: UIView {
-    var seriesNumberButtonOnTap: ((Int) -> Void)?
+    let seriesNumberButtonTapPublisher = PassthroughSubject<Int, Never>()
+
+    private var cancellables = Set<AnyCancellable>()
 
     private lazy var bookTitleLabel: UILabel = {
         let label = UILabel()
@@ -36,7 +39,7 @@ private extension HPBHeaderView {
     func configure() {
         configureSubviews()
         configureConstraints()
-        configureActions()
+        configureBind()
     }
 
     func configureSubviews() {
@@ -56,9 +59,10 @@ private extension HPBHeaderView {
         }
     }
 
-    func configureActions() {
-        seriesNumberButtonsView.seriesNumberButtonOnTap = { [weak self] seriesNumber in
-            self?.seriesNumberButtonOnTap?(seriesNumber)
-        }
+    func configureBind() {
+        seriesNumberButtonsView.seriesNumberButtonOnTapPublisher
+            .sink { [weak self] seriesNumber in
+                self?.seriesNumberButtonTapPublisher.send(seriesNumber)
+            }.store(in: &cancellables)
     }
 }

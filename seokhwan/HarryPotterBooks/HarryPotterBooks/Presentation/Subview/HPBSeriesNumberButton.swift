@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 import SnapKit
 
 final class HPBSeriesNumberButton: UIButton {
@@ -25,7 +26,7 @@ final class HPBSeriesNumberButton: UIButton {
         }
     }
 
-    var onTap: ((Int) -> Void)?
+    let tapPublisher = PassthroughSubject<Int, Never>()
 
     private override init(frame: CGRect) {
         super.init(frame: frame)
@@ -47,7 +48,7 @@ final class HPBSeriesNumberButton: UIButton {
 
     @objc func didTap() {
         guard let seriesNumber = Int(currentTitle ?? "") else { return }
-        onTap?(seriesNumber)
+        tapPublisher.send(seriesNumber)
     }
 }
 

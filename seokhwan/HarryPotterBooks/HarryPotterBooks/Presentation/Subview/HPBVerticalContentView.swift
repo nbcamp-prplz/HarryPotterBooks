@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 final class HPBVerticalContentView: UIStackView {
     enum ContentType: String {
@@ -17,7 +18,7 @@ final class HPBVerticalContentView: UIStackView {
         }
     }
 
-    var moreButtonOnTap: (() -> Void)?
+    let moreButtonTapPublisher = PassthroughSubject<Void, Never>()
 
     private var contentType: ContentType = .none
     private var contentAttributes = [NSAttributedString.Key: Any]()
@@ -81,7 +82,7 @@ final class HPBVerticalContentView: UIStackView {
     }
 
     @objc private func didTapMoreButton() {
-        moreButtonOnTap?()
+        moreButtonTapPublisher.send()
     }
 }
 
