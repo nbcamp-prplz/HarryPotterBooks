@@ -2,7 +2,7 @@ import XCTest
 import Combine
 
 final class MainViewModelTests: XCTestCase {
-    private var mainViewModel: MainViewModel!
+    private var viewModel: MainViewModel!
     private var books: Books!
     private var cancellables: Set<AnyCancellable>!
 
@@ -36,7 +36,7 @@ final class MainViewModelTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        mainViewModel = nil
+        viewModel = nil
         books = nil
         cancellables = nil
         try super.tearDownWithError()
@@ -44,9 +44,9 @@ final class MainViewModelTests: XCTestCase {
 
     func testLoadBooksSuccess() throws {
         let mock = MockFetchBooksUseCase(result: .success(books))
-        mainViewModel = MainViewModel(fetchBooksUseCase: mock)
+        viewModel = MainViewModel(fetchBooksUseCase: mock)
 
-        mainViewModel.selectedBook
+        viewModel.selectedBook
             .dropFirst()
             .sink { book in
                 XCTAssertEqual(book?.title, "First Book")
@@ -57,9 +57,9 @@ final class MainViewModelTests: XCTestCase {
     func testLoadBooksFailure() throws {
         let error = DataError.parsingFailed
         let mock = MockFetchBooksUseCase(result: .failure(error))
-        mainViewModel = MainViewModel(fetchBooksUseCase: mock)
+        viewModel = MainViewModel(fetchBooksUseCase: mock)
 
-        mainViewModel.errorMessage
+        viewModel.errorMessage
             .dropFirst()
             .sink { message in
                 XCTAssertEqual(message, error.localizedDescription)
@@ -69,11 +69,11 @@ final class MainViewModelTests: XCTestCase {
 
     func testSelectBookAtValidIndex() throws {
         let mock = MockFetchBooksUseCase(result: .success(books))
-        mainViewModel = MainViewModel(fetchBooksUseCase: mock)
+        viewModel = MainViewModel(fetchBooksUseCase: mock)
 
         let nextIndex = 1
 
-        mainViewModel.selectedBook
+        viewModel.selectedBook
             .dropFirst()
             .compactMap { $0 }
             .sink { book in
@@ -81,38 +81,38 @@ final class MainViewModelTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        mainViewModel.selectBook(at: nextIndex)
+        viewModel.selectBook(at: nextIndex)
     }
 
     func testSelectBookAtInvalidIndex() throws {
         let mock = MockFetchBooksUseCase(result: .success(books))
-        mainViewModel = MainViewModel(fetchBooksUseCase: mock)
+        viewModel = MainViewModel(fetchBooksUseCase: mock)
 
         var updateCount = 0
 
-        mainViewModel.selectedBook
+        viewModel.selectedBook
             .dropFirst()
             .sink { _ in
                 updateCount += 1
             }
             .store(in: &cancellables)
 
-        mainViewModel.selectBook(at: -5)
+        viewModel.selectBook(at: -5)
         XCTAssertEqual(updateCount, 0)
 
-        mainViewModel.selectBook(at: 9)
+        viewModel.selectBook(at: 9)
         XCTAssertEqual(updateCount, 0)
     }
 
     func testToggleExpandedStateOfSelectedBook() throws {
         let mockTrue = MockFetchExpandedStateUseCase(result: true)
-        mainViewModel = MainViewModel(fetchExpandedStateUseCase: mockTrue)
-        mainViewModel.toggleExpandedStateOfSelectedBook()
-        XCTAssertEqual(mainViewModel.selectedBook.value?.isExpanded, false)
+        viewModel = MainViewModel(fetchExpandedStateUseCase: mockTrue)
+        viewModel.toggleExpandedStateOfSelectedBook()
+        XCTAssertEqual(viewModel.selectedBook.value?.isExpanded, false)
 
         let mockFalse = MockFetchExpandedStateUseCase(result: false)
-        mainViewModel = MainViewModel(fetchExpandedStateUseCase: mockFalse)
-        mainViewModel.toggleExpandedStateOfSelectedBook()
-        XCTAssertEqual(mainViewModel.selectedBook.value?.isExpanded, true)
+        viewModel = MainViewModel(fetchExpandedStateUseCase: mockFalse)
+        viewModel.toggleExpandedStateOfSelectedBook()
+        XCTAssertEqual(viewModel.selectedBook.value?.isExpanded, true)
     }
 }

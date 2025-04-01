@@ -1,16 +1,16 @@
 import XCTest
 
 final class FetchBooksUseCaseTests: XCTestCase {
-    private var fetchBooksUseCase: FetchableBooksUseCase!
+    private var useCase: FetchableBooksUseCase!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         let mock = MockDataService()
-        fetchBooksUseCase = FetchBooksUseCase(dataService: mock)
+        useCase = FetchBooksUseCase(dataService: mock)
     }
 
     override func tearDownWithError() throws {
-        fetchBooksUseCase = nil
+        useCase = nil
         try super.tearDownWithError()
     }
 
@@ -18,7 +18,7 @@ final class FetchBooksUseCaseTests: XCTestCase {
         let expectedBooksCount = 2
         let expectedFirstBookTitle = "First Book"
 
-        switch fetchBooksUseCase.execute() {
+        switch useCase.execute() {
         case .success(let books):
             XCTAssertEqual(books.count, expectedBooksCount)
             XCTAssertEqual(books.first?.title, expectedFirstBookTitle)
