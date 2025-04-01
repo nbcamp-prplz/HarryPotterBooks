@@ -57,9 +57,7 @@ class HomeViewModel: HomeViewModelProtocol {
                 if !isSavedBooks { useCase.saveSummaryExpandStatus(books: books) }
                 self.setBooksStatus(books: books)
             case .failure(let error):
-                await MainActor.run { // error를 바인딩한 ViewController에서 Alert으로 UI를 변경하므로 메인 스레드에서 진행
-                    self.error.accept(error.description)
-                }
+                self.error.accept(error.description)
             }
         }
     }
@@ -67,10 +65,7 @@ class HomeViewModel: HomeViewModelProtocol {
     // UserDefaults에 저장된 [(Book, Bool)] 반환
     private func setBooksStatus(books: [Book]) {
         guard let booksStatus = useCase.loadSummaryExpandStatus(books: books) else { return }
-        
-        DispatchQueue.main.async {
-            self.books.accept(booksStatus)
-        }
+        self.books.accept(booksStatus)
     }
     
     // 더보기/접기 정보저장 (일부만 저장)

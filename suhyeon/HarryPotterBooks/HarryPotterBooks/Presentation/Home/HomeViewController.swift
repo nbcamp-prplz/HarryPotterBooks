@@ -43,6 +43,7 @@ class HomeViewController: UIViewController {
     
     private func bindView() {
         homeView.summaryStackView.contentView.expandFoldButton.rx.tap
+            .observe(on: MainScheduler.instance)
             .bind { [weak self] in
                 guard let self else { return }
                 let expandFoldButton = self.homeView.summaryStackView.contentView.expandFoldButton
@@ -51,9 +52,10 @@ class HomeViewController: UIViewController {
                 self.isExpandedSummary.accept((title, expandFoldButton.isSelected))
             }.disposed(by: disposeBag)
         
-        homeView.topView.seriesNumberCollectionView.rx.itemSelected.bind {[weak self] indexPath in
-            self?.selectedIndex.accept(indexPath.row)
-            self?.homeView.topView.seriesNumberCollectionView.reloadData()
+        homeView.topView.seriesNumberCollectionView.rx.itemSelected
+            .bind {[weak self] indexPath in
+                self?.selectedIndex.accept(indexPath.row)
+                self?.homeView.topView.seriesNumberCollectionView.reloadData()
         }.disposed(by: disposeBag)
     }
     
@@ -62,6 +64,7 @@ class HomeViewController: UIViewController {
         let output = viewModel.transform(input: input)
         
         output.books
+            .observe(on: MainScheduler.instance)
             .do(onNext: {[weak self] books in
                 self?.books.accept(books)
             })
@@ -71,16 +74,19 @@ class HomeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.error.bind {[weak self] error in
-            guard let self else { return }
-            let alert = self.alertService.createErrorAlert(title: "데이터 불러오기 실패", message: error.description)
-            self.present(alert, animated: true)
+        output.error
+            .observe(on: MainScheduler.instance)
+            .bind {[weak self] error in
+                guard let self else { return }
+                let alert = self.alertService.createErrorAlert(title: "데이터 불러오기 실패", message: error.description)
+                self.present(alert, animated: true)
         }.disposed(by: disposeBag)
     }
     
     private func setDataSource() {
         Observable.combineLatest(books, selectedIndex)
             .filter {books, _ in books.count > 0 } // 비어있을 때는 제외
+            .observe(on: MainScheduler.instance)
             .bind {[weak self] books, selectedIndex in
                 self?.homeView.configure(books: books, index: selectedIndex)
             }
@@ -94,24 +100,22 @@ class HomeViewController: UIViewController {
             homeView.topView.seriesNumberCollectionView.rx.observe(CGRect.self, "bounds") // 뷰 크기 변화 감지 (옵셔널 타입)
         )
         .compactMap { itemCount, bounds -> UIEdgeInsets? in // bounds가 옵셔널 타입이므로 compactMap 사용
-            guard let bounds = bounds else { return nil }
+            guard let bounds else { return nil }
             
             let flowLayout = self.homeView.topView.seriesNumberCollectionView.collectionViewLayout as? UICollectionViewFlowLayout
             let itemSize = flowLayout?.itemSize.width ?? 0
             let spacing = flowLayout?.minimumInteritemSpacing ?? 0
-
             let totalItemWidth = CGFloat(itemCount) * itemSize + CGFloat(itemCount - 1) * spacing
             let horizontalInset = max((bounds.width - totalItemWidth) / 2, 0) // 음수 방지
             return UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
         }
+        .observe(on: MainScheduler.instance)
         .bind { [weak self] insets in
-            guard let self = self else { return }
-            if let flowLayout = self.homeView.topView.seriesNumberCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            guard let self,
+                  let flowLayout = self.homeView.topView.seriesNumberCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+            DispatchQueue.main.async {
                 flowLayout.sectionInset = insets
-                
-                DispatchQueue.main.async {
-                    self.homeView.topView.seriesNumberCollectionView.collectionViewLayout.invalidateLayout() // 레이아웃 갱신
-                }
+                self.homeView.topView.seriesNumberCollectionView.collectionViewLayout.invalidateLayout() // 레이아웃 갱신
             }
         }
         .disposed(by: disposeBag)
