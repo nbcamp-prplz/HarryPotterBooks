@@ -29,6 +29,9 @@
 		448144642D93FBC5007BDE19 /* Exceptions for "HarryPotterBooks" folder in "HarryPotterBooksTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Data/DTO/BookDTO.swift,
+				Data/Storage/AppStatesStorage.swift,
+				Data/Storage/DataService.swift,
 				Domain/Entity/Book.swift,
 				Domain/UseCase/FetchBooksUseCase.swift,
 				Domain/UseCase/FetchExpandedStateUseCase.swift,
@@ -36,9 +39,6 @@
 				Domain/UseCase/UpdateExpandedStateUseCase.swift,
 				Domain/UseCase/UpdateLastSelectedSeriesNumberUseCase.swift,
 				Presentation/MainViewModel.swift,
-				Storage/AppStatesStorage.swift,
-				Storage/DataService.swift,
-				Storage/DTO/BookDTO.swift,
 				"Utility/Array+Extensions.swift",
 				"Utility/Date+Extensions.swift",
 			);
