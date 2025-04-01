@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 class ViewController: UIViewController {
-    
     private let titleLabel = {
         let title = UILabel()
         title.text = "Harry Potter and the Philosopher's Stone"
@@ -44,19 +43,14 @@ class ViewController: UIViewController {
     
     private let author = {
         let author = UILabel()
-        
         let titleAttribute: [NSAttributedString.Key: Any] = [.font: UIFont.boldSystemFont(ofSize: 16), .foregroundColor: UIColor.black]
         let titleAttributeString = NSAttributedString(string: "Author : ", attributes: titleAttribute)
-        
         let authorAttribute: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 18), .foregroundColor: UIColor.darkGray]
         let authorAttributeString = NSAttributedString(string: "J. K. Rowling", attributes: authorAttribute)
-        
         let combineAttribute = NSMutableAttributedString()
         combineAttribute.append(titleAttributeString)
         combineAttribute.append(authorAttributeString)
-        
         author.attributedText = combineAttribute
-        
         return author
     }()
     
@@ -141,6 +135,16 @@ class ViewController: UIViewController {
     private let dataService = DataService()
     private var books = [BookAttributes]()
     
+    private let scrollView = {
+        let scroll = UIScrollView()
+        scroll.showsVerticalScrollIndicator = true
+        scroll.alwaysBounceVertical = true
+        scroll.contentInsetAdjustmentBehavior = .always
+        return scroll
+    }()
+    
+    private let contentView = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadBooks()
@@ -153,9 +157,12 @@ class ViewController: UIViewController {
 extension ViewController {
     func configureHierarchy() {
         view.backgroundColor = .white
-        [titleLabel, buttonStackView, bookImageView, bookInfoStackView, bookDetailInfoStackView].forEach { view.addSubview($0) }
+        [titleLabel, buttonStackView, scrollView].forEach { view.addSubview($0) }
+        [contentView].forEach { scrollView.addSubview($0)}
+        [bookImageView, bookInfoStackView, bookDetailInfoStackView].forEach { contentView.addSubview($0) }
         [bookTitle, author, releaseDate, bookPage].forEach { bookInfoStackView.addArrangedSubview($0) }
         [dedicationTitle, dedicationDetail, summaryTitle, summaryDetail, chapterTitle, chapterDetail].forEach { bookDetailInfoStackView.addArrangedSubview($0) }
+        
     }
     
     func configureLayout() {
@@ -168,14 +175,22 @@ extension ViewController {
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
             make.height.equalTo(40)
         }
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(buttonStackView.snp.bottom).offset(10)
+            make.directionalHorizontalEdges.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+        contentView.snp.makeConstraints { make in
+            make.size.equalToSuperview()
+        }
         bookImageView.snp.makeConstraints { make in
-            make.top.equalTo(buttonStackView.snp.bottom).offset(24)
+            make.top.equalToSuperview().offset(24)
             make.leading.equalToSuperview().offset(20)
             make.width.equalTo(100)
             make.height.equalTo(bookImageView.snp.width).multipliedBy(1.5)
         }
         bookInfoStackView.snp.makeConstraints { make in
-            make.top.equalTo(buttonStackView.snp.bottom).offset(24)
+            make.top.equalToSuperview().offset(24)
             make.leading.equalTo(bookImageView.snp.trailing).offset(10)
             make.trailing.equalToSuperview().inset(20)
         }
@@ -183,6 +198,7 @@ extension ViewController {
             make.top.equalTo(bookImageView.snp.bottom).offset(24)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
         }
+        
     }
     
     func configureView() {
@@ -193,10 +209,8 @@ extension ViewController {
             btn.backgroundColor = .systemBlue
             btn.tag = i
             btn.addTarget(self, action: #selector(seriesButtonClicked), for: .touchUpInside)
-            
             btn.layer.cornerRadius = 20
             btn.clipsToBounds = true
-            
             buttonStackView.addArrangedSubview(btn)
         }
     }
@@ -208,7 +222,6 @@ extension ViewController {
             titleLabel.text = tag.title
             bookTitle.text = tag.title
             bookPage.text = "Pages : \(tag.pages)"
-            
             let releaseDateFormatter = DateFormatter()
             releaseDateFormatter.dateFormat = "yyyy-MM-dd"
             guard let date = releaseDateFormatter.date(from: tag.releaseDate) else { return print("Release Date Error")}
