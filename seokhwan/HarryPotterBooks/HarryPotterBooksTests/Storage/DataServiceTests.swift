@@ -1,6 +1,6 @@
 import XCTest
 
-final class HPBDataServiceTests: XCTestCase {
+final class DataServiceTests: XCTestCase {
     var dataService: DataServiceProtocol!
 
     override func setUpWithError() throws {

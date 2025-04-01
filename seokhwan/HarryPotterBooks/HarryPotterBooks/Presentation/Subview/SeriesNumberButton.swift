@@ -2,7 +2,7 @@ import UIKit
 import Combine
 import SnapKit
 
-final class HPBSeriesNumberButton: UIButton {
+final class SeriesNumberButton: UIButton {
     enum State {
         case selected
         case unselected
@@ -52,7 +52,7 @@ final class HPBSeriesNumberButton: UIButton {
     }
 }
 
-private extension HPBSeriesNumberButton {
+private extension SeriesNumberButton {
     func configure(seriesNumber: Int) {
         configureLayout(seriesNumber)
         configureConstraints()

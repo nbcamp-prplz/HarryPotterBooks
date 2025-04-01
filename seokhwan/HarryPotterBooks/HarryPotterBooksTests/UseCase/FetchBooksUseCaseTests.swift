@@ -1,6 +1,6 @@
 import XCTest
 
-final class HPBFetchBooksUseCaseTests: XCTestCase {
+final class FetchBooksUseCaseTests: XCTestCase {
     var fetchBooksUseCase: FetchableBooksUseCase!
 
     override func setUpWithError() throws {

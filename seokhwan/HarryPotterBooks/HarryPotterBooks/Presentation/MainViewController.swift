@@ -6,9 +6,9 @@ final class MainViewController: UIViewController {
     private let viewModel = MainViewModel()
     private var cancellables = Set<AnyCancellable>()
 
-    private lazy var headerView = HPBHeaderView()
+    private lazy var headerView = HeaderView()
     private lazy var scrollView = UIScrollView()
-    private lazy var containerView = HPBContainerView()
+    private lazy var containerView = ContainerView()
 
     override func viewDidLoad() {
         super.viewDidLoad()

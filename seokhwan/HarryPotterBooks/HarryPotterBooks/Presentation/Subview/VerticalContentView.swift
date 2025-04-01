@@ -1,7 +1,7 @@
 import UIKit
 import Combine
 
-final class HPBVerticalContentView: UIStackView {
+final class VerticalContentView: UIStackView {
     enum ContentType: String {
         case none
         case dedication = "Dedication"
@@ -54,7 +54,7 @@ final class HPBVerticalContentView: UIStackView {
         super.init(frame: frame)
     }
 
-    convenience init(_ contentType: HPBVerticalContentView.ContentType) {
+    convenience init(_ contentType: VerticalContentView.ContentType) {
         self.init(frame: .zero)
         self.contentType = contentType
         configure()
@@ -86,7 +86,7 @@ final class HPBVerticalContentView: UIStackView {
     }
 }
 
-private extension HPBVerticalContentView {
+private extension VerticalContentView {
     func configure() {
         configureLayout()
         configureSubviews()

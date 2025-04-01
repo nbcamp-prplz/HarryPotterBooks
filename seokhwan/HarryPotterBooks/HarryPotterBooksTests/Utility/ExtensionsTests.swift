@@ -1,6 +1,6 @@
 import XCTest
 
-final class HPBExtensionsTests: XCTestCase {
+final class ExtensionsTests: XCTestCase {
     func testChaptersJoinedTitles() throws {
         let chapters1 = [
             Chapter(from: ChapterDTO(title: "first")),

@@ -2,7 +2,7 @@ import UIKit
 import Combine
 import SnapKit
 
-final class HPBHeaderView: UIView {
+final class HeaderView: UIView {
     let seriesNumberButtonTapPublisher = PassthroughSubject<Int, Never>()
 
     private var cancellables = Set<AnyCancellable>()
@@ -18,7 +18,7 @@ final class HPBHeaderView: UIView {
 
         return label
     }()
-    private lazy var seriesNumberButtonsView = HPBSeriesNumberButtonsView()
+    private lazy var seriesNumberButtonsView = SeriesNumberButtonsView()
 
     convenience init() {
         self.init(frame: .zero)
@@ -35,7 +35,7 @@ final class HPBHeaderView: UIView {
     }
 }
 
-private extension HPBHeaderView {
+private extension HeaderView {
     func configure() {
         configureSubviews()
         configureConstraints()

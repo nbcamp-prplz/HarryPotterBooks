@@ -1,7 +1,7 @@
 import XCTest
 import Combine
 
-final class HPBMainViewModelTests: XCTestCase {
+final class MainViewModelTests: XCTestCase {
     var mainViewModel: MainViewModel!
     var books: Books!
     var cancellables: Set<AnyCancellable>!

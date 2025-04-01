@@ -1,14 +1,14 @@
 import UIKit
 import Combine
 
-final class HPBContainerView: UIStackView {
+final class ContainerView: UIStackView {
     let moreButtonTapPublisher = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
 
-    private lazy var informationView = HPBInformationView()
-    private lazy var dedicationView = HPBVerticalContentView(.dedication)
-    private lazy var summaryView = HPBVerticalContentView(.summary)
-    private lazy var chaptersView = HPBVerticalContentView(.chapters)
+    private lazy var informationView = InformationView()
+    private lazy var dedicationView = VerticalContentView(.dedication)
+    private lazy var summaryView = VerticalContentView(.summary)
+    private lazy var chaptersView = VerticalContentView(.chapters)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,7 +28,7 @@ final class HPBContainerView: UIStackView {
     }
 }
 
-private extension HPBContainerView {
+private extension ContainerView {
     func configure() {
         configureLayout()
         configureSubviews()

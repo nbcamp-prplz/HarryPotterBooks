@@ -1,7 +1,7 @@
 import UIKit
 import Combine
 
-final class HPBSeriesNumberButtonsView: UIStackView {
+final class SeriesNumberButtonsView: UIStackView {
     let seriesNumberButtonOnTapPublisher = PassthroughSubject<Int, Never>()
 
     private var cancellables = Set<AnyCancellable>()
@@ -22,7 +22,7 @@ final class HPBSeriesNumberButtonsView: UIStackView {
         }
 
         let publishers = (1...count).map {
-            let button = HPBSeriesNumberButton(seriesNumber: $0)
+            let button = SeriesNumberButton(seriesNumber: $0)
             addArrangedSubview(button)
 
             return button.tapPublisher.eraseToAnyPublisher()
@@ -37,16 +37,16 @@ final class HPBSeriesNumberButtonsView: UIStackView {
 
     func updateStates(with selectedSeriesNumber: Int) {
         arrangedSubviews
-            .compactMap { $0 as? HPBSeriesNumberButton }
+            .compactMap { $0 as? SeriesNumberButton }
             .forEach {
                 let isSelected = $0.currentTitle == "\(selectedSeriesNumber)"
-                let state: HPBSeriesNumberButton.State = isSelected ? .selected : .unselected
+                let state: SeriesNumberButton.State = isSelected ? .selected : .unselected
                 $0.updateLayout(with: state)
             }
     }
 }
 
-private extension HPBSeriesNumberButtonsView {
+private extension SeriesNumberButtonsView {
     func configure() {
         configureLayout()
     }

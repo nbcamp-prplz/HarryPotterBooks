@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class HPBInformationView: UIStackView {
+final class InformationView: UIStackView {
     private lazy var coverImageView: UIImageView = {
         let imageView = UIImageView()
 
@@ -30,9 +30,9 @@ final class HPBInformationView: UIStackView {
 
         return label
     }()
-    private lazy var authorView = HPBHorizontalContentView(.author)
-    private lazy var releasedView = HPBHorizontalContentView(.released)
-    private lazy var pagesView = HPBHorizontalContentView(.pages)
+    private lazy var authorView = HorizontalContentView(.author)
+    private lazy var releasedView = HorizontalContentView(.released)
+    private lazy var pagesView = HorizontalContentView(.pages)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -53,7 +53,7 @@ final class HPBInformationView: UIStackView {
     }
 }
 
-private extension HPBInformationView {
+private extension InformationView {
     func configure() {
         configureLayout()
         configureSubviews()
