@@ -31,7 +31,6 @@ class ViewController: UIViewController {
         let img = UIImageView()
         img.image = UIImage(named: "harrypotter1")
         img.contentMode = .scaleAspectFill
-        img.backgroundColor = .cyan
         return img
     }()
     
@@ -75,6 +74,14 @@ class ViewController: UIViewController {
         return pg
     }()
     
+    private lazy var bookInfoStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
     private let dedicationTitle = {
         let dd = UILabel()
         dd.text = "Dedication"
@@ -107,15 +114,29 @@ class ViewController: UIViewController {
         return detail
     }()
     
-    private let scrollView = {
-        let scroll = UIScrollView()
-        scroll.showsVerticalScrollIndicator = true
-        scroll.showsHorizontalScrollIndicator = false
-        scroll.backgroundColor = .cyan
-        return scroll
+    private let chapterTitle = {
+        let chap = UILabel()
+        chap.font = .boldSystemFont(ofSize: 18)
+        chap.text = "Chapters"
+        return chap
     }()
     
-    private let containerView = UIView()
+    private let chapterDetail = {
+        let detail = UILabel()
+        detail.text = "Test Text"
+        detail.font = .systemFont(ofSize: 14)
+        detail.textColor = .darkGray
+        detail.numberOfLines = 0
+        return detail
+    }()
+    
+    private lazy var bookDetailInfoStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
     
     private let dataService = DataService()
     private var books = [BookAttributes]()
@@ -132,15 +153,9 @@ class ViewController: UIViewController {
 extension ViewController {
     func configureHierarchy() {
         view.backgroundColor = .white
-        
-        [titleLabel, buttonStackView, scrollView].forEach { view.addSubview($0)}
-        
-        scrollView.addSubview(containerView)
-        
-        [bookImageView, bookTitle, author, releaseDate, bookPage,
-         dedicationTitle, dedicationDetail, summaryTitle, summaryDetail]
-            .forEach { containerView.addSubview($0) }
-        
+        [titleLabel, buttonStackView, bookImageView, bookInfoStackView, bookDetailInfoStackView].forEach { view.addSubview($0) }
+        [bookTitle, author, releaseDate, bookPage].forEach { bookInfoStackView.addArrangedSubview($0) }
+        [dedicationTitle, dedicationDetail, summaryTitle, summaryDetail, chapterTitle, chapterDetail].forEach { bookDetailInfoStackView.addArrangedSubview($0) }
     }
     
     func configureLayout() {
@@ -153,60 +168,23 @@ extension ViewController {
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
             make.height.equalTo(40)
         }
-        scrollView.snp.makeConstraints { make in
-            make.top.equalTo(buttonStackView.snp.bottom).offset(10)
-            make.directionalHorizontalEdges.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
-        containerView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalTo(scrollView.contentLayoutGuide)
-            make.width.equalTo(scrollView.frameLayoutGuide)
-        }
         bookImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(24)
+            make.top.equalTo(buttonStackView.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(20)
             make.width.equalTo(100)
             make.height.equalTo(bookImageView.snp.width).multipliedBy(1.5)
         }
-        bookTitle.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(28)
-            make.leading.equalTo(bookImageView.snp.trailing).offset(16)
+        bookInfoStackView.snp.makeConstraints { make in
+            make.top.equalTo(buttonStackView.snp.bottom).offset(24)
+            make.leading.equalTo(bookImageView.snp.trailing).offset(10)
             make.trailing.equalToSuperview().inset(20)
         }
-        author.snp.makeConstraints { make in
-            make.top.equalTo(bookTitle.snp.bottom).offset(12)
-            make.leading.equalTo(bookImageView.snp.trailing).offset(16)
-            make.trailing.equalToSuperview().inset(20)
-        }
-        releaseDate.snp.makeConstraints { make in
-            make.top.equalTo(author.snp.bottom).offset(12)
-            make.leading.equalTo(bookImageView.snp.trailing).offset(16)
-            make.trailing.equalToSuperview().inset(20)
-        }
-        bookPage.snp.makeConstraints { make in
-            make.top.equalTo(releaseDate.snp.bottom).offset(12)
-            make.leading.equalTo(bookImageView.snp.trailing).offset(16)
-            make.trailing.equalToSuperview().inset(20)
-        }
-        dedicationTitle.snp.makeConstraints { make in
+        bookDetailInfoStackView.snp.makeConstraints { make in
             make.top.equalTo(bookImageView.snp.bottom).offset(24)
-            make.leading.equalToSuperview().offset(20)
-        }
-        dedicationDetail.snp.makeConstraints { make in
-            make.top.equalTo(dedicationTitle.snp.bottom).offset(8)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
-        }
-        summaryTitle.snp.makeConstraints { make in
-            make.top.equalTo(dedicationDetail.snp.bottom).offset(24)
-            make.leading.equalToSuperview().offset(20)
-        }
-        summaryDetail.snp.makeConstraints { make in
-            make.top.equalTo(summaryTitle.snp.bottom).offset(8)
-            make.directionalHorizontalEdges.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(20)
         }
     }
-
+    
     func configureView() {
         for i in 1...7 {
             let btn = UIButton()
@@ -237,10 +215,10 @@ extension ViewController {
             releaseDate.text = date.dateFormatter()
             dedicationDetail.text = tag.dedication
             summaryDetail.text = tag.summary
-            
+//            chapterDetail.text = tag.chapters[sender.tag - 1]
         }
     }
-
+    
     func loadBooks() {
         dataService.loadBooks { [weak self] result in
             guard let self else { return }
@@ -248,6 +226,7 @@ extension ViewController {
             case .success(let books):
                 self.books = books
             case .failure(_):
+                // completion
                 showAlert(text: "오류", message: "확인")
             }
         }
