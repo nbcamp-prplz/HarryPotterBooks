@@ -1,7 +1,7 @@
 import XCTest
 
 final class DataServiceTests: XCTestCase {
-    var dataService: DataServiceProtocol!
+    private var dataService: DataServiceProtocol!
 
     override func setUpWithError() throws {
         dataService = DataService()

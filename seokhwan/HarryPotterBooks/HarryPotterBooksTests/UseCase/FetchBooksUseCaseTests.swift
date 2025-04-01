@@ -1,7 +1,7 @@
 import XCTest
 
 final class FetchBooksUseCaseTests: XCTestCase {
-    var fetchBooksUseCase: FetchableBooksUseCase!
+    private var fetchBooksUseCase: FetchableBooksUseCase!
 
     override func setUpWithError() throws {
         let mock = MockDataService()

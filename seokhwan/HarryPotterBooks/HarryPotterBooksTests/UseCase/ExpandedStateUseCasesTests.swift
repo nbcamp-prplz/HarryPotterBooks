@@ -1,9 +1,9 @@
 import XCTest
 
 final class ExpandedStateUseCasesTests: XCTestCase {
-    var mockStorage: AppStatesStorageProtocol!
-    var fetchExpandedStateUseCase: FetchableExpandedStateUseCase!
-    var updateExpandedStateUseCase: UpdatableExpandedStateUseCase!
+    private var mockStorage: AppStatesStorageProtocol!
+    private var fetchExpandedStateUseCase: FetchableExpandedStateUseCase!
+    private var updateExpandedStateUseCase: UpdatableExpandedStateUseCase!
 
     override func setUpWithError() throws {
         mockStorage = MockAppStatesStorage()

@@ -2,9 +2,9 @@ import XCTest
 import Combine
 
 final class MainViewModelTests: XCTestCase {
-    var mainViewModel: MainViewModel!
-    var books: Books!
-    var cancellables: Set<AnyCancellable>!
+    private var mainViewModel: MainViewModel!
+    private var books: Books!
+    private var cancellables: Set<AnyCancellable>!
 
     override func setUpWithError() throws {
         let firstBookDTO = BookDTO(

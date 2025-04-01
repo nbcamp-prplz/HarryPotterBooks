@@ -1,8 +1,8 @@
 import XCTest
 
 final class AppStatesStorageTests: XCTestCase {
-    var userDefaults: UserDefaults!
-    var storage: AppStatesStorageProtocol!
+    private var userDefaults: UserDefaults!
+    private var storage: AppStatesStorageProtocol!
 
     override func setUpWithError() throws {
         userDefaults = UserDefaults.init(suiteName: "Test")!

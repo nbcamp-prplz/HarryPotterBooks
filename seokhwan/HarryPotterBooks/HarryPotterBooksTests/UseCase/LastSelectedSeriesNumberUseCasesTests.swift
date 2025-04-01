@@ -1,9 +1,9 @@
 import XCTest
 
 final class LastSelectedSeriesNumberUseCasesTests: XCTestCase {
-    var mockStorage: AppStatesStorageProtocol!
-    var fetchLastSelectedSeriesNumberUseCase: FetchableLastSelectedSeriesNumberUseCase!
-    var updateLastSelectedSeriesNumberUseCase: UpdatableLastSelectedSeriesNumberUseCase!
+    private var mockStorage: AppStatesStorageProtocol!
+    private var fetchLastSelectedSeriesNumberUseCase: FetchableLastSelectedSeriesNumberUseCase!
+    private var updateLastSelectedSeriesNumberUseCase: UpdatableLastSelectedSeriesNumberUseCase!
 
     override func setUpWithError() throws {
         mockStorage = MockAppStatesStorage()
