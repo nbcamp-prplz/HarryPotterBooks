@@ -137,9 +137,7 @@ class ViewController: UIViewController {
     
     private let scrollView = {
         let scroll = UIScrollView()
-        scroll.showsVerticalScrollIndicator = true
-        scroll.alwaysBounceVertical = true
-        scroll.contentInsetAdjustmentBehavior = .always
+        scroll.showsVerticalScrollIndicator = false
         return scroll
     }()
     
@@ -158,22 +156,22 @@ extension ViewController {
     func configureHierarchy() {
         view.backgroundColor = .white
         [titleLabel, buttonStackView, scrollView].forEach { view.addSubview($0) }
-        [contentView].forEach { scrollView.addSubview($0)}
+        [contentView].forEach { scrollView.addSubview($0) }
         [bookImageView, bookInfoStackView, bookDetailInfoStackView].forEach { contentView.addSubview($0) }
         [bookTitle, author, releaseDate, bookPage].forEach { bookInfoStackView.addArrangedSubview($0) }
         [dedicationTitle, dedicationDetail, summaryTitle, summaryDetail, chapterTitle, chapterDetail].forEach { bookDetailInfoStackView.addArrangedSubview($0) }
-        
     }
     
     func configureLayout() {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
+            make.height.equalTo(88)
         }
         buttonStackView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
-            make.height.equalTo(40)
+            make.height.equalTo(44)
         }
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(buttonStackView.snp.bottom).offset(10)
@@ -181,7 +179,8 @@ extension ViewController {
             make.bottom.equalToSuperview()
         }
         contentView.snp.makeConstraints { make in
-            make.size.equalToSuperview()
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.width.equalTo(scrollView.frameLayoutGuide)
         }
         bookImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(24)
@@ -197,10 +196,10 @@ extension ViewController {
         bookDetailInfoStackView.snp.makeConstraints { make in
             make.top.equalTo(bookImageView.snp.bottom).offset(24)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(5)
         }
-        
     }
-    
+
     func configureView() {
         for i in 1...7 {
             let btn = UIButton()
@@ -228,7 +227,9 @@ extension ViewController {
             releaseDate.text = date.dateFormatter()
             dedicationDetail.text = tag.dedication
             summaryDetail.text = tag.summary
-//            chapterDetail.text = tag.chapters[sender.tag - 1]
+            chapterDetail.text = tag.chapters.enumerated().map { index, chapter in
+                return "\(index + 1). \(chapter.title)"
+            }.joined(separator: "\n")
         }
     }
     
