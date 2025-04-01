@@ -7,6 +7,7 @@ final class MainViewModelTests: XCTestCase {
     private var cancellables: Set<AnyCancellable>!
 
     override func setUpWithError() throws {
+        try super.setUpWithError()
         let firstBookDTO = BookDTO(
             title: "First Book",
             author: "author",
@@ -38,6 +39,7 @@ final class MainViewModelTests: XCTestCase {
         mainViewModel = nil
         books = nil
         cancellables = nil
+        try super.tearDownWithError()
     }
 
     func testLoadBooksSuccess() throws {

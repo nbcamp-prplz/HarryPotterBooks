@@ -6,6 +6,7 @@ final class ExpandedStateUseCasesTests: XCTestCase {
     private var updateExpandedStateUseCase: UpdatableExpandedStateUseCase!
 
     override func setUpWithError() throws {
+        try super.setUpWithError()
         mockStorage = MockAppStatesStorage()
         fetchExpandedStateUseCase = FetchExpandedStateUseCase(appStatesStorage: mockStorage)
         updateExpandedStateUseCase = UpdateExpandedStateUseCase(appStatesStorage: mockStorage)
@@ -15,6 +16,7 @@ final class ExpandedStateUseCasesTests: XCTestCase {
         updateExpandedStateUseCase = nil
         fetchExpandedStateUseCase = nil
         mockStorage = nil
+        try super.tearDownWithError()
     }
 
     func testExecutes() throws {

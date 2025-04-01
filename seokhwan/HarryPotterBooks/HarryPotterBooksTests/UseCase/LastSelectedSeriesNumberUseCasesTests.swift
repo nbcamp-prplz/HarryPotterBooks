@@ -6,6 +6,7 @@ final class LastSelectedSeriesNumberUseCasesTests: XCTestCase {
     private var updateLastSelectedSeriesNumberUseCase: UpdatableLastSelectedSeriesNumberUseCase!
 
     override func setUpWithError() throws {
+        try super.setUpWithError()
         mockStorage = MockAppStatesStorage()
         fetchLastSelectedSeriesNumberUseCase = FetchLastSelectedSeriesNumberUseCase(appStatesStorage: mockStorage)
         updateLastSelectedSeriesNumberUseCase = UpdateLastSelectedSeriesNumberUseCase(appStatesStorage: mockStorage)
@@ -15,6 +16,7 @@ final class LastSelectedSeriesNumberUseCasesTests: XCTestCase {
         updateLastSelectedSeriesNumberUseCase = nil
         fetchLastSelectedSeriesNumberUseCase = nil
         mockStorage = nil
+        try super.tearDownWithError()
     }
 
     func testExecutes() throws {

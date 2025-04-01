@@ -5,6 +5,7 @@ final class AppStatesStorageTests: XCTestCase {
     private var storage: AppStatesStorageProtocol!
 
     override func setUpWithError() throws {
+        try super.setUpWithError()
         userDefaults = UserDefaults.init(suiteName: "Test")!
         userDefaults.removePersistentDomain(forName: "Test")
         storage = AppStatesStorage(userDefaults)
@@ -14,6 +15,7 @@ final class AppStatesStorageTests: XCTestCase {
         userDefaults.removePersistentDomain(forName: "Test")
         userDefaults = nil
         storage = nil
+        try super.tearDownWithError()
     }
 
     func testIsExpanded() throws {
