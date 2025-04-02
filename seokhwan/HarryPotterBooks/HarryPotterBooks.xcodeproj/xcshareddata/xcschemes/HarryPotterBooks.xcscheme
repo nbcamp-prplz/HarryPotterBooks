@@ -41,6 +41,17 @@
                ReferencedContainer = "container:HarryPotterBooks.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "441994FA2D9CF4F0004CBA25"
+               BuildableName = "HarryPotterBooksUITests.xctest"
+               BlueprintName = "HarryPotterBooksUITests"
+               ReferencedContainer = "container:HarryPotterBooks.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
