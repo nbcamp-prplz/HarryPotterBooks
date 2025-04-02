@@ -36,7 +36,7 @@ final class VerticalContentView: UIStackView {
 
         label.font = .systemFont(ofSize: 14)
         label.textColor = .darkGray
-        label.numberOfLines = 0
+        label.numberOfLines = 0 // multiline 설정
         label.lineBreakMode = .byWordWrapping
 
         return label
@@ -48,7 +48,7 @@ final class VerticalContentView: UIStackView {
 
         button.setTitle("more", for: .normal)
         button.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
-        button.accessibilityIdentifier = "moreButton"
+        button.accessibilityIdentifier = "moreButton" // UITest를 위한 identifier
 
         return button
     }()
@@ -74,9 +74,9 @@ final class VerticalContentView: UIStackView {
         let shouldTruncateContent = shouldShowMoreButton && !isExpanded
 
         moreButtonStackView.isHidden = !shouldShowMoreButton
-        UIView.performWithoutAnimation {
+        UIView.performWithoutAnimation { // 상위 View의 애니메이션과 충돌하여 Button의 애니메이션은 비활성화함
             moreButton.setTitle(isExpanded ? "접기" : "더 보기", for: .normal)
-            moreButton.layoutIfNeeded()
+            moreButton.layoutIfNeeded() // 애니메이션이 없을 경우, 바로 반영해주지 않으면 다음 RunLoop까지 올바르지 않은 UI가 표시될 수 있음
         }
 
         let truncatedContent = shouldTruncateContent ? content.prefix(maxContentCount) + "..." : content
@@ -100,8 +100,9 @@ private extension VerticalContentView {
         spacing = 8
 
         headerLabel.text = contentType.rawValue
-        contentLabel.accessibilityIdentifier = "contentLabelOf\(contentType.rawValue)"
+        contentLabel.accessibilityIdentifier = "contentLabelOf\(contentType.rawValue)" // UITest를 위한 identifier
 
+        // 단락 스타일을 지정하여 Label의 줄간격 지정
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = contentType.lineSpacing
         contentAttributes = [.paragraphStyle: paragraphStyle]

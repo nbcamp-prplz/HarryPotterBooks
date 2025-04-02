@@ -13,6 +13,7 @@ final class DataServiceTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    // JSON 파싱이 잘 되는지 테스트
     func testJSONParsing() throws {
         let expectedBooksCount = 7
         let expectedFirstBookTitle = "Harry Potter and the Philosopher's Stone"

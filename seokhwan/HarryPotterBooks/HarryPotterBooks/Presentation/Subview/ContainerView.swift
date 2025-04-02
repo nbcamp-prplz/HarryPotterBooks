@@ -5,7 +5,7 @@ final class ContainerView: UIStackView {
     let moreButtonTapPublisher = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
 
-    private lazy var informationView = InformationView()
+    private lazy var informationView = InformationView() // 책 정보 영역
     private lazy var dedicationView = VerticalContentView(.dedication)
     private lazy var summaryView = VerticalContentView(.summary)
     private lazy var chaptersView = VerticalContentView(.chapters)

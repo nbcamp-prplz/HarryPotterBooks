@@ -20,8 +20,10 @@ final class LastSelectedSeriesNumberUseCasesTests: XCTestCase {
     }
 
     func testExecutes() throws {
+        // 지정한 적이 없으면, 기본값은 1권
         XCTAssertEqual(fetchUseCase.execute(), 1)
 
+        // 변경 후 테스트
         updateUseCase.execute(to: 5)
         XCTAssertEqual(fetchUseCase.execute(), 5)
     }

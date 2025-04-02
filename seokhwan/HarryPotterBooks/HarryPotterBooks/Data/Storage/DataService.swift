@@ -30,6 +30,7 @@ final class DataService: DataServiceProtocol {
             let books = booksResponse.data
                 .enumerated()
                 .map { Book(from: $0.element.attributes, with: $0.offset + 1) }
+            // JSON에 seriesNumber가 없기 때문에, index + 1을 seriesNumber로 부여
 
             return .success(books)
         } catch {

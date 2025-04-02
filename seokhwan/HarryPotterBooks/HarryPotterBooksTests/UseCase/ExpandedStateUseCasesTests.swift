@@ -20,8 +20,10 @@ final class ExpandedStateUseCasesTests: XCTestCase {
     }
 
     func testExecutes() throws {
+        // 지정한 적이 없으면, 기본값은 false
         XCTAssertEqual(fetchUseCase.execute(at: 1), false)
 
+        // 확장시킨 후 테스트
         updateUseCase.execute(at: 1, isExpanded: true)
         XCTAssertEqual(fetchUseCase.execute(at: 1), true)
     }

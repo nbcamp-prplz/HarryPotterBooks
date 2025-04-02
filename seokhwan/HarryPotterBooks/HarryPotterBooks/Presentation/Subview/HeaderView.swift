@@ -13,9 +13,9 @@ final class HeaderView: UIView {
         label.text = "HarryPotterBooks"
         label.textAlignment = .center
         label.font = .boldSystemFont(ofSize: 24)
-        label.numberOfLines = 0
+        label.numberOfLines = 0 // multiline으로 설정
         label.lineBreakMode = .byWordWrapping
-        label.accessibilityIdentifier = "bookTitleLabel"
+        label.accessibilityIdentifier = "bookTitleLabel" // UITest를 위한 identifier
 
         return label
     }()
@@ -52,7 +52,7 @@ private extension HeaderView {
     func configureConstraints() {
         bookTitleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(10)
-            make.directionalHorizontalEdges.equalToSuperview().inset(20)
+            make.directionalHorizontalEdges.equalToSuperview().inset(20) // leading + trailing
         }
         seriesNumberButtonsView.snp.makeConstraints { make in
             make.top.equalTo(bookTitleLabel.snp.bottom).offset(16)

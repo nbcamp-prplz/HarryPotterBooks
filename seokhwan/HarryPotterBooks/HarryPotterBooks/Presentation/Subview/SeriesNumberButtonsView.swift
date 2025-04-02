@@ -17,6 +17,7 @@ final class SeriesNumberButtonsView: UIStackView {
     }
 
     func generateSeriesNumberButtons(numberOf count: Int) {
+        // 버튼들을 재할당하기 위해 기존 버튼들 제거
         arrangedSubviews.forEach {
             $0.removeFromSuperview()
         }
@@ -25,9 +26,10 @@ final class SeriesNumberButtonsView: UIStackView {
             let button = SeriesNumberButton(seriesNumber: $0)
             addArrangedSubview(button)
 
-            return button.tapPublisher.eraseToAnyPublisher()
+            return button.tapPublisher.eraseToAnyPublisher() // [PassthroughSubject]를 [AnyPublisher]로 변환
         }
 
+        // 각 버튼들의 Publisher를 따로따로 구독하지 않고, 하나의 스트림으로 처리할 수 있도록 merge
         Publishers.MergeMany(publishers)
             .sink { [weak self] seriesNumber in
                 self?.seriesNumberButtonOnTapPublisher.send(seriesNumber)

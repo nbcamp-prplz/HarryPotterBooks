@@ -6,7 +6,7 @@ final class InformationView: UIStackView {
         let imageView = UIImageView()
 
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(systemName: "book.fill")
+        imageView.image = UIImage(systemName: "book.fill") // placeholder
 
         return imageView
     }()
@@ -48,7 +48,7 @@ final class InformationView: UIStackView {
         coverImageView.image = UIImage(named: "harrypotter\(book.seriesNumber)")
         titleLabel.text = book.title
         authorView.update(content: book.author)
-        releasedView.update(content: book.releaseDate.releasedString())
+        releasedView.update(content: book.releaseDate.releasedString()) // 'June 26, 1997'로 formatting
         pagesView.update(content: "\(book.pages)")
     }
 }

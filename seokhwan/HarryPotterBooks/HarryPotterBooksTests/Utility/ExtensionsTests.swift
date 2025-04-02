@@ -1,6 +1,7 @@
 import XCTest
 
 final class ExtensionsTests: XCTestCase {
+    // 챕터들이 하나의 String으로 올바르게 join됐는지 테스트
     func testChaptersJoinedTitles() throws {
         let chapters1 = [
             Chapter(from: ChapterDTO(title: "first")),
@@ -15,6 +16,7 @@ final class ExtensionsTests: XCTestCase {
         XCTAssertEqual(chapters3.joinedTitles, "")
     }
 
+    // String 값을 Date 타입으로 초기화가 올바르게 됐는지 테스트
     func testInitializeDateFromString() throws {
         let dateString = "2025-03-26"
         let format = "yyyy-MM-dd"
@@ -30,6 +32,7 @@ final class ExtensionsTests: XCTestCase {
         XCTAssertEqual(components.day, 26)
     }
 
+    // 출시일 항목에 맞게 올바르게 formatting 됐는지 테스트
     func testReleasedString() throws {
         let dateString = "2025-03-26"
         let format = "yyyy-MM-dd"

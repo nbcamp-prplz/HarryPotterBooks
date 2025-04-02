@@ -42,6 +42,7 @@ final class MainViewModelTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    // Books 로드 성공 테스트
     func testLoadBooksSuccess() throws {
         let mock = MockFetchBooksUseCase(result: .success(books))
         viewModel = MainViewModel(fetchBooksUseCase: mock)
@@ -54,6 +55,7 @@ final class MainViewModelTests: XCTestCase {
             .store(in: &cancellables)
     }
 
+    // Books 로드 실패 테스트
     func testLoadBooksFailure() throws {
         let error = DataError.parsingFailed
         let mock = MockFetchBooksUseCase(result: .failure(error))
@@ -67,6 +69,7 @@ final class MainViewModelTests: XCTestCase {
             .store(in: &cancellables)
     }
 
+    // 올바른 인덱스 선택 테스트
     func testSelectBookAtValidIndex() throws {
         let mock = MockFetchBooksUseCase(result: .success(books))
         viewModel = MainViewModel(fetchBooksUseCase: mock)
@@ -84,6 +87,7 @@ final class MainViewModelTests: XCTestCase {
         viewModel.selectBook(at: nextIndex)
     }
 
+    // 올바르지 않은 인덱스 선택 테스트
     func testSelectBookAtInvalidIndex() throws {
         let mock = MockFetchBooksUseCase(result: .success(books))
         viewModel = MainViewModel(fetchBooksUseCase: mock)
@@ -98,10 +102,10 @@ final class MainViewModelTests: XCTestCase {
             .store(in: &cancellables)
 
         viewModel.selectBook(at: -5)
-        XCTAssertEqual(updateCount, 0)
+        XCTAssertEqual(updateCount, 0) // 올바르지 않은 인덱스일 경우 selectBook의 변경이 없어야 하고, updateCount가 증가하면 안됨
 
         viewModel.selectBook(at: 9)
-        XCTAssertEqual(updateCount, 0)
+        XCTAssertEqual(updateCount, 0) // 올바르지 않은 인덱스일 경우 selectBook의 변경이 없어야 하고, updateCount가 증가하면 안됨
     }
 
     func testToggleExpandedStateOfSelectedBook() throws {

@@ -64,7 +64,7 @@ private extension SeriesNumberButton {
         titleLabel?.font = .systemFont(ofSize: 16)
         layer.cornerRadius = 22
         layer.masksToBounds = true
-        accessibilityIdentifier = "seriesNumberButton\(seriesNumber)"
+        accessibilityIdentifier = "seriesNumberButton\(seriesNumber)" // UITest를 위한 identifier
     }
 
     func configureConstraints() {
