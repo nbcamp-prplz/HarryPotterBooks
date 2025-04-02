@@ -45,8 +45,8 @@ final class AppStatesStorage: AppStatesStorageProtocol {
     }
 
     private func userDefaultsKey(_ type: UserDefaultsKeyType, at index: Int? = nil) -> String {
-        let postfix = index == nil ? "" : "at\(index!)"
+        let suffix = index == nil ? "" : "at\(index!)"
 
-        return "\(type.rawValue)\(postfix)"
+        return "\(type.rawValue)\(suffix)"
     }
 }
