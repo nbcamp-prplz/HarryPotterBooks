@@ -45,8 +45,11 @@ final class VerticalContentView: UIStackView {
     private lazy var spacer = UIView()
     private lazy var moreButton: UIButton = {
         let button = UIButton(type: .system)
+
         button.setTitle("more", for: .normal)
         button.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
+        button.accessibilityIdentifier = "moreButton"
+
         return button
     }()
 
@@ -97,6 +100,7 @@ private extension VerticalContentView {
         spacing = 8
 
         headerLabel.text = contentType.rawValue
+        contentLabel.accessibilityIdentifier = "contentLabelOf\(contentType.rawValue)"
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = contentType.lineSpacing

@@ -15,6 +15,7 @@ final class HeaderView: UIView {
         label.font = .boldSystemFont(ofSize: 24)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        label.accessibilityIdentifier = "bookTitleLabel"
 
         return label
     }()

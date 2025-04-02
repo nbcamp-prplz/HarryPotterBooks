@@ -64,6 +64,7 @@ private extension SeriesNumberButton {
         titleLabel?.font = .systemFont(ofSize: 16)
         layer.cornerRadius = 22
         layer.masksToBounds = true
+        accessibilityIdentifier = "seriesNumberButton\(seriesNumber)"
     }
 
     func configureConstraints() {
