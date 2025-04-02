@@ -24,7 +24,9 @@ class MainViewModel {
         return books[index]
     }
     
-    func isReadMore(index: Int) -> Bool {
+    func isReadMore(index: Int) -> Bool? {
+        guard 0 ..< books.count ~= index else { return nil }
+        
         return readMoreStates[index]
     }
     
@@ -35,7 +37,7 @@ class MainViewModel {
     
     func loadReadMoreStates() {
         readMoreStates = Array(repeating: false, count: books.count)
-        let states = UserDefaultsManager.shared.getReadMoreStates()
+        let states = UserDefaultsManager.shared.readMoreStates()
         if states.isEmpty {
             UserDefaultsManager.shared.saveReadMoreStates(readMoreStates)
         } else {

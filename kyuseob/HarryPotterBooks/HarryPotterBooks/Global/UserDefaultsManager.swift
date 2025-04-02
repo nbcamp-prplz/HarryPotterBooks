@@ -16,7 +16,7 @@ class UserDefaultsManager {
         UserDefaults.standard.set(readMoreStates, forKey: "readMoreStates")
     }
     
-    func getReadMoreStates() -> [Bool] {
+    func readMoreStates() -> [Bool] {
         guard let readMoreStates = UserDefaults.standard.object(forKey: "readMoreStates") as? [Bool] else {
             return []
         }

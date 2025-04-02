@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 protocol MainViewDelegate: AnyObject {
-    func mainViewDidTapReadMore(index: Int)
+    func didTapReadMore(index: Int)
     func didChangeSelectedIndex(to index: Int)
 }
 
@@ -126,7 +126,7 @@ final class MainView: UIView {
 
 extension MainView: BookDetailsViewDelegate {
     func bookDetailsViewDidTapReadMore(index: Int) {
-        delegate?.mainViewDidTapReadMore(index: index)
+        delegate?.didTapReadMore(index: index)
     }
 }
 

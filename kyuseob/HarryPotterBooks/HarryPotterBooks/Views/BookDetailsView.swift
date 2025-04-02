@@ -76,9 +76,9 @@ class BookDetailsView: UIView {
         self.currentIndex = index
         dedicationStackView.configure(title: "Dedication", content: dedication)
         summaryStackView.configure(title: "Summary", content: summary)
-        summaryStackView.setExpandedLabel(isExpanded: isReadMore)
+        summaryStackView.setExpandedLabel(isExpanded: summaryStackView.contentLength() <= 450 ? true : isReadMore) // 450자 미만이면 바로 펼쳐지게 구현
          
-        readMoreButton.isHidden = summaryStackView.contentLength() <= 450 ? true : false
+        readMoreButton.isHidden = summaryStackView.contentLength() <= 450
         readMoreButton.setTitle(isReadMore ? "접기" : "더보기", for: .normal)
     }
     

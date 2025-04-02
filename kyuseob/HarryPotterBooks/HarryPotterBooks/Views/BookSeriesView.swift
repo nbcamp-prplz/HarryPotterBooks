@@ -52,8 +52,6 @@ class BookSeriesView: UIView {
         buttons.removeAll()
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        guard seriesCount > 0 else { return } // 스택뷰의 하위 뷰들의 제거가 제대로 되지않은경우
-        
         for i in 0..<seriesCount {
             let button = UIButton()
             button.setTitle(String(i + 1), for: .normal)
@@ -82,18 +80,6 @@ class BookSeriesView: UIView {
     private func didTapSeriesButton(_ sender: UIButton, index: Int) {
         self.selectedIndex = index
         delegate?.didChangeSelectedIndex(to: index)
-    }
-    
-    private func arrangeButtonState(selectedButton: UIButton) {
-        buttons.forEach { button in
-            if button == selectedButton {
-                button.backgroundColor = UIColor.systemBlue
-                button.setTitleColor(UIColor.white, for: .normal)
-            } else {
-                button.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
-                button.setTitleColor(UIColor.systemBlue, for: .normal)
-            }
-        }
     }
     
 }

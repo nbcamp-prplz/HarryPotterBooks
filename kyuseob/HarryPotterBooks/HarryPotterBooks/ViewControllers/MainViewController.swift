@@ -17,14 +17,14 @@ class MainViewController: UIViewController {
         
         loadBooks()
         mainViewModel.loadReadMoreStates()
-        
         mainView.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
-        mainView.configure(books: mainViewModel.books, index: 0, readMoreState: mainViewModel.isReadMore(index: 0))
+        guard let isReadMore = mainViewModel.isReadMore(index: 0) else { return }
+        mainView.configure(books: mainViewModel.books, index: 0, readMoreState: isReadMore)
     }
 
     override func loadView() {
@@ -49,10 +49,11 @@ class MainViewController: UIViewController {
 
 extension MainViewController: MainViewDelegate {
     func didChangeSelectedIndex(to index: Int) {
-        mainView.configure(books: mainViewModel.books, index: index, readMoreState: mainViewModel.isReadMore(index: index))
+        guard let readMoreState = mainViewModel.isReadMore(index: index) else { return }
+        mainView.configure(books: mainViewModel.books, index: index, readMoreState: readMoreState)
     }
     
-    func mainViewDidTapReadMore(index: Int) {
+    func didTapReadMore(index: Int) {
         mainViewModel.toggleReadMore(index: index)
     }
 }
