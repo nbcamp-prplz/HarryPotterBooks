@@ -1,7 +1,12 @@
 import UIKit
+import Combine
 import SnapKit
 
 final class HPBHeaderView: UIView {
+    let seriesNumberButtonTapPublisher = PassthroughSubject<Int, Never>()
+
+    private var cancellables = Set<AnyCancellable>()
+
     private lazy var bookTitleLabel: UILabel = {
         let label = UILabel()
 
@@ -13,29 +18,20 @@ final class HPBHeaderView: UIView {
 
         return label
     }()
-    private lazy var seriesNumberButtonsStackView = UIStackView()
-    private lazy var seriesNumberButton: UIButton = {
-        var container = AttributeContainer()
-        container.font = UIFont.systemFont(ofSize: 16)
-
-        var configuration = UIButton.Configuration.filled()
-        configuration.attributedTitle = AttributedString("1", attributes: container)
-
-        let button = UIButton(configuration: configuration)
-        button.layer.cornerRadius = 22
-        button.layer.masksToBounds = true
-
-        return button
-    }()
+    private lazy var seriesNumberButtonsView = HPBSeriesNumberButtonsView()
 
     convenience init() {
         self.init(frame: .zero)
         configure()
     }
 
+    func generateSeriesNumberButtons(numberOf count: Int) {
+        seriesNumberButtonsView.generateSeriesNumberButtons(numberOf: count)
+    }
+
     func updateContents(with book: Book) {
         bookTitleLabel.text = book.title
-        seriesNumberButton.configuration?.title = "\(book.seriesNumber)"
+        seriesNumberButtonsView.updateStates(with: book.seriesNumber)
     }
 }
 
@@ -43,13 +39,11 @@ private extension HPBHeaderView {
     func configure() {
         configureSubviews()
         configureConstraints()
+        configureBind()
     }
 
     func configureSubviews() {
-        [seriesNumberButton].forEach {
-            seriesNumberButtonsStackView.addArrangedSubview($0)
-        }
-        [bookTitleLabel, seriesNumberButtonsStackView].forEach {
+        [bookTitleLabel, seriesNumberButtonsView].forEach {
             addSubview($0)
         }
     }
@@ -59,12 +53,16 @@ private extension HPBHeaderView {
             make.top.equalToSuperview().inset(10)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
         }
-        seriesNumberButtonsStackView.snp.makeConstraints { make in
+        seriesNumberButtonsView.snp.makeConstraints { make in
             make.top.equalTo(bookTitleLabel.snp.bottom).offset(16)
             make.centerX.bottom.equalToSuperview()
         }
-        seriesNumberButton.snp.makeConstraints { make in
-            make.size.equalTo(44)
-        }
+    }
+
+    func configureBind() {
+        seriesNumberButtonsView.seriesNumberButtonOnTapPublisher
+            .sink { [weak self] seriesNumber in
+                self?.seriesNumberButtonTapPublisher.send(seriesNumber)
+            }.store(in: &cancellables)
     }
 }

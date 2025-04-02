@@ -1,14 +1,6 @@
 import XCTest
 
 final class HPBExtensionsTests: XCTestCase {
-    override func setUpWithError() throws {
-
-    }
-
-    override func tearDownWithError() throws {
-
-    }
-
     func testChaptersJoinedTitles() throws {
         let chapters1 = [
             Chapter(from: ChapterDTO(title: "first")),

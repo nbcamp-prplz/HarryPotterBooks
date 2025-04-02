@@ -1,6 +1,6 @@
 import Foundation
 
-struct FetchBooksUseCaseMock: FetchableBooksUseCase {
+struct MockFetchBooksUseCase: FetchableBooksUseCase {
     var result: Result<Books, DataError>
 
     func execute() -> Result<Books, DataError> {

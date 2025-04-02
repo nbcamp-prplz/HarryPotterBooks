@@ -1,6 +1,6 @@
 import Foundation
 
-final class DataServiceMock: DataServiceProtocol {
+final class MockDataService: DataServiceProtocol {
     func fetchBooks() -> Result<Books, DataError> {
         let firstBookDTO = BookDTO(
             title: "First Book",

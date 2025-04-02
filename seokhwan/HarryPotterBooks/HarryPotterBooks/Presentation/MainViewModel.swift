@@ -2,29 +2,59 @@ import Foundation
 import Combine
 
 protocol MainViewModelInput {
-    func selectBook(at index: Int)
+    func selectBook(at seriesNumber: Int)
+    func toggleExpandedStateOfSelectedBook()
 }
 
 protocol MainViewModelOutput {
+    var numberOfBooks: CurrentValueSubject<Int, Never> { get }
     var selectedBook: CurrentValueSubject<Book?, Never> { get }
     var errorMessage: CurrentValueSubject<String?, Never> { get }
 }
 
 final class MainViewModel: MainViewModelInput, MainViewModelOutput {
-    private var books = Books()
-    private let fetchBooksUseCase: FetchableBooksUseCase
-
+    var numberOfBooks = CurrentValueSubject<Int, Never>(0)
     var selectedBook = CurrentValueSubject<Book?, Never>(nil)
     var errorMessage = CurrentValueSubject<String?, Never>(nil)
 
-    init(fetchBooksUseCase: FetchableBooksUseCase = FetchBooksUseCase()) {
+    private var books = Books()
+
+    private let fetchBooksUseCase: FetchableBooksUseCase
+    private let fetchExpandedStateUseCase: FetchableExpandedStateUseCase
+    private let updateExpandedStateUseCase: UpdatableExpandedStateUseCase
+    private let fetchLastSelectedSeriesNumberUseCase: FetchableLastSelectedSeriesNumberUseCase
+    private let updateLastSelectedSeriesNumberUseCase: UpdatableLastSelectedSeriesNumberUseCase
+
+    init(
+        fetchBooksUseCase: FetchableBooksUseCase = FetchBooksUseCase(),
+        fetchExpandedStateUseCase: FetchableExpandedStateUseCase = FetchExpandedStateUseCase(),
+        updateExpandedStateUseCase: UpdatableExpandedStateUseCase = UpdateExpandedStateUseCase(),
+        fetchLastSelectedSeriesNumberUseCase: FetchableLastSelectedSeriesNumberUseCase = FetchLastSelectedSeriesNumberUseCase(),
+        updateLastSelectedSeriesNumberUseCase: UpdatableLastSelectedSeriesNumberUseCase = UpdateLastSelectedSeriesNumberUseCase()
+    ) {
         self.fetchBooksUseCase = fetchBooksUseCase
+        self.fetchExpandedStateUseCase = fetchExpandedStateUseCase
+        self.updateExpandedStateUseCase = updateExpandedStateUseCase
+        self.fetchLastSelectedSeriesNumberUseCase = fetchLastSelectedSeriesNumberUseCase
+        self.updateLastSelectedSeriesNumberUseCase = updateLastSelectedSeriesNumberUseCase
+
         loadBooks()
     }
 
-    func selectBook(at index: Int) {
-        guard books.indices.contains(index) else { return }
-        selectedBook.send(books[index])
+    func selectBook(at seriesNumber: Int) {
+        guard books.indices.contains(seriesNumber - 1) else { return }
+
+        books[seriesNumber - 1].isExpanded = fetchExpandedStateUseCase.execute(at: seriesNumber)
+        selectedBook.send(books[seriesNumber - 1])
+        updateLastSelectedSeriesNumberUseCase.execute(to: seriesNumber)
+    }
+
+    func toggleExpandedStateOfSelectedBook() {
+        guard let seriesNumber = selectedBook.value?.seriesNumber else { return }
+
+        books[seriesNumber - 1].isExpanded.toggle()
+        selectedBook.send(books[seriesNumber - 1])
+        updateExpandedStateUseCase.execute(at: seriesNumber, isExpanded: books[seriesNumber - 1].isExpanded)
     }
 
     private func loadBooks() {
@@ -33,7 +63,9 @@ final class MainViewModel: MainViewModelInput, MainViewModelOutput {
             errorMessage.send(error.localizedDescription)
         case .success(let books):
             self.books = books
-            selectBook(at: books.startIndex)
+            numberOfBooks.send(books.count)
+            let lastSelectedSeriesNumber = fetchLastSelectedSeriesNumberUseCase.execute()
+            selectBook(at: lastSelectedSeriesNumber)
         }
     }
 }

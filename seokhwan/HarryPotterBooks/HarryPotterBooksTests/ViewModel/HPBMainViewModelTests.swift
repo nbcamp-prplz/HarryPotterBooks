@@ -41,8 +41,8 @@ final class HPBMainViewModelTests: XCTestCase {
     }
 
     func testLoadBooksSuccess() throws {
-        let fetchBooksUseCaseMock = FetchBooksUseCaseMock(result: .success(books))
-        mainViewModel = MainViewModel(fetchBooksUseCase: fetchBooksUseCaseMock)
+        let mock = MockFetchBooksUseCase(result: .success(books))
+        mainViewModel = MainViewModel(fetchBooksUseCase: mock)
 
         mainViewModel.selectedBook
             .dropFirst()
@@ -54,8 +54,8 @@ final class HPBMainViewModelTests: XCTestCase {
 
     func testLoadBooksFailure() throws {
         let error = DataError.parsingFailed
-        let fetchBooksUseCaseMock = FetchBooksUseCaseMock(result: .failure(error))
-        mainViewModel = MainViewModel(fetchBooksUseCase: fetchBooksUseCaseMock)
+        let mock = MockFetchBooksUseCase(result: .failure(error))
+        mainViewModel = MainViewModel(fetchBooksUseCase: mock)
 
         mainViewModel.errorMessage
             .dropFirst()
@@ -66,7 +66,7 @@ final class HPBMainViewModelTests: XCTestCase {
     }
 
     func testSelectBookAtValidIndex() throws {
-        let mock = FetchBooksUseCaseMock(result: .success(books))
+        let mock = MockFetchBooksUseCase(result: .success(books))
         mainViewModel = MainViewModel(fetchBooksUseCase: mock)
 
         let nextIndex = 1
@@ -75,7 +75,7 @@ final class HPBMainViewModelTests: XCTestCase {
             .dropFirst()
             .compactMap { $0 }
             .sink { book in
-                XCTAssertEqual(book.seriesNumber - 1, nextIndex)
+                XCTAssertEqual(book.seriesNumber, nextIndex)
             }
             .store(in: &cancellables)
 
@@ -83,7 +83,7 @@ final class HPBMainViewModelTests: XCTestCase {
     }
 
     func testSelectBookAtInvalidIndex() throws {
-        let mock = FetchBooksUseCaseMock(result: .success(books))
+        let mock = MockFetchBooksUseCase(result: .success(books))
         mainViewModel = MainViewModel(fetchBooksUseCase: mock)
 
         var updateCount = 0
@@ -100,5 +100,17 @@ final class HPBMainViewModelTests: XCTestCase {
 
         mainViewModel.selectBook(at: 9)
         XCTAssertEqual(updateCount, 0)
+    }
+
+    func testToggleExpandedStateOfSelectedBook() throws {
+        let mockTrue = MockFetchExpandedStateUseCase(result: true)
+        mainViewModel = MainViewModel(fetchExpandedStateUseCase: mockTrue)
+        mainViewModel.toggleExpandedStateOfSelectedBook()
+        XCTAssertEqual(mainViewModel.selectedBook.value?.isExpanded, false)
+
+        let mockFalse = MockFetchExpandedStateUseCase(result: false)
+        mainViewModel = MainViewModel(fetchExpandedStateUseCase: mockFalse)
+        mainViewModel.toggleExpandedStateOfSelectedBook()
+        XCTAssertEqual(mainViewModel.selectedBook.value?.isExpanded, true)
     }
 }

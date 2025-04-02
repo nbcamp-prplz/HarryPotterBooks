@@ -1,7 +1,7 @@
 import UIKit
 
 final class HPBHorizontalContentView: UIStackView {
-    enum ContentsType: String {
+    enum ContentType: String {
         case none
         case author = "Author"
         case released = "Released"
@@ -20,7 +20,7 @@ final class HPBHorizontalContentView: UIStackView {
             return .black
         }
 
-        var contentsFont: UIFont {
+        var contentFont: UIFont {
             switch self {
             case .author:
                 return .systemFont(ofSize: 18)
@@ -29,7 +29,7 @@ final class HPBHorizontalContentView: UIStackView {
             }
         }
 
-        var contentsTextColor: UIColor {
+        var contentTextColor: UIColor {
             switch self {
             case .author:
                 return .darkGray
@@ -40,13 +40,13 @@ final class HPBHorizontalContentView: UIStackView {
     }
 
     private lazy var headerLabel = UILabel()
-    private lazy var contentsLabel = UILabel()
+    private lazy var contentLabel = UILabel()
 
     private override init(frame: CGRect) {
         super.init(frame: frame)
     }
 
-    convenience init(_ type: HPBHorizontalContentView.ContentsType) {
+    convenience init(_ type: HPBHorizontalContentView.ContentType) {
         self.init(frame: .zero)
         configure(type)
     }
@@ -56,30 +56,30 @@ final class HPBHorizontalContentView: UIStackView {
         configure(.none)
     }
 
-    func update(contents: String) {
-        contentsLabel.text = contents
+    func update(content: String) {
+        contentLabel.text = content
     }
 }
 
 private extension HPBHorizontalContentView {
-    func configure(_ type: HPBHorizontalContentView.ContentsType) {
+    func configure(_ type: HPBHorizontalContentView.ContentType) {
         configureLayout(type)
         configureSubviews()
     }
 
-    func configureLayout(_ type: HPBHorizontalContentView.ContentsType) {
+    func configureLayout(_ type: HPBHorizontalContentView.ContentType) {
         spacing = 8
 
         headerLabel.text = type.rawValue
         headerLabel.font = type.headerFont
         headerLabel.textColor = type.headerTextColor
 
-        contentsLabel.font = type.contentsFont
-        contentsLabel.textColor = type.contentsTextColor
+        contentLabel.font = type.contentFont
+        contentLabel.textColor = type.contentTextColor
     }
 
     func configureSubviews() {
-        [headerLabel, contentsLabel].forEach {
+        [headerLabel, contentLabel].forEach {
             addArrangedSubview($0)
         }
     }
