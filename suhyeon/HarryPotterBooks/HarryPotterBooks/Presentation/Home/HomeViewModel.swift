@@ -43,7 +43,6 @@ class HomeViewModel: HomeViewModelProtocol {
             self?.saveSummaryExpandStatus(title: title, isExpandedSummary: isExpandedSummary)
         }.disposed(by: disposeBag)
         
-        
         return Output(books: books.asObservable(), error: error.asObservable())
     }
     
