@@ -32,10 +32,9 @@ class BookRepository: BookRepositoryProtocol {
         guard let summaryExpandStatusDictionary = userDefaults.dictionary(forKey: key) as? [String: Bool] else {
             return nil
         }
-
+        
         let bookStatus = books.map{ book in
-            let isSummaryExpandStatus = summaryExpandStatusDictionary.filter{$0.key == book.title}
-                .first?.value
+            let isSummaryExpandStatus = summaryExpandStatusDictionary[book.title]
             return (book, isSummaryExpandStatus ?? false)
         }
         return bookStatus

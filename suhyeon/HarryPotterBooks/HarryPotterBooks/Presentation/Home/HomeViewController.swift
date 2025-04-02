@@ -13,7 +13,6 @@ class HomeViewController: UIViewController {
     private let homeView = HomeView()
     private let viewModel: HomeViewModelProtocol
     private let disposeBag = DisposeBag()
-    private let alertService = AlertService()
     
     private let books = BehaviorRelay<[(Book, Bool)]>(value: [])
     private let selectedIndex = BehaviorRelay<Int>(value: 0)
@@ -69,8 +68,8 @@ class HomeViewController: UIViewController {
                 self?.books.accept(books)
             })
             .bind(to: homeView.topView.seriesNumberCollectionView.rx.items(
-                cellIdentifier: SeriesNumberCell.id, cellType: SeriesNumberCell.self)) { index, book, cell in
-                    cell.configure(title: "\(index + 1)", isSelected: index == self.selectedIndex.value)
+                cellIdentifier: SeriesNumberCell.id, cellType: SeriesNumberCell.self)) {[weak self] index, book, cell in
+                    cell.configure(title: "\(index + 1)", isSelected: index == self?.selectedIndex.value)
                 }
                 .disposed(by: disposeBag)
         
@@ -78,7 +77,7 @@ class HomeViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind {[weak self] error in
                 guard let self else { return }
-                let alert = self.alertService.createErrorAlert(title: "데이터 불러오기 실패", message: error.description)
+                let alert = AlertService.createErrorAlert(title: "데이터 불러오기 실패", message: error.description)
                 self.present(alert, animated: true)
         }.disposed(by: disposeBag)
     }
@@ -99,8 +98,8 @@ class HomeViewController: UIViewController {
             books.map { $0.count }, // 현재 책 개수
             homeView.topView.seriesNumberCollectionView.rx.observe(CGRect.self, "bounds") // 뷰 크기 변화 감지 (옵셔널 타입)
         )
-        .compactMap { itemCount, bounds -> UIEdgeInsets? in // bounds가 옵셔널 타입이므로 compactMap 사용
-            guard let bounds else { return nil }
+        .compactMap {[weak self] itemCount, bounds -> UIEdgeInsets? in // bounds가 옵셔널 타입이므로 compactMap 사용
+            guard let bounds, let self else { return nil }
             
             let flowLayout = self.homeView.topView.seriesNumberCollectionView.collectionViewLayout as? UICollectionViewFlowLayout
             let itemSize = flowLayout?.itemSize.width ?? 0

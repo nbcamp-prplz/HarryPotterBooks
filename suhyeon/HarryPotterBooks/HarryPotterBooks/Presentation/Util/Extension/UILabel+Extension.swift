@@ -9,7 +9,7 @@ import UIKit
 
 extension UILabel {
     // 450자 넘어가면 text를 앞에서부터 450자로 줄이고 '...'을 더해줌
-    func setTruncatedText(maxCharacters: Int = 450) {
+    func setTruncatedText(maxCharacters: Int) {
         guard let text else { return }
         if text.count >= maxCharacters {
             let truncatedText = String(text.prefix(maxCharacters)) + "..."

@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class AlertService {
+enum AlertService {
     // 에러 얼럿 생성 함수
-    func createErrorAlert(title: String, message: String) -> UIAlertController {
+    static func createErrorAlert(title: String, message: String) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "확인", style: .default)
         alert.addAction(confirmAction)

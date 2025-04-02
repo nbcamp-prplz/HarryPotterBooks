@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct Constant {
+enum Constant {
     static let seriesNumberWidthHeight: CGFloat = 30 // 시리즈 넘버 버튼 크기
 }

@@ -62,14 +62,15 @@ class ExpandableContentView: UIView {
     }
     
     func configure(content: String, isExpandedSummary: Bool = false) {
+        let maxCharacters = 450
         contentLabel.text = content
         if type != .summary { return } // summary가 아니면 종료
         
         // 더보기 버튼 로직
         expandFoldButton.isSelected = isExpandedSummary
-        if !isExpandedSummary { contentLabel.setTruncatedText() } // 전체 내용을 보지 않으면 450자 이상이면 ... 표시
+        if !isExpandedSummary { contentLabel.setTruncatedText(maxCharacters: maxCharacters) } // 전체 내용을 보지 않으면 450자 이상이면 ... 표시
         
-        let isShortSummary = type == .summary && content.count < 450 // 타입이 summary면서 글자가 450자 미만인지 확인
+        let isShortSummary = type == .summary && content.count < maxCharacters // 타입이 summary면서 글자가 450자 미만인지 확인
         expandFoldButton.isHidden = isShortSummary // 450자 미만이면 더보기 버튼 숨김
         
         // 짧은 컨텐츠라면
