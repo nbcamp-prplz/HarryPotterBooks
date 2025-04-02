@@ -143,12 +143,31 @@ class ViewController: UIViewController {
     
     private let contentView = UIView()
     
+    private lazy var summaryToggleButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("더보기", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(toggleSummary), for: .touchUpInside)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.contentHorizontalAlignment = .trailing
+        button.isHidden = true
+        return button
+    }()
+
+    
+    private var currentBookIndex = 0
+    
+    private let summaryExpandedKey = "SummaryExpanded"
+    
+    private var summaryExpanded = Array(repeating: false, count: 7)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadBooks()
         configureHierarchy()
         configureLayout()
         configureView()
+        saveCurrentState()
     }
 }
 
@@ -159,7 +178,7 @@ extension ViewController {
         [contentView].forEach { scrollView.addSubview($0) }
         [bookImageView, bookInfoStackView, bookDetailInfoStackView].forEach { contentView.addSubview($0) }
         [bookTitle, author, releaseDate, bookPage].forEach { bookInfoStackView.addArrangedSubview($0) }
-        [dedicationTitle, dedicationDetail, summaryTitle, summaryDetail, chapterTitle, chapterDetail].forEach { bookDetailInfoStackView.addArrangedSubview($0) }
+        [dedicationTitle, dedicationDetail, summaryTitle, summaryDetail, summaryToggleButton, chapterTitle, chapterDetail].forEach { bookDetailInfoStackView.addArrangedSubview($0) }
     }
     
     func configureLayout() {
@@ -199,7 +218,7 @@ extension ViewController {
             make.bottom.equalToSuperview().inset(5)
         }
     }
-
+    
     func configureView() {
         for i in 1...7 {
             let btn = UIButton()
@@ -216,20 +235,68 @@ extension ViewController {
     
     @objc func seriesButtonClicked(_ sender: UIButton) {
         if sender.tag <= books.count {
-            let tag = books[sender.tag - 1]
-            bookImageView.image = UIImage(named: "harrypotter\(sender.tag)")
-            titleLabel.text = tag.title
-            bookTitle.text = tag.title
-            bookPage.text = "Pages : \(tag.pages)"
-            let releaseDateFormatter = DateFormatter()
-            releaseDateFormatter.dateFormat = "yyyy-MM-dd"
-            guard let date = releaseDateFormatter.date(from: tag.releaseDate) else { return print("Release Date Error")}
-            releaseDate.text = date.dateFormatter()
-            dedicationDetail.text = tag.dedication
-            summaryDetail.text = tag.summary
-            chapterDetail.text = tag.chapters.enumerated().map { index, chapter in
-                return "\(index + 1). \(chapter.title)"
-            }.joined(separator: "\n")
+            currentBookIndex = sender.tag - 1
+            let tag = books[currentBookIndex]
+            
+            DispatchQueue.main.async {
+                self.bookImageView.image = UIImage(named: "harrypotter\(sender.tag)")
+                self.titleLabel.text = tag.title
+                self.bookTitle.text = tag.title
+                self.bookPage.text = "Pages : \(tag.pages)"
+                let releaseDateFormatter = DateFormatter()
+                releaseDateFormatter.dateFormat = "yyyy-MM-dd"
+                guard let date = releaseDateFormatter.date(from: tag.releaseDate) else { return print("Release Date Error")}
+                self.releaseDate.text = date.dateFormatter()
+                self.dedicationDetail.text = tag.dedication
+                self.summaryDetail.text = tag.summary
+                print(tag.summary.count)
+                self.chapterDetail.text = tag.chapters.enumerated().map { index, chapter in
+                    return "\(index + 1). \(chapter.title)"
+                }.joined(separator: "\n")
+            }
+            
+            updateSummaryDisplay()
+        }
+    }
+    
+    @objc private func toggleSummary() {
+        summaryExpanded[currentBookIndex] = !summaryExpanded[currentBookIndex]
+        UserDefaults.standard.set(summaryExpanded, forKey: summaryExpandedKey)
+        updateSummaryDisplay()
+    }
+    
+    private func updateSummaryDisplay() {
+        guard currentBookIndex < books.count else { return }
+        
+        let book = books[currentBookIndex]
+        let fullText = book.summary
+        
+        if fullText.count > 450 {
+            summaryToggleButton.isHidden = false
+            
+            if summaryExpanded[currentBookIndex] {
+                summaryDetail.text = fullText
+                summaryToggleButton.setTitle("접기", for: .normal)
+            } else {
+                let truncatedText = String(fullText.prefix(450)) + "..."
+                summaryDetail.text = truncatedText
+                summaryToggleButton.setTitle("더보기", for: .normal)
+            }
+        } else {
+            summaryDetail.text = fullText
+            summaryToggleButton.isHidden = true
+        }
+    }
+
+    
+    func saveCurrentState() {
+        if let savedExpanded = UserDefaults.standard.array(forKey: summaryExpandedKey) as? [Bool] {
+            summaryExpanded = savedExpanded
+        }
+        if !books.isEmpty {
+            let button = UIButton(type: .system)
+            button.tag = 1
+            seriesButtonClicked(button)
         }
     }
     
@@ -240,7 +307,6 @@ extension ViewController {
             case .success(let books):
                 self.books = books
             case .failure(_):
-                // completion
                 showAlert(text: "오류", message: "확인")
             }
         }
