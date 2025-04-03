@@ -10,17 +10,8 @@ import Then
 import SnapKit
 
 class HomeView: UIView {
-    private let widthHeightLength: CGFloat = 30 // 버튼의 너비, 높이 사이즈
-    
-    // 상단 책 제목
-    private let mainTitleLabel = UILabel().then {
-        $0.textAlignment = .center
-        $0.font = .systemFont(ofSize: 24, weight: .bold)
-        $0.numberOfLines = 0
-    }
-
-    // 시리즈 순서
-    lazy var seriesButton = SeriesButton(title: "1", widthHeightLength: widthHeightLength)
+    // TopView(타이틀 + 버튼)
+    let topView = HomeTopView()
     
     // 스크롤뷰
     private let scrollView = UIScrollView().then {
@@ -38,10 +29,10 @@ class HomeView: UIView {
     private let bookDetailStackView = BookDetailStackView()
     
     // 헌정사
-    private let dedicationStackView = InfoVerticalStackView(title: "Dedication")
+    private let dedicationStackView = InfoVerticalStackView(type: .dedication)
     
     // 요약
-    private let summaryStackView = InfoVerticalStackView(title: "Summary")
+    let summaryStackView = InfoVerticalStackView(type: .summary)
     
     // 챕터
     private let chaptersStackView = ChaptersStackView()
@@ -61,8 +52,7 @@ class HomeView: UIView {
     // subView 설정
     private func setSubview() {
         [
-            mainTitleLabel,
-            seriesButton,
+            topView,
             scrollView,
         ].forEach { self.addSubview($0) } // HomeView
         
@@ -78,24 +68,15 @@ class HomeView: UIView {
     
     // 제약조건 설정
     private func setConstraints() {
-        
-        // 책 제목
-        mainTitleLabel.snp.makeConstraints { make in
+        // 탑
+        topView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).inset(16)
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
         }
         
-        // 시리즈 버튼
-        seriesButton.snp.makeConstraints { make in
-            make.size.equalTo(widthHeightLength)
-            make.top.equalTo(mainTitleLabel.snp.bottom).offset(20)
-            make.centerX.equalToSuperview()
-            make.directionalHorizontalEdges.greaterThanOrEqualToSuperview().inset(20).priority(.low)
-        }
-        
         // 스크롤뷰
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(seriesButton.snp.bottom).offset(20)
+            make.top.equalTo(topView.snp.bottom).offset(20)
             make.directionalHorizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
             make.bottom.equalToSuperview()
         }
@@ -108,11 +89,12 @@ class HomeView: UIView {
     }
     
     // configuration
-    public func configure(book: Book, index: Int) {
-        mainTitleLabel.text = book.title    // 메인 타이틀
-        dedicationStackView.configure(content: book.dedication) // 헌정사
-        summaryStackView.configure(content: book.summary) // 요역
-        bookDetailStackView.configure(book: book, index: index) // 이미지 + 기본 정보
-        chaptersStackView.configure(contents: book.chapters.map{$0.title})
+    public func configure(books: [(Book, Bool)], index: Int) {
+        let selectedBook = books[index]
+        topView.configure(book: selectedBook.0, index: index)
+        bookDetailStackView.configure(book: selectedBook.0, index: index) // 이미지 + 기본 정보
+        dedicationStackView.configure(content: selectedBook.0.dedication) // 헌정사
+        summaryStackView.configure(content: selectedBook.0.summary, isExpandedSummary: selectedBook.1) // 요역
+        chaptersStackView.configure(contents: selectedBook.0.chapters.map{$0.title})
     }
 }

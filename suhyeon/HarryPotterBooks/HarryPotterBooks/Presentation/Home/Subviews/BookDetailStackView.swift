@@ -91,7 +91,7 @@ class BookDetailStackView: UIStackView {
     
     func configure(book: Book, index: Int) {
         bookTitleLabel.text = book.title
-        bookImageView.image = UIImage(named: "harrypotter\(index)")
+        bookImageView.image = UIImage(named: "harrypotter\(index + 1)")
         authorStackView.configure(content: book.author)
         releaseStackView.configure(content: book.releaseDate)
         pageStackView.configure(content: "\(book.pages)")

@@ -35,6 +35,7 @@ class ChaptersStackView: UIStackView {
     }
     
     func configure(contents: [String]) {
+        self.arrangedSubviews[1...].forEach{$0.removeFromSuperview()} // 포함되어 있는 뷰 제거 (타이틀 라벨 제외)
         contents.forEach { content in
             let contentLabel = ContentLabel()
             contentLabel.configure(content: content)

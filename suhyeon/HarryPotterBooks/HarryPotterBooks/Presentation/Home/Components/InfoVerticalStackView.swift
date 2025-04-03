@@ -7,24 +7,25 @@
 
 import UIKit
 
+enum InfoVerticalStackViewType: String {
+    case dedication = "Dedication"
+    case summary = "Summary"
+}
+
 class InfoVerticalStackView: UIStackView {
-    private let title: String
+    private let type: InfoVerticalStackViewType
     
     // 타이틀
     private lazy var titleLabel = UILabel().then {
-        $0.text = title
+        $0.text = type.rawValue
         $0.font = .systemFont(ofSize: 18, weight: .bold)
     }
     
-    // 컨텐츠
-    private let contentLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 14)
-        $0.textColor = .darkGray
-        $0.numberOfLines = 0
-    }
-    
-    init(title: String) {
-        self.title = title
+    // 컨텐츠뷰 (컨텐츠 라벨 + 더보기 버튼)
+    lazy var contentView = ExpandableContentView(type: type)
+
+    init(type: InfoVerticalStackViewType) {
+        self.type = type
         super.init(frame: .zero)
         
         setSubview()
@@ -38,7 +39,7 @@ class InfoVerticalStackView: UIStackView {
     private func setSubview() {
         [
             titleLabel,
-            contentLabel
+            contentView
         ].forEach{ self.addArrangedSubview($0) }
     }
     
@@ -47,7 +48,7 @@ class InfoVerticalStackView: UIStackView {
         self.spacing = 8
     }
     
-    func configure(content: String) {
-        contentLabel.text = content
+    func configure(content: String, isExpandedSummary: Bool = false) {
+        contentView.configure(content: content, isExpandedSummary: isExpandedSummary)
     }
 }
