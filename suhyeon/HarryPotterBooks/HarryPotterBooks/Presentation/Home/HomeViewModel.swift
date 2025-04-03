@@ -24,21 +24,26 @@ class HomeViewModel: HomeViewModelProtocol {
         self.useCase = useCase
     }
     
+    // 사용자의 이벤트
     struct Input {
         let viewDidLoad: Observable<Void>
         let isExpandedSummary: Observable<(String, Bool)> // (책 제목, 확정 여부)
     }
     
+    // 뷰에 필요한 데이터
     struct Output {
         let books: Observable<[(Book, Bool)]>
         let error: Observable<String>
     }
     
+    // 단방향 데이터 흐름을 위한 메서드
     func transform(input: Input) -> Output {
+        // viewDidLoad가 되면 fetchBooks() 호출
         input.viewDidLoad.bind { [weak self] in
             self?.fetchBooks()
         }.disposed(by: disposeBag)
         
+        // 더보기/접기 여부가 바뀌면 갱신
         input.isExpandedSummary.bind { [weak self] (title, isExpandedSummary) in
             self?.saveSummaryExpandStatus(title: title, isExpandedSummary: isExpandedSummary)
         }.disposed(by: disposeBag)
@@ -52,9 +57,9 @@ class HomeViewModel: HomeViewModelProtocol {
             let books = await useCase.fetchBooks()
             switch books {
             case .success(let books):
-                let isSavedBooks = useCase.isSavedBooks(books: books)
-                if !isSavedBooks { useCase.saveSummaryExpandStatus(books: books) }
-                self.setBooksStatus(books: books)
+                let isSavedBooks = useCase.isSavedBooks(books: books) // UserDefaults에 값이 저장되어 있는지 확인
+                if !isSavedBooks { useCase.saveSummaryExpandStatus(books: books) } // 저장되어 있지 않다면, 저장
+                self.setBooksStatus(books: books) // 저장된 books를 불러옴
             case .failure(let error):
                 self.error.accept(error.description)
             }

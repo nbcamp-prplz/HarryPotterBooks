@@ -11,7 +11,8 @@ protocol BookNetworkProtocol {
     func fetchBooks() async -> Result<[Book], DataError>
 }
 
-class BookNetwork: BookNetworkProtocol {  
+// JSON 데이터 디코딩
+class BookNetwork: BookNetworkProtocol {
     func fetchBooks() async -> Result<[Book], DataError> {
         guard let path = Bundle.main.path(forResource: "data", ofType: "json") else {
             return .failure(.fileNotFound)
