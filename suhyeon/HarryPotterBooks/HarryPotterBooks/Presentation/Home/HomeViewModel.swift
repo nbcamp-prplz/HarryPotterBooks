@@ -57,7 +57,7 @@ class HomeViewModel: HomeViewModelProtocol {
             let books = await useCase.fetchBooks()
             switch books {
             case .success(let books):
-                let isSavedBooks = useCase.isSavedBooks(books: books) // UserDefaults에 값이 저장되어 있는지 확인
+                let isSavedBooks = useCase.isSavedBooks() // UserDefaults에 값이 저장되어 있는지 확인
                 if !isSavedBooks { useCase.saveSummaryExpandStatus(books: books) } // 저장되어 있지 않다면, 저장
                 self.setBooksStatus(books: books) // 저장된 books를 불러옴
             case .failure(let error):
