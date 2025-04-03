@@ -1,26 +1,30 @@
 import XCTest
 
 final class ExpandedStateUseCasesTests: XCTestCase {
-    var mockStorage: AppStatesStorageProtocol!
-    var fetchExpandedStateUseCase: FetchableExpandedStateUseCase!
-    var updateExpandedStateUseCase: UpdatableExpandedStateUseCase!
+    private var mock: AppStatesStorageProtocol!
+    private var fetchUseCase: FetchableExpandedStateUseCase!
+    private var updateUseCase: UpdatableExpandedStateUseCase!
 
     override func setUpWithError() throws {
-        mockStorage = MockAppStatesStorage()
-        fetchExpandedStateUseCase = FetchExpandedStateUseCase(appStatesStorage: mockStorage)
-        updateExpandedStateUseCase = UpdateExpandedStateUseCase(appStatesStorage: mockStorage)
+        try super.setUpWithError()
+        mock = MockAppStatesStorage()
+        fetchUseCase = FetchExpandedStateUseCase(appStatesStorage: mock)
+        updateUseCase = UpdateExpandedStateUseCase(appStatesStorage: mock)
     }
 
     override func tearDownWithError() throws {
-        updateExpandedStateUseCase = nil
-        fetchExpandedStateUseCase = nil
-        mockStorage = nil
+        updateUseCase = nil
+        fetchUseCase = nil
+        mock = nil
+        try super.tearDownWithError()
     }
 
     func testExecutes() throws {
-        XCTAssertEqual(fetchExpandedStateUseCase.execute(at: 1), false)
+        // 지정한 적이 없으면, 기본값은 false
+        XCTAssertEqual(fetchUseCase.execute(at: 1), false)
 
-        updateExpandedStateUseCase.execute(at: 1, isExpanded: true)
-        XCTAssertEqual(fetchExpandedStateUseCase.execute(at: 1), true)
+        // 확장시킨 후 테스트
+        updateUseCase.execute(at: 1, isExpanded: true)
+        XCTAssertEqual(fetchUseCase.execute(at: 1), true)
     }
 }

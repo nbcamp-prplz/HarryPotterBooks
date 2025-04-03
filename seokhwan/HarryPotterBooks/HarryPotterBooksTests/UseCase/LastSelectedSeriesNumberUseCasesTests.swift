@@ -1,26 +1,30 @@
 import XCTest
 
 final class LastSelectedSeriesNumberUseCasesTests: XCTestCase {
-    var mockStorage: AppStatesStorageProtocol!
-    var fetchLastSelectedSeriesNumberUseCase: FetchableLastSelectedSeriesNumberUseCase!
-    var updateLastSelectedSeriesNumberUseCase: UpdatableLastSelectedSeriesNumberUseCase!
+    private var mock: AppStatesStorageProtocol!
+    private var fetchUseCase: FetchableLastSelectedSeriesNumberUseCase!
+    private var updateUseCase: UpdatableLastSelectedSeriesNumberUseCase!
 
     override func setUpWithError() throws {
-        mockStorage = MockAppStatesStorage()
-        fetchLastSelectedSeriesNumberUseCase = FetchLastSelectedSeriesNumberUseCase(appStatesStorage: mockStorage)
-        updateLastSelectedSeriesNumberUseCase = UpdateLastSelectedSeriesNumberUseCase(appStatesStorage: mockStorage)
+        try super.setUpWithError()
+        mock = MockAppStatesStorage()
+        fetchUseCase = FetchLastSelectedSeriesNumberUseCase(appStatesStorage: mock)
+        updateUseCase = UpdateLastSelectedSeriesNumberUseCase(appStatesStorage: mock)
     }
 
     override func tearDownWithError() throws {
-        updateLastSelectedSeriesNumberUseCase = nil
-        fetchLastSelectedSeriesNumberUseCase = nil
-        mockStorage = nil
+        updateUseCase = nil
+        fetchUseCase = nil
+        mock = nil
+        try super.tearDownWithError()
     }
 
     func testExecutes() throws {
-        XCTAssertEqual(fetchLastSelectedSeriesNumberUseCase.execute(), 1)
+        // 지정한 적이 없으면, 기본값은 1권
+        XCTAssertEqual(fetchUseCase.execute(), 1)
 
-        updateLastSelectedSeriesNumberUseCase.execute(to: 5)
-        XCTAssertEqual(fetchLastSelectedSeriesNumberUseCase.execute(), 5)
+        // 변경 후 테스트
+        updateUseCase.execute(to: 5)
+        XCTAssertEqual(fetchUseCase.execute(), 5)
     }
 }

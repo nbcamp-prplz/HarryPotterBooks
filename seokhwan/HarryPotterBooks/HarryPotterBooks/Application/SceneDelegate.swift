@@ -11,6 +11,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
 
+        // Main.storyboard를 지우고 MainViewController를 Key로 지정
         window.rootViewController = MainViewController()
         window.makeKeyAndVisible()
 

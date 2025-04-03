@@ -12,7 +12,7 @@ struct Book: Codable {
     let summary: String
     let wiki: String
     let chapters: Chapters
-    var isExpanded: Bool
+    var isExpanded: Bool // Summary 확장 여부
 
     init(from dto: BookDTO, with seriesNumber: Int) {
         self.seriesNumber = seriesNumber

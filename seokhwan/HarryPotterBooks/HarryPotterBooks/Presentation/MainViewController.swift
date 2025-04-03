@@ -6,9 +6,9 @@ final class MainViewController: UIViewController {
     private let viewModel = MainViewModel()
     private var cancellables = Set<AnyCancellable>()
 
-    private lazy var headerView = HPBHeaderView()
+    private lazy var headerView = HeaderView()
     private lazy var scrollView = UIScrollView()
-    private lazy var containerView = HPBContainerView()
+    private lazy var containerView = ContainerView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,15 +48,15 @@ private extension MainViewController {
     func configureConstraints() {
         headerView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
-            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20) // leading + trailing
         }
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(24)
-            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20) // leading + trailing
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         containerView.snp.makeConstraints { make in
-            make.directionalEdges.width.equalToSuperview()
+            make.directionalEdges.width.equalToSuperview() // top + leading + bottom + trailing
         }
     }
 
@@ -64,7 +64,7 @@ private extension MainViewController {
         viewModel.numberOfBooks
             .sink { [weak self] count in
                 Task {
-                    await MainActor.run {
+                    await MainActor.run { // Main Thread에서 실행
                         self?.generateSeriesNumberButtons(with: count)
                     }
                 }
@@ -75,7 +75,8 @@ private extension MainViewController {
             .sink { [weak self] book in
                 guard let self else { return }
                 Task {
-                    await MainActor.run {
+                    await MainActor.run { // Main Thread에서 실행
+                        // 부드럽게 전환되도록 애니메이션 지정
                         UIView.transition(with: self.view, duration: 0.1, options: .transitionCrossDissolve) {
                             self.updateContents(with: book)
                         }
@@ -87,7 +88,7 @@ private extension MainViewController {
             .compactMap { $0 }
             .sink { [weak self] errorMessage in
                 Task {
-                    await MainActor.run {
+                    await MainActor.run { // Main Thread에서 실행
                         self?.presentErrorAlert(with: errorMessage)
                     }
                 }
