@@ -3,6 +3,7 @@
 ## 👀 Intro
 
 HarryPotter 책 시리즈 정보를 제공하는 iOS 앱입니다.
+![스크린샷 2025-04-03 오후 4 06 18](https://github.com/user-attachments/assets/d663fcc5-d94d-49e5-a254-a5d11badb5be)
 
 ## 🛠️ Stack / Dependency
 
