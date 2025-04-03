@@ -236,29 +236,27 @@ extension ViewController {
     @objc func seriesButtonClicked(_ sender: UIButton) {
         if sender.tag <= books.count {
             currentBookIndex = sender.tag - 1
-            let tag = books[currentBookIndex]
-            
+            let currentBook = books[currentBookIndex]
+
             DispatchQueue.main.async {
                 self.bookImageView.image = UIImage(named: "harrypotter\(sender.tag)")
-                self.titleLabel.text = tag.title
-                self.bookTitle.text = tag.title
-                self.bookPage.text = "Pages : \(tag.pages)"
+                self.titleLabel.text = currentBook.title
+                self.bookTitle.text = currentBook.title
+                self.bookPage.text = "Pages : \(currentBook.pages)"
                 let releaseDateFormatter = DateFormatter()
                 releaseDateFormatter.dateFormat = "yyyy-MM-dd"
-                guard let date = releaseDateFormatter.date(from: tag.releaseDate) else { return print("Release Date Error")}
+                guard let date = releaseDateFormatter.date(from: currentBook.releaseDate) else { return print("Release Date Error")}
                 self.releaseDate.text = date.dateFormatter()
-                self.dedicationDetail.text = tag.dedication
-                self.summaryDetail.text = tag.summary
-                print(tag.summary.count)
-                self.chapterDetail.text = tag.chapters.enumerated().map { index, chapter in
-                    return "\(index + 1). \(chapter.title)"
+                self.dedicationDetail.text = currentBook.dedication
+                self.chapterDetail.text = currentBook.chapters.indices.map { index in
+                    return "\(index + 1). \(currentBook.chapters[index].title)"
                 }.joined(separator: "\n")
+
             }
             
             updateSummaryDisplay()
         }
     }
-    
     @objc private func toggleSummary() {
         summaryExpanded[currentBookIndex] = !summaryExpanded[currentBookIndex]
         UserDefaults.standard.set(summaryExpanded, forKey: summaryExpandedKey)
@@ -293,13 +291,13 @@ extension ViewController {
         if let savedExpanded = UserDefaults.standard.array(forKey: summaryExpandedKey) as? [Bool] {
             summaryExpanded = savedExpanded
         }
+        // naming으로 파악하기 힘듦
         if !books.isEmpty {
             let button = UIButton(type: .system)
             button.tag = 1
             seriesButtonClicked(button)
         }
     }
-    
     func loadBooks() {
         dataService.loadBooks { [weak self] result in
             guard let self else { return }
