@@ -86,7 +86,7 @@ MVVM 기반 Clean Architecture 적용
 
 ## 🎯 Result
 
-<video src="Resources/result.mp4" mute controls></video>
+<image src="Resources/Result.gif" width="500px"></image>
 
 ## 🔥 Trouble Shooting
 
