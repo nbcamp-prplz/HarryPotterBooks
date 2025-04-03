@@ -9,7 +9,9 @@ import Foundation
 
 class MainViewModel {
     private let dataService = DataService()
-    private var books: [Book] = []
+    
+    private(set) var books: [Book] = []
+    private var readMoreStates: [Bool] = []
     
     func loadBooks() throws {
         let books = try dataService.loadBooks()
@@ -21,4 +23,26 @@ class MainViewModel {
         
         return books[index]
     }
+    
+    func isReadMore(index: Int) -> Bool? {
+        guard 0 ..< books.count ~= index else { return nil }
+        
+        return readMoreStates[index]
+    }
+    
+    func toggleReadMore(index: Int) {
+        readMoreStates[index] = !(readMoreStates[index])
+        UserDefaultsManager.shared.saveReadMoreStates(readMoreStates)
+    }
+    
+    func loadReadMoreStates() {
+        readMoreStates = Array(repeating: false, count: books.count)
+        let states = UserDefaultsManager.shared.readMoreStates()
+        if states.isEmpty {
+            UserDefaultsManager.shared.saveReadMoreStates(readMoreStates)
+        } else {
+            self.readMoreStates = states
+        }
+    }
+    
 }

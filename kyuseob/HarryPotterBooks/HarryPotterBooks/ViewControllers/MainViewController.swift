@@ -12,29 +12,28 @@ class MainViewController: UIViewController {
     private let mainView = MainView()
     private let mainViewModel = MainViewModel()
     
-    private var myBook: Book? = nil
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadBooks()
+        mainViewModel.loadReadMoreStates()
+        mainView.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        loadBook(index: 1)
         
-        guard let book = self.myBook else { return }
-        mainView.configure(book: book, index: 1)
+        guard let isReadMore = mainViewModel.isReadMore(index: 0) else { return }
+        mainView.configure(books: mainViewModel.books, index: 0, readMoreState: isReadMore)
     }
 
     override func loadView() {
         view = mainView
     }
  
-    private func loadBook(index: Int) {
+    private func loadBooks() {
         do {
             try mainViewModel.loadBooks()
-            guard let book = mainViewModel.book(index: index) else { return }
-            self.myBook = book
         } catch let error as DataError {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // ViewController가 display 준비되기 전 메시지를 띄우지 않도록
                 self.showMessage(title: nil, message: error.errorMessage)
@@ -48,3 +47,13 @@ class MainViewController: UIViewController {
     
 }
 
+extension MainViewController: MainViewDelegate {
+    func didChangeSelectedIndex(to index: Int) {
+        guard let readMoreState = mainViewModel.isReadMore(index: index) else { return }
+        mainView.configure(books: mainViewModel.books, index: index, readMoreState: readMoreState)
+    }
+    
+    func didTapReadMore(index: Int) {
+        mainViewModel.toggleReadMore(index: index)
+    }
+}

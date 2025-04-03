@@ -9,11 +9,19 @@ import UIKit
 import SnapKit
 import Then
 
+protocol MainViewDelegate: AnyObject {
+    func didTapReadMore(index: Int)
+    func didChangeSelectedIndex(to index: Int)
+}
+
 final class MainView: UIView {
 
+    weak var delegate: MainViewDelegate?
+    
     private let bookOverviewView = BookOverviewView()
     private let bookDetailsView = BookDetailsView()
     private let bookChapterView = BookChapterView()
+    private let bookSeriesView = BookSeriesView()
     
     private let titleLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 24, weight: .bold)
@@ -22,14 +30,6 @@ final class MainView: UIView {
         $0.textColor = .black
         $0.numberOfLines = 0
         $0.lineBreakMode = .byWordWrapping
-    }
-    
-    private let seriesButton = UIButton().then {
-        $0.setTitleColor( .white, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        $0.backgroundColor = UIColor.systemBlue
-        $0.setTitle("?", for: .normal)
-        $0.isUserInteractionEnabled = false // 임시 레벨 1 기준 세팅
     }
     
     private let scrollView = UIScrollView().then {
@@ -42,6 +42,8 @@ final class MainView: UIView {
         super.init(frame: frame)
         
         setupUI()
+        bookDetailsView.delegate = self
+        bookSeriesView.delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -52,11 +54,11 @@ final class MainView: UIView {
         setupHierarchy()
         setupConstraints()
         
-        seriesButton.layer.cornerRadius = 16
+        bookSeriesView.layer.cornerRadius = 16
     }
     
     private func setupHierarchy() {
-        [titleLabel, seriesButton, scrollView].forEach { addSubview($0) }
+        [titleLabel, bookSeriesView, scrollView].forEach { addSubview($0) }
         scrollView.addSubview(contentView)
         [bookOverviewView, bookDetailsView, bookChapterView].forEach { contentView.addSubview($0) }
     }
@@ -69,17 +71,16 @@ final class MainView: UIView {
             $0.top.equalTo(safeAreaLayoutGuide).offset(10)
         }
         
-        seriesButton.snp.makeConstraints {
+        bookSeriesView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(titleLabel.snp.bottom).offset(16)
             $0.leading.greaterThanOrEqualToSuperview().offset(20)
             $0.trailing.lessThanOrEqualToSuperview().offset(-20)
-            $0.size.equalTo(32)
         }
         
         scrollView.snp.makeConstraints {
             $0.directionalHorizontalEdges.equalToSuperview()
-            $0.top.equalTo(seriesButton.snp.bottom)
+            $0.top.equalTo(bookSeriesView.snp.bottom)
             $0.bottom.equalToSuperview()
             $0.width.equalToSuperview()
         }
@@ -110,13 +111,27 @@ final class MainView: UIView {
         }
     }
     
-    func configure(book: Book, index: Int) {
-        titleLabel.text = book.title
-        seriesButton.setTitle(String(index), for: .normal)
+    func configure(books: [Book], index: Int, readMoreState: Bool) {
+        let book = books[index]
         
+        titleLabel.text = book.title
+
         bookOverviewView.configure(book: book, index: index)
-        bookDetailsView.configure(dedication: book.dedication, summary: book.summary)
+        bookDetailsView.configure(dedication: book.dedication, summary: book.summary, isReadMore: readMoreState, index: index)
         bookChapterView.configure(with: book.chapters)
+        bookSeriesView.configure(books.count)
     }
     
+}
+
+extension MainView: BookDetailsViewDelegate {
+    func bookDetailsViewDidTapReadMore(index: Int) {
+        delegate?.didTapReadMore(index: index)
+    }
+}
+
+extension MainView: BookSeriesViewDelegate {
+    func didChangeSelectedIndex(to index: Int) {
+        delegate?.didChangeSelectedIndex(to: index)
+    }
 }

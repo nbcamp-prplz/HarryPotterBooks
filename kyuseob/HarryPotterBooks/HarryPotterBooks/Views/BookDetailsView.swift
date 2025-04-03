@@ -7,16 +7,30 @@
 
 import UIKit
 
+protocol BookDetailsViewDelegate: AnyObject {
+    func bookDetailsViewDidTapReadMore(index: Int)
+}
+
 class BookDetailsView: UIView {
     
-    private let dedicationStackView = TitleContentView()
+    weak var delegate: BookDetailsViewDelegate?
     
+    private var isReadMore: Bool?
+    private var currentIndex: Int = 0
+    
+    private let dedicationStackView = TitleContentView()
     private let summaryStackView = TitleContentView()
+    private let readMoreButton = UIButton().then {
+        $0.setTitle("더보기", for: .normal)
+        $0.setTitleColor(.systemBlue, for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupUI()
+        setupAction()
     }
     
     required init?(coder: NSCoder) {
@@ -29,8 +43,7 @@ class BookDetailsView: UIView {
     }
     
     private func setupHierarchy() {
-        addSubview(dedicationStackView)
-        addSubview(summaryStackView)
+        [dedicationStackView, summaryStackView, readMoreButton].forEach { addSubview($0) }
     }
     
     private func setupConstraints() {
@@ -44,14 +57,39 @@ class BookDetailsView: UIView {
             $0.directionalHorizontalEdges.equalToSuperview().inset(20)
         }
         
+        readMoreButton.snp.makeConstraints {
+            $0.trailing.equalTo(summaryStackView.snp.trailing)
+            $0.top.equalTo(summaryStackView.snp.bottom).offset(8)
+        }
+        
         self.snp.makeConstraints {
-            $0.bottom.equalTo(summaryStackView.snp.bottom)
+            $0.bottom.equalTo(readMoreButton.snp.bottom)
         }
     }
+    
+    private func setupAction() {
+        readMoreButton.addTarget(self, action: #selector(didTapReadMoreButton), for: .touchUpInside)
+    }
 
-    func configure(dedication: String, summary: String) {
+    func configure(dedication: String, summary: String, isReadMore: Bool, index: Int) {
+        self.isReadMore = isReadMore
+        self.currentIndex = index
         dedicationStackView.configure(title: "Dedication", content: dedication)
         summaryStackView.configure(title: "Summary", content: summary)
+        summaryStackView.setExpandedLabel(isExpanded: summaryStackView.contentLength() <= 450 ? true : isReadMore) // 450자 미만이면 바로 펼쳐지게 구현
+         
+        readMoreButton.isHidden = summaryStackView.contentLength() <= 450
+        readMoreButton.setTitle(isReadMore ? "접기" : "더보기", for: .normal)
+    }
+    
+    @objc private func didTapReadMoreButton() {
+        delegate?.bookDetailsViewDidTapReadMore(index: currentIndex) // viewModel 측 데이터 변경은 viewController에서 할 수 있도록
+
+        self.isReadMore?.toggle()
+        
+        guard let isReadMore else { return } // 이후 코드들의 파라미터는 옵셔널을 받을 수 없어 언래핑
+        summaryStackView.setExpandedLabel(isExpanded: isReadMore)
+        readMoreButton.setTitle(isReadMore ? "접기" : "더보기", for: .normal)
     }
     
 }
