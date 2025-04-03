@@ -58,6 +58,7 @@ class HomeTopView: UIView {
             make.directionalHorizontalEdges.equalToSuperview().inset(20)
         }
         
+        // 시리즈 컬렉션뷰
         seriesNumberCollectionView.snp.makeConstraints { make in
             make.top.equalTo(mainTitleLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()

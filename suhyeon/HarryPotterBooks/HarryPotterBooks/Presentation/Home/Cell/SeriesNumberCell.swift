@@ -10,6 +10,7 @@ import UIKit
 class SeriesNumberCell: UICollectionViewCell {
     static let id = "SeriesNumberCell"
     
+    // 타이틀
     private let titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
         $0.textAlignment = .center

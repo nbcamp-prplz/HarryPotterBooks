@@ -8,7 +8,7 @@
 import UIKit
 
 class ExpandableContentView: UIView {
-    private let type: InfoVerticalStackViewType
+    private let type: InfoVerticalStackViewType // Summary가 아닐 경우, 버튼 히든 처리
     
     // 컨텐츠
     private let contentLabel = UILabel().then {
@@ -23,7 +23,7 @@ class ExpandableContentView: UIView {
         $0.setTitle("접기" , for: .selected)
         $0.setTitleColor(.systemBlue, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 14)
-        $0.isHidden = type != .summary
+        $0.isHidden = type != .summary  // Summary가 아닐 경우, 버튼 히든 처리
     }
     
     init(type: InfoVerticalStackViewType) {

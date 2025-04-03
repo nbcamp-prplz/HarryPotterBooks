@@ -20,7 +20,7 @@ class BookRepository: BookRepositoryProtocol {
     }
     
     // UserDefaults에 저장되어 있는지 확인
-    func isSavedBooks(books: [Book]) -> Bool {
+    func isSavedBooks() -> Bool {
         let key = UserDefaultsKey.summaryExpandStatus.rawValue
         let summaryExpandStatus = userDefaults.dictionary(forKey: key) as? [String: Bool]
         return summaryExpandStatus != nil
