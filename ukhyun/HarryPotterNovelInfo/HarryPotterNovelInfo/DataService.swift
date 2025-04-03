@@ -39,6 +39,7 @@ class DataService: UIViewController {
             completion(.failure(DataError.parsingFailed(error)))
         }
     }
+    
 }
 
 
