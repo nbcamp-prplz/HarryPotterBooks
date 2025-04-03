@@ -172,6 +172,8 @@ class ViewController: UIViewController {
 }
 
 extension ViewController {
+    
+    // 뷰 구성 및 UI 추가
     func configureHierarchy() {
         view.backgroundColor = .white
         [titleLabel, buttonStackView, scrollView].forEach { view.addSubview($0) }
@@ -181,6 +183,7 @@ extension ViewController {
         [dedicationTitle, dedicationDetail, summaryTitle, summaryDetail, summaryToggleButton, chapterTitle, chapterDetail].forEach { bookDetailInfoStackView.addArrangedSubview($0) }
     }
     
+    // 오토레이아웃 제약조건 설정
     func configureLayout() {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
@@ -219,6 +222,7 @@ extension ViewController {
         }
     }
     
+    // series Button 생성
     func configureView() {
         for i in 1...7 {
             let btn = UIButton()
@@ -226,14 +230,15 @@ extension ViewController {
             btn.titleLabel?.font = .systemFont(ofSize: 16)
             btn.backgroundColor = .systemBlue
             btn.tag = i
-            btn.addTarget(self, action: #selector(seriesButtonClicked), for: .touchUpInside)
+            btn.addTarget(self, action: #selector(seriesButtonTapped), for: .touchUpInside)
             btn.layer.cornerRadius = 20
             btn.clipsToBounds = true
             buttonStackView.addArrangedSubview(btn)
         }
     }
     
-    @objc func seriesButtonClicked(_ sender: UIButton) {
+    // series Button 클릭 이벤트
+    @objc func seriesButtonTapped(_ sender: UIButton) {
         if sender.tag <= books.count {
             currentBookIndex = sender.tag - 1
             let currentBook = books[currentBookIndex]
@@ -257,12 +262,15 @@ extension ViewController {
             updateSummaryDisplay()
         }
     }
+    
+    // 토글 기능
     @objc private func toggleSummary() {
         summaryExpanded[currentBookIndex] = !summaryExpanded[currentBookIndex]
         UserDefaults.standard.set(summaryExpanded, forKey: summaryExpandedKey)
         updateSummaryDisplay()
     }
     
+    // summary Toggle Button 업데이트
     private func updateSummaryDisplay() {
         guard currentBookIndex < books.count else { return }
         
@@ -286,18 +294,18 @@ extension ViewController {
         }
     }
 
-    
+    // 상태 저장
     func saveCurrentState() {
         if let savedExpanded = UserDefaults.standard.array(forKey: summaryExpandedKey) as? [Bool] {
             summaryExpanded = savedExpanded
         }
-        // naming으로 파악하기 힘듦
         if !books.isEmpty {
             let button = UIButton(type: .system)
             button.tag = 1
-            seriesButtonClicked(button)
+            seriesButtonTapped(button)
         }
     }
+    // 책 데이터 로드
     func loadBooks() {
         dataService.loadBooks { [weak self] result in
             guard let self else { return }
