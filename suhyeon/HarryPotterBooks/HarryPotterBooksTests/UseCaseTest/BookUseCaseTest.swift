@@ -55,7 +55,7 @@ final class BookUseCaseTest: XCTestCase {
     }
     
     // UserDefaults에 저장되어 있는 값 불러오기 테스트
-    func testLoadSummaryExapndStatus() {
+    func testLoadSummaryExpandStatus() {
         let books = Book.dummy()
         saveData(books: books) //  UserDefaults에 데이터 저장
         
