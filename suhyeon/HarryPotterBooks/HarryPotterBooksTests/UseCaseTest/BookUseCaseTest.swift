@@ -79,7 +79,6 @@ final class BookUseCaseTest: XCTestCase {
         
         let result = userDefaults.dictionary(forKey: key) as? [String: Bool] // 저장된 값 확인
         XCTAssertEqual(result?[books[0].title], false)
-        
     }
     
     // UserDefaults에 데이터 저장

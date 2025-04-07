@@ -9,16 +9,17 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol HomeViewModelProtocol {
-    func transform(input: HomeViewModel.Input) -> HomeViewModel.Output
+protocol ViewModelProtocol {
+    associatedtype Input
+    associatedtype Output
+    var output: Output { get }
+    func transform(input: Input)
 }
 
-class HomeViewModel: HomeViewModelProtocol {
+class HomeViewModel: ViewModelProtocol {
     private let disposeBag = DisposeBag()
     private let useCase: BookUseCaseProtocol
-    
-    private let books = BehaviorRelay<[(Book, Bool)]>(value: [])
-    private let error = PublishRelay<String>()
+    var output = Output()
     
     init(useCase: BookUseCaseProtocol) {
         self.useCase = useCase
@@ -32,12 +33,12 @@ class HomeViewModel: HomeViewModelProtocol {
     
     // 뷰에 필요한 데이터
     struct Output {
-        let books: Observable<[(Book, Bool)]>
-        let error: Observable<String>
+        let books = BehaviorRelay<[(Book, Bool)]>(value: [])
+        let error = BehaviorRelay<String>(value: "")
     }
     
     // 단방향 데이터 흐름을 위한 메서드
-    func transform(input: Input) -> Output {
+    func transform(input: Input) {
         // viewDidLoad가 되면 fetchBooks() 호출
         input.viewDidLoad.bind { [weak self] in
             self?.fetchBooks()
@@ -47,8 +48,6 @@ class HomeViewModel: HomeViewModelProtocol {
         input.isExpandedSummary.bind { [weak self] (title, isExpandedSummary) in
             self?.saveSummaryExpandStatus(title: title, isExpandedSummary: isExpandedSummary)
         }.disposed(by: disposeBag)
-        
-        return Output(books: books.asObservable(), error: error.asObservable())
     }
     
     // 책 정보 불러오기
@@ -61,7 +60,7 @@ class HomeViewModel: HomeViewModelProtocol {
                 if !isSavedBooks { useCase.saveSummaryExpandStatus(books: books) } // 저장되어 있지 않다면, 저장
                 self.setBooksStatus(books: books) // 저장된 books를 불러옴
             case .failure(let error):
-                self.error.accept(error.description)
+                self.output.error.accept(error.description)
             }
         }
     }
@@ -69,12 +68,12 @@ class HomeViewModel: HomeViewModelProtocol {
     // UserDefaults에 저장된 [(Book, Bool)] 반환
     private func setBooksStatus(books: [Book]) {
         guard let booksStatus = useCase.loadSummaryExpandStatus(books: books) else { return }
-        self.books.accept(booksStatus)
+        self.output.books.accept(booksStatus)
     }
     
     // 더보기/접기 정보저장 (일부만 저장)
     private func saveSummaryExpandStatus(title: String, isExpandedSummary: Bool) {
         useCase.saveSummaryExpandStatus(title: title, isExpandedSummary: isExpandedSummary)
-        self.setBooksStatus(books: books.value.map{$0.0})
+        self.setBooksStatus(books: output.books.value.map{$0.0})
     }
 }

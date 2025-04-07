@@ -11,7 +11,7 @@ import RxCocoa
 
 class HomeViewController: UIViewController {
     private let homeView = HomeView()
-    private let viewModel: HomeViewModelProtocol
+    private let viewModel: HomeViewModel
     private let disposeBag = DisposeBag()
     
     private let books = BehaviorRelay<[(Book, Bool)]>(value: []) // (책, summary 확장 여부) 튜플 형태 배열
@@ -65,10 +65,10 @@ class HomeViewController: UIViewController {
     // 뷰모델 바인딩
     private func bindViewModel() {
         let input = HomeViewModel.Input(viewDidLoad: .just(()), isExpandedSummary: isExpandedSummary.asObservable())
-        let output = viewModel.transform(input: input)
+        viewModel.transform(input: input)
         
         // books 바인딩
-        output.books
+        viewModel.output.books
             .observe(on: MainScheduler.instance) // 시리즈 컬렉션뷰의 UI를 변경하므로 Main 큐 사용
             .do(onNext: {[weak self] books in
                 self?.books.accept(books) // 변경된 books 반영
@@ -80,7 +80,8 @@ class HomeViewController: UIViewController {
                 .disposed(by: disposeBag)
         
         // 에러 바인딩
-        output.error
+        viewModel.output.error
+            .filter { $0 != "" }
             .observe(on: MainScheduler.instance) // 얼럿을 띄우므로 메인 큐 사용
             .bind {[weak self] error in
                 guard let self else { return }
